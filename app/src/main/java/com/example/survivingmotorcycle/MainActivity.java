@@ -14,5 +14,7 @@ public class MainActivity extends AppCompatActivity
 
         // change 1 - Paul
 
+        // change 2 - Razvan
+
     }
 }
