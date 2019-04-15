@@ -16,7 +16,7 @@ public class WorldRenderer
     {
         gameEngine = ge;
         world = w;
-        carImage = gameEngine.loadBitmap("survivingmotorcycle/images/vehicle1.png");
+        carImage = gameEngine.loadBitmap("survivingmotorcycle/images/vehicles/ship2.png");
         monsterImage = gameEngine.loadBitmap("survivingmotorcycle/images/enemy1.png");
     }
 

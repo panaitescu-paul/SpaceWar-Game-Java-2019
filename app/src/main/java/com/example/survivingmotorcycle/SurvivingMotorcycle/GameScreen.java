@@ -21,8 +21,8 @@ public class GameScreen extends Screen
     }
 
     Bitmap background = null;
-    float backgroundX = 0;
-    float backgroundY = 2000 - 320;
+    float backgroundX = 100;
+    float backgroundY = 1000 - 320;
     Bitmap resume = null;
     Bitmap gameOver = null;
     Sound bounce = null;
@@ -40,7 +40,7 @@ public class GameScreen extends Screen
         super(gameEngine);
         Log.d("Carscroller", "Starting the GameScreen");
 
-        background = gameEngine.loadBitmap("survivingmotorcycle/images/map1.png");
+        background = gameEngine.loadBitmap("survivingmotorcycle/images/maps/map2.png");
         resume = gameEngine.loadBitmap("survivingmotorcycle/images/resume.png");
         gameOver = gameEngine.loadBitmap("survivingmotorcycle/images/gameover.png");
         bounce = gameEngine.loadSound("survivingmotorcycle/music/bounce.wav");
@@ -120,7 +120,7 @@ public class GameScreen extends Screen
 //            }
             if (backgroundY < 0) // img size - screen size
             {
-                backgroundY = 2000 - 320;
+                backgroundY = 1000 - 320;
             }
             // update the objects
             world.update(deltaTime, gameEngine.getAccelerometer()[1]);

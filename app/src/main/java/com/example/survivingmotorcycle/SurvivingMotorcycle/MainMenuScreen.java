@@ -15,7 +15,7 @@ public class MainMenuScreen extends Screen
     public MainMenuScreen(GameEngine gameEngine)
     {
         super(gameEngine);
-        background = gameEngine.loadBitmap("survivingmotorcycle/images/map1.png");
+        background = gameEngine.loadBitmap("survivingmotorcycle/images/maps/map2.png");
         startGame = gameEngine.loadBitmap("survivingmotorcycle/images/xstartgame.png");
         startTime = System.nanoTime();
     }
