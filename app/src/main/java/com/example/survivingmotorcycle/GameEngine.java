@@ -49,6 +49,8 @@ public abstract class GameEngine extends Activity implements Runnable, TouchHand
     Paint paint = new Paint();
     public Music music;
 
+    //    change 1
+//    change 2
     public abstract Screen createStartScreen();
 
     public void setScreen(Screen screen)
