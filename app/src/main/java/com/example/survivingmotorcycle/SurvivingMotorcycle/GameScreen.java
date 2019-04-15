@@ -25,6 +25,8 @@ public class GameScreen extends Screen
     float backgroundY = 1000 - 320;
     Bitmap resume = null;
     Bitmap gameOver = null;
+    Bitmap pause = null;
+    Bitmap start = null;
     Sound bounce = null;
     Sound crash = null;
     Sound gameOverSound = null;
@@ -42,6 +44,8 @@ public class GameScreen extends Screen
 
         background = gameEngine.loadBitmap("survivingmotorcycle/images/maps/map2.png");
         resume = gameEngine.loadBitmap("survivingmotorcycle/images/resume.png");
+        pause = gameEngine.loadBitmap("survivingmotorcycle/images/ui/btn_pause.png");
+        start = gameEngine.loadBitmap("survivingmotorcycle/images/ui/btn_start.png");
         gameOver = gameEngine.loadBitmap("survivingmotorcycle/images/gameover.png");
         bounce = gameEngine.loadSound("survivingmotorcycle/music/bounce.wav");
         crash = gameEngine.loadSound("survivingmotorcycle/music/blocksplosion.wav");
@@ -129,12 +133,16 @@ public class GameScreen extends Screen
         // draw the backgraound, no matter what state (paused, running)
 //        gameEngine.drawBitmap(background, 0,0, (int)backgroundY, 0, 480, 320);
         gameEngine.drawBitmap(background, 0,0, 0, (int)backgroundY, 480, 320);
+        gameEngine.drawBitmap(pause, 480-50, 10, 0, 0, 80 , 80);
+
         // draw the game object, no matter what state (paused, running)
         renderer.render();
 
         if (state == State.Paused)
         {
             gameEngine.drawBitmap(resume, 240 - resume.getWidth()/2, 160 - resume.getHeight()/2);
+            gameEngine.drawBitmap(start, 480-50, 10, 0, 0, 80 , 80);
+
 
         }
         if (state == State.GameOver)
