@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.survivingmotorcycle"
+    package="com.example.survivingmotorcycle.SurvivingMotorcycle"
     android:installLocation="preferExternal">
 
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
+        android:label="SurvivingMotorcycle"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".SurvivingMotorcycle.SurvivingMotorcycle"
+        <activity android:name=".SurvivingMotorcycle"
             android:configChanges="keyboard|keyboardHidden|orientation"
             android:screenOrientation="portrait">
             <intent-filter>
