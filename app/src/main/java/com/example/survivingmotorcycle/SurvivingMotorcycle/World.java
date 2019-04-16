@@ -21,7 +21,9 @@ public class World
 
     Vehicle vehicle = new Vehicle();
     List<Monster> monsterList = new ArrayList<>();
+    List<Bullet> bulletList = new ArrayList<>();
     public int maxMonsters = 5;
+    public int maxBullets = 10;
 
     GameEngine gameEngine;
     CollisionListener listener;
@@ -36,7 +38,10 @@ public class World
         this.backgroundSpeed = backgroundSpeed;
         this.gameEngine = gameEngine;
         this.listener = listener;
+        initializeBullets();
         initializeMonsters();
+
+
     }
 
     public void update(float deltaTime, float accelY)
@@ -63,16 +68,35 @@ public class World
             // make monster move
 //            monster.x = (int)(monster.x - backgroundSpeed * deltaTime);
             monster.y = (int)(monster.y + backgroundSpeed * deltaTime);
-//            if (monster.x < 0 - Monster.WIDTH)
-//            {
-//                Random random = new Random();
-//                monster.x = 30 + random.nextInt(320/2);
-//                monster.y = 500 + random.nextInt(480/2);
-//                Log.d("World", "Just recycled a monster.");
-//            }
+            if (monster.y > 480 - Monster.HEIGHT)
+            {
+                Random random = new Random();
+                int randX = random.nextInt(320-30); // between 0 and 50
+                int randY = random.nextInt(20);
+                monster.x = (randX);
+                monster.y = ((-450 + randY) + i*100);
+                Log.d("World", "Just recycled a monster.");
+            }
+        }
+//        Bullet bullet = null;
+        Bullet bullet;
+        for (int i = 0; i < maxBullets; i++)
+        {
+            bullet = bulletList.get(i);
+            // make monster move
+//            monster.x = (int)(monster.x - backgroundSpeed * deltaTime);
+            bullet.y = (int)(bullet.y - backgroundSpeed * deltaTime);
+            if (bullet.y < 0 - Bullet.HEIGHT-300)// - 30 for testing purposes
+            {
+                bullet.x = vehicle.x+vehicle.WIDTH/2;
+                bullet.y = 480-vehicle.HEIGHT-10;
+                Log.d("World", "Just recycled a bullet.");
+            }
+
         }
         // check if the car collides with a monster
         collideCarMonster();
+
     }
 
     private void collideCarMonster()
@@ -102,15 +126,24 @@ public class World
 
     private void initializeMonsters()
     {
-
         Random random = new Random();
         for(int i=0; i< maxMonsters; i++)
         {
-            int randX = random.nextInt(280); // between 0 and 50
+            int randX = random.nextInt(320-30); // between 0 and 50
             int randY = random.nextInt(20);
 //            Monster monster = new Monster(((500 + randX) + i*50), 30 + randY);
-            Monster monster = new Monster(30 + randX, ((-10 + randY) + i*50));
+            Monster monster = new Monster(randX, ((-450 + randY) + i*100));
             monsterList.add(monster);
+        }
+    }
+
+    private void initializeBullets()
+    {
+        for(int i=0; i< maxBullets; i++)
+        {
+//            Bullet bullet = new Bullet(vehicle.x+vehicle.WIDTH/2, 480-vehicle.HEIGHT-10+(i*20)); // middle vehicle coordonates
+            Bullet bullet = new Bullet(100, -200+(i*20)); // middle vehicle coordonates
+            bulletList.add(bullet);
         }
     }
 }

@@ -9,7 +9,7 @@ public class Vehicle
 
     public Vehicle()
     {
-        x = 320-100;
-        y = 480-100;
+        x = 0;
+        y = 480-76-10;
     }
 }
