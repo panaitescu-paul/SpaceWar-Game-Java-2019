@@ -15,7 +15,7 @@ public class MainMenuScreen extends Screen
     public MainMenuScreen(GameEngine gameEngine)
     {
         super(gameEngine);
-        background = gameEngine.loadBitmap("survivingmotorcycle/images/maps/map2.png");
+        background = gameEngine.loadBitmap("survivingmotorcycle/images/maps/map4.jpg");
         startGame = gameEngine.loadBitmap("survivingmotorcycle/images/xstartgame.png");
         startTime = System.nanoTime();
     }
@@ -32,7 +32,7 @@ public class MainMenuScreen extends Screen
         passedTime = passedTime + deltaTime;
         if ((passedTime - (int)passedTime) > 0.5f )  // 1,55 - 1 > 0.5  blink every half seconds
         {
-            gameEngine.drawBitmap(startGame, 240 - startGame.getWidth()/2, 160);
+            gameEngine.drawBitmap(startGame, 320/2 - startGame.getWidth()/2, 480/2 - startGame.getHeight()/2);
         }
 
     }

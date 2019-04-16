@@ -22,7 +22,7 @@ public class GameScreen extends Screen
 
     Bitmap background = null;
     float backgroundX = 100;
-    float backgroundY = 1000 - 320;
+    float backgroundY = 800 - 480;
     Bitmap resume = null;
     Bitmap gameOver = null;
     Bitmap pause = null;
@@ -42,7 +42,7 @@ public class GameScreen extends Screen
         super(gameEngine);
         Log.d("Carscroller", "Starting the GameScreen");
 
-        background = gameEngine.loadBitmap("survivingmotorcycle/images/maps/map2.png");
+        background = gameEngine.loadBitmap("survivingmotorcycle/images/maps/map4.jpg");
         resume = gameEngine.loadBitmap("survivingmotorcycle/images/resume.png");
         pause = gameEngine.loadBitmap("survivingmotorcycle/images/ui/btn_pause.png");
         start = gameEngine.loadBitmap("survivingmotorcycle/images/ui/btn_start.png");
@@ -106,7 +106,8 @@ public class GameScreen extends Screen
             }
         }
 
-        if (state == State.Running && gameEngine.getTouchY(0) < 40 && gameEngine.getTouchX(0) > 320-40)
+        // press invisible pause button
+        if (state == State.Running && gameEngine.getTouchY(0) < 50 && gameEngine.getTouchX(0) > 320-50)
         {
             Log.d("GameScreen", "Pausing the game.");
             state = State.Paused;
@@ -117,6 +118,7 @@ public class GameScreen extends Screen
         if (state == State.Running)
         {
 //            backgroundY = backgroundY + backgroundSpeed * deltaTime;
+            // makes the background move
             backgroundY = backgroundY - backgroundSpeed * deltaTime;
 //            if (backgroundY > 2000 - 320) // img size - screen size
 //            {
@@ -124,24 +126,27 @@ public class GameScreen extends Screen
 //            }
             if (backgroundY < 0) // img size - screen size
             {
-                backgroundY = 1000 - 320;
+                backgroundY = 800 - 480;
             }
             // update the objects
             world.update(deltaTime, gameEngine.getAccelerometer()[1]);
+//            world.update(deltaTime, gameEngine.getTouchY(0));
         }
 
         // draw the backgraound, no matter what state (paused, running)
 //        gameEngine.drawBitmap(background, 0,0, (int)backgroundY, 0, 480, 320);
-        gameEngine.drawBitmap(background, 0,0, 0, (int)backgroundY, 480, 320);
-        gameEngine.drawBitmap(pause, 480-50, 10, 0, 0, 80 , 80);
+//        gameEngine.drawBitmap(background, 0,0, 0, (int)backgroundY, 480, 320);
+        gameEngine.drawBitmap(background, 0,0, 0, (int)backgroundY, 320, 480);
+        gameEngine.drawBitmap(pause, 320-50, 10, 0, 0, 80 , 80);
 
         // draw the game object, no matter what state (paused, running)
         renderer.render();
 
         if (state == State.Paused)
         {
-            gameEngine.drawBitmap(resume, 240 - resume.getWidth()/2, 160 - resume.getHeight()/2);
-            gameEngine.drawBitmap(start, 480-50, 10, 0, 0, 80 , 80);
+//            gameEngine.drawBitmap(resume, 240 - resume.getWidth()/2, 160 - resume.getHeight()/2);
+            gameEngine.drawBitmap(resume, 160 - resume.getWidth()/2, 240 - resume.getHeight()/2);
+            gameEngine.drawBitmap(start, 320-50, 10, 0, 0, 80 , 80);
 
 
         }

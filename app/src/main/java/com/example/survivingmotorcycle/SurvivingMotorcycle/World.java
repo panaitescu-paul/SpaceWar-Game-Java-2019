@@ -12,8 +12,8 @@ import java.util.Random;
 public class World
 {
 
-    public static final float MIN_X = 50;
-    public static final float MAX_X = 480-50;
+    public static final float MIN_X = 1;
+    public static final float MAX_X = 320-1;
 //    public static final float MAX_X = 1000;
     public static final float MIN_Y = 37;
     public static final float MAX_Y = 285;

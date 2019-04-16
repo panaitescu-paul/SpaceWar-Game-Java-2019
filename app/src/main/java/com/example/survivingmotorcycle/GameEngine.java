@@ -379,8 +379,8 @@ public abstract class GameEngine extends Activity implements Runnable, TouchHand
         {
             setOffscreenSurface(320, 480);
         }
-        setOffscreenSurface(480, 320);
-        //setOffscreenSurface(320, 480);
+//        setOffscreenSurface(480, 320); // landscape screen
+        setOffscreenSurface(320, 480); // portrait screen
 
         mainLoopThread = new Thread(this);
         mainLoopThread.start();
