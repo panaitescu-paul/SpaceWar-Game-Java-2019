@@ -68,7 +68,7 @@ public class World
             // make monster move
 //            monster.x = (int)(monster.x - backgroundSpeed * deltaTime);
             monster.y = (int)(monster.y + backgroundSpeed * deltaTime);
-            if (monster.y > 480 - Monster.HEIGHT)
+            if (monster.y > 480 - Monster.HEIGHT) // if monster disappears off screen
             {
                 Random random = new Random();
                 int randX = random.nextInt(320-30); // between 0 and 50
@@ -96,6 +96,7 @@ public class World
         }
         // check if the car collides with a monster
         collideCarMonster();
+        collideBulletEnemy();
 
     }
 
@@ -111,6 +112,32 @@ public class World
                 gameOver = true;
                 Log.d("World", "The car just hit a monster");
             }
+        }
+    }
+
+    private void collideBulletEnemy()
+    {
+        Bullet bullet = null;
+        for (int i=0; i < maxBullets; i++)
+        {
+            bullet = bulletList.get(i);
+
+            Monster monster = null;
+            for (int j=0; j < maxMonsters; j++)
+            {
+                monster = monsterList.get(j);
+                // check collision of a bullet with a enemy
+                if (collideRects(bullet.x, bullet.y, Bullet.WIDTH, Bullet.HEIGHT,
+                        monster.x, monster.y, Monster.WIDTH, Monster.HEIGHT))
+                {
+                    // bullet dissapears
+                    // enemy dissapears
+                    bullet.y = -500; // move bullet off screen for recycling
+                    monster.y = 500; // move monster off screen for recycling
+                    Log.d("World", "The bullet just hit an enemy");
+                }
+            }
+
         }
     }
 
