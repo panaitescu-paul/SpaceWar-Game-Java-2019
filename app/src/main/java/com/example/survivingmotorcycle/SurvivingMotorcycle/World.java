@@ -12,8 +12,8 @@ import java.util.Random;
 public class World
 {
 
-    public static final float MIN_X = 1;
-    public static final float MAX_X = 320-1;
+    public static final float MIN_X = -30;
+    public static final float MAX_X = 320 + 30; // logical screen + vehicle size
 //    public static final float MAX_X = 1000;
     public static final float MIN_Y = 37;
     public static final float MAX_Y = 285;
@@ -52,8 +52,20 @@ public class World
         // move the vehicle based on user touch. Only for testing. Remove before publishing.
         if (gameEngine.isTouchDown(0));
         {
-//            vehicle.y = gameEngine.getTouchY(0) - Vehicle.HEIGHT;
-            vehicle.x = gameEngine.getTouchX(0) - Vehicle.WIDTH;
+            vehicle.x = gameEngine.getTouchX(0) - Vehicle.WIDTH/2; // position vehicle after touch x
+            // check for vehicle to be in the lower part of the screen
+            if (gameEngine.getTouchY(0) < 480/2) // check if touch is on the upper part
+            {
+                vehicle.y = 480/2 - Vehicle.HEIGHT/2; // reposition vehicle on the lower part of the screen
+            }else
+            {
+                vehicle.y = gameEngine.getTouchY(0) - Vehicle.HEIGHT/2; // position vehicle after touch y
+            }
+
+            if (gameEngine.getTouchY(0) > 480 - Vehicle.HEIGHT)  // check if vehicle is out of screen (lower)
+            {
+                vehicle.y = 480 - Vehicle.HEIGHT - 10; // reposition vehicle on the lower part of the screen
+            }
         }
 
         // check left screen boundary
@@ -89,7 +101,8 @@ public class World
             if (bullet.y < 0 - Bullet.HEIGHT-300)// - 30 for testing purposes
             {
                 bullet.x = vehicle.x+vehicle.WIDTH/2;
-                bullet.y = 480-vehicle.HEIGHT-10;
+//                bullet.y = 480-vehicle.HEIGHT-10;
+                bullet.y = vehicle.y;
                 Log.d("World", "Just recycled a bullet.");
             }
 
