@@ -152,7 +152,7 @@ public class GameScreen extends Screen
         }
         if (state == State.GameOver)
         {
-            gameEngine.drawBitmap(gameOver, 240 - gameOver.getWidth()/2, 160 - gameOver.getHeight()/2);
+            gameEngine.drawBitmap(gameOver, 320/2 - gameOver.getWidth()/2, 480/2 - gameOver.getHeight()/2);
         }
     }
 

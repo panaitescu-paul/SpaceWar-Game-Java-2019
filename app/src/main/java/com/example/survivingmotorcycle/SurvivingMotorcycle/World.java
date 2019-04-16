@@ -21,7 +21,7 @@ public class World
 
     Vehicle vehicle = new Vehicle();
     List<Monster> monsterList = new ArrayList<>();
-    public int maxMonsters = 3;
+    public int maxMonsters = 5;
 
     GameEngine gameEngine;
     CollisionListener listener;
@@ -57,18 +57,19 @@ public class World
         if (vehicle.x + vehicle.WIDTH > MAX_X) vehicle.x = (int)(MAX_X - vehicle.WIDTH - 1);
 
         Monster monster = null;
-        for (int i=1; i<maxMonsters; i++)
+        for (int i = 0; i < maxMonsters; i++)
         {
             monster = monsterList.get(i);
+            // make monster move
 //            monster.x = (int)(monster.x - backgroundSpeed * deltaTime);
-            monster.y = (int)(monster.y - backgroundSpeed * deltaTime);
-            if (monster.x < 0 - Monster.WIDTH)
-            {
-                Random random = new Random();
-                monster.x = 500 + random.nextInt(300);
-                monster.y = 30 + random.nextInt(230);
-                Log.d("World", "Just recycled a monster.");
-            }
+            monster.y = (int)(monster.y + backgroundSpeed * deltaTime);
+//            if (monster.x < 0 - Monster.WIDTH)
+//            {
+//                Random random = new Random();
+//                monster.x = 30 + random.nextInt(320/2);
+//                monster.y = 500 + random.nextInt(480/2);
+//                Log.d("World", "Just recycled a monster.");
+//            }
         }
         // check if the car collides with a monster
         collideCarMonster();
@@ -105,9 +106,10 @@ public class World
         Random random = new Random();
         for(int i=0; i< maxMonsters; i++)
         {
-            int randX = random.nextInt(50); // between 0 and 50
-            int randY = random.nextInt(255);
-            Monster monster = new Monster(((500 + randX) + i*50), 30 + randY);
+            int randX = random.nextInt(280); // between 0 and 50
+            int randY = random.nextInt(20);
+//            Monster monster = new Monster(((500 + randX) + i*50), 30 + randY);
+            Monster monster = new Monster(30 + randX, ((-10 + randY) + i*50));
             monsterList.add(monster);
         }
     }
