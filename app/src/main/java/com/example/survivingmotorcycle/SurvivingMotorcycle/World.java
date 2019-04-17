@@ -32,10 +32,14 @@ public class World
     int points = 0;
     int lives = 3;
     int backgroundSpeed = 0;
+    int backgroundSpeed2 = 0;
+    int backgroundSpeed3 = 0;
 
-    public World(GameEngine gameEngine, CollisionListener listener, int backgroundSpeed)
+    public World(GameEngine gameEngine, CollisionListener listener, int backgroundSpeed, int backgroundSpeed2, int backgroundSpeed3)
     {
         this.backgroundSpeed = backgroundSpeed;
+        this.backgroundSpeed2 = backgroundSpeed2;
+        this.backgroundSpeed3 = backgroundSpeed3;
         this.gameEngine = gameEngine;
         this.listener = listener;
         initializeBullets();

@@ -20,9 +20,14 @@ public class GameScreen extends Screen
         GameOver
     }
 
+    int bgImgHeight = 4096;
     Bitmap background = null;
+    Bitmap background2 = null;
+    Bitmap background3 = null;
     float backgroundX = 100;
-    float backgroundY = 800 - 480;
+    float backgroundY = bgImgHeight - 480;
+    float backgroundY2 = bgImgHeight - 480;
+    float backgroundY3 = bgImgHeight - 480;
     Bitmap resume = null;
     Bitmap gameOver = null;
     Bitmap pause = null;
@@ -31,6 +36,8 @@ public class GameScreen extends Screen
     Sound crash = null;
     Sound gameOverSound = null;
     int backgroundSpeed = 100;
+    int backgroundSpeed2 = 150;
+    int backgroundSpeed3 = 80;
 
 
     World world = null; // creating the world
@@ -42,7 +49,9 @@ public class GameScreen extends Screen
         super(gameEngine);
         Log.d("Carscroller", "Starting the GameScreen");
 
-        background = gameEngine.loadBitmap("survivingmotorcycle/images/maps/map4.jpg");
+        background = gameEngine.loadBitmap("survivingmotorcycle/images/maps/space_map1.png");
+        background2 = gameEngine.loadBitmap("survivingmotorcycle/images/maps/star_map1.png");
+        background3 = gameEngine.loadBitmap("survivingmotorcycle/images/maps/star_map2.png");
         resume = gameEngine.loadBitmap("survivingmotorcycle/images/resume.png");
         pause = gameEngine.loadBitmap("survivingmotorcycle/images/ui/btn_pause.png");
         start = gameEngine.loadBitmap("survivingmotorcycle/images/ui/btn_start.png");
@@ -70,7 +79,7 @@ public class GameScreen extends Screen
             {
                 gameOverSound.play(1);
             }
-        }, backgroundSpeed);
+        }, backgroundSpeed, backgroundSpeed2, backgroundSpeed3);
         renderer = new WorldRenderer(gameEngine, world);
     }
 
@@ -120,13 +129,24 @@ public class GameScreen extends Screen
 //            backgroundY = backgroundY + backgroundSpeed * deltaTime;
             // makes the background move
             backgroundY = backgroundY - backgroundSpeed * deltaTime;
+            backgroundY2 = backgroundY2 - backgroundSpeed2 * deltaTime;
+            backgroundY3 = backgroundY3 - backgroundSpeed3 * deltaTime;
 //            if (backgroundY > 2000 - 320) // img size - screen size
 //            {
 //                backgroundY = 0;
 //            }
             if (backgroundY < 0) // img size - screen size
             {
-                backgroundY = 800 - 480;
+                backgroundY = bgImgHeight - 480;
+            }
+
+            if (backgroundY2 < 0) // img size - screen size
+            {
+                backgroundY2 = bgImgHeight - 480;
+            }
+            if (backgroundY3 < 0) // img size - screen size
+            {
+                backgroundY3 = bgImgHeight - 480;
             }
             // update the objects
             world.update(deltaTime, gameEngine.getAccelerometer()[1]);
@@ -137,6 +157,8 @@ public class GameScreen extends Screen
 //        gameEngine.drawBitmap(background, 0,0, (int)backgroundY, 0, 480, 320);
 //        gameEngine.drawBitmap(background, 0,0, 0, (int)backgroundY, 480, 320);
         gameEngine.drawBitmap(background, 0,0, 0, (int)backgroundY, 320, 480);
+        gameEngine.drawBitmap(background2, 0,0, 0, (int)backgroundY2, 320, 480);
+        gameEngine.drawBitmap(background3, 0,0, 0, (int)backgroundY3, 320, 480);
         gameEngine.drawBitmap(pause, 320-50, 10, 0, 0, 80 , 80);
 
         // draw the game object, no matter what state (paused, running)
