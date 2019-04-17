@@ -35,9 +35,12 @@ public class GameScreen extends Screen
     Sound bounce = null;
     Sound crash = null;
     Sound gameOverSound = null;
+    Sound bulletSound = null;
+    Sound bulletSound2 = null;
     int backgroundSpeed = 100;
     int backgroundSpeed2 = 150;
     int backgroundSpeed3 = 80;
+//    boolean bgMusicOn = false;
 
 
     World world = null; // creating the world
@@ -59,6 +62,8 @@ public class GameScreen extends Screen
         bounce = gameEngine.loadSound("survivingmotorcycle/music/bounce.wav");
         crash = gameEngine.loadSound("survivingmotorcycle/music/blocksplosion.wav");
         gameOverSound = gameEngine.loadSound("survivingmotorcycle/music/gameover.wav");
+        bulletSound = gameEngine.loadSound("survivingmotorcycle/music/laser1.mp3");
+        bulletSound2 = gameEngine.loadSound("survivingmotorcycle/music/laser2.mp3");
 
         world = new World(gameEngine, new CollisionListener()
         {
@@ -86,6 +91,14 @@ public class GameScreen extends Screen
     @Override
     public void update(float deltaTime)
     {
+        // add bg music
+
+//        if (!bgMusicOn)
+//        {
+//            gameEngine.music.play();
+//            bgMusicOn = true;
+//        }
+
         if (world.gameOver)
         {
             state = State.GameOver;
@@ -101,15 +114,23 @@ public class GameScreen extends Screen
             resume();
         }
 
+//        if (state == State.GameOver && gameEngine.getTouchEvents().size() > 0)
+//        {
+//            Log.d("GameScreen", "Starting the game again");
+//            state = State.Running;
+//            resume();
+//        }
+
         if (state == State.GameOver)
         {
             Log.d("GameScreen", "Game is Over.");
             List<TouchEvent> events = gameEngine.getTouchEvents();
             for (int i=0; i < events.size(); i++)
             {
-                if (events.get(i).type == TouchEvent.TouchEventType.Up)
+                if (events.get(i).type == TouchEvent.TouchEventType.Down)
                 {
                     gameEngine.setScreen(new MainMenuScreen(gameEngine));
+                    gameEngine.music.play();
                     return;
                 }
             }
@@ -166,6 +187,8 @@ public class GameScreen extends Screen
 
         if (state == State.Paused)
         {
+            pause();
+
 //            gameEngine.drawBitmap(resume, 240 - resume.getWidth()/2, 160 - resume.getHeight()/2);
             gameEngine.drawBitmap(resume, 160 - resume.getWidth()/2, 240 - resume.getHeight()/2);
             gameEngine.drawBitmap(start, 320-50, 10, 0, 0, 80 , 80);
@@ -174,28 +197,32 @@ public class GameScreen extends Screen
         }
         if (state == State.GameOver)
         {
+            pause();
             gameEngine.drawBitmap(gameOver, 320/2 - gameOver.getWidth()/2, 480/2 - gameOver.getHeight()/2);
+
         }
     }
 
     @Override
     public void pause()
     {
-
         if (state == State.Running) state = State.Paused;
         gameEngine.music.pause();
+//        bgMusicOn = false;
     }
 
     @Override
     public void resume()
     {
         gameEngine.music.play();
-
+//        bgMusicOn = true;
     }
 
     @Override
     public void dispose()
     {
-
+        gameEngine.music.pause();
+//        gameEngine.music.stop();
+//        gameEngine.music.dispose();
     }
 }

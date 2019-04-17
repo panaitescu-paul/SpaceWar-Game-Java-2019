@@ -8,7 +8,7 @@ public class SurvivingMotorcycle extends GameEngine
     @Override
     public Screen createStartScreen()
     {
-        music = this.loadMusic("survivingmotorcycle/music/music.ogg");
+        music = this.loadMusic("survivingmotorcycle/music/bg_music.mp3");
         return new MainMenuScreen(this);
     }
 
