@@ -34,6 +34,9 @@ public class World
     int backgroundSpeed = 0;
     int backgroundSpeed2 = 0;
     int backgroundSpeed3 = 0;
+    double ShootingTimer = 0.5;
+    float passedTime = 0;
+    long startTime;
 
     public World(GameEngine gameEngine, CollisionListener listener, int backgroundSpeed, int backgroundSpeed2, int backgroundSpeed3)
     {
@@ -50,6 +53,8 @@ public class World
 
     public void update(float deltaTime, float accelY)
     {
+
+
         // move the Vehicle based on the phone accelerometer. For finished game.
 //        vehicle.y = (int)(vehicle.y + accelY * deltaTime * 40);
 //        vehicle.y = (int)(vehicle.y - accelY * deltaTime * 40);
@@ -99,18 +104,20 @@ public class World
         for (int i = 0; i < maxBullets; i++)
         {
             bullet = bulletList.get(i);
-            // make monster move
-//            monster.x = (int)(monster.x - backgroundSpeed * deltaTime);
+            // move bullet
             bullet.y = (int)(bullet.y - backgroundSpeed * deltaTime);
-            if (bullet.y < 0 - Bullet.HEIGHT-300)// - 30 for testing purposes
-            {
-                bullet.x = vehicle.x+vehicle.WIDTH/2;
-//                bullet.y = 480-vehicle.HEIGHT-10;
-                bullet.y = vehicle.y;
-                Log.d("World", "Just recycled a bullet.");
-            }
-
+//                 recycling a bullet
+                if (bullet.y < 0 - Bullet.HEIGHT-300)// - 30 for testing purposes
+                {
+                    bullet.x = vehicle.x+vehicle.WIDTH/2;
+                    bullet.y = vehicle.y;
+                    Log.d("World", "Just recycled a bullet.");
+                }
         }
+
+
+
+
         // check if the car collides with a monster
         collideCarMonster();
         collideBulletEnemy();
@@ -190,4 +197,5 @@ public class World
             bulletList.add(bullet);
         }
     }
+
 }

@@ -24,7 +24,7 @@ public class MainMenuScreen extends Screen
     @Override
     public void update(float deltaTime)
     {
-        if (gameEngine.isTouchDown(0) && (passedTime) > 0.5f) // wait half of second after the main menu shows, then interact
+        if (gameEngine.isTouchDown(0) && (passedTime) > 0.5f) // wait half a second after the main menu shows, then interact
         {
             gameEngine.setScreen(new GameScreen(gameEngine));
             return;
