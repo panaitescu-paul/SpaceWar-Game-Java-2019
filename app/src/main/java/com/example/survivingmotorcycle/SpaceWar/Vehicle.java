@@ -1,4 +1,4 @@
-package com.example.survivingmotorcycle.SurvivingMotorcycle;
+package com.example.survivingmotorcycle.SpaceWar;
 
 public class Vehicle
 {

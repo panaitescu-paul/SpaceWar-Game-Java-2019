@@ -1,9 +1,9 @@
-package com.example.survivingmotorcycle.SurvivingMotorcycle;
+package com.example.survivingmotorcycle.SpaceWar;
 
 import com.example.survivingmotorcycle.GameEngine;
 import com.example.survivingmotorcycle.Screen;
 
-public class SurvivingMotorcycle extends GameEngine
+public class SpaceWar extends GameEngine
 {
     @Override
     public Screen createStartScreen()
