@@ -103,34 +103,30 @@ public class World
         }
 
         Bullet bullet;
-//        if (updateCounter % 5 ==0)
-//        {
-//            if (bulletList.size()<100)
-//            {
-////                bullet = new Bullet(vehicle.x+vehicle.WIDTH/2, 480-vehicle.HEIGHT-vehicle.HEIGHT/2, true); // middle vehicle coordonates
-//                bullet = new Bullet(vehicle.x+vehicle.WIDTH/2, vehicle.y, true);
-////            Bullet bullet = new Bullet(100, -200+(i*20), true); // middle vehicle coordonates
-////            Bullet bullet = new Bullet(100, -500, true); // middle vehicle coordonates
-//                bulletList.add(bullet);
+        if (updateCounter % 10 ==0)
+        {
+            if (bulletList.size() < 100)
+            {
+                bullet = new Bullet(vehicle.x+vehicle.WIDTH/2, vehicle.y); // middle vehicle coordonates
+                bulletList.add(bullet);
 //                maxBullets ++;
-//
-//            }
-//        }
+            }
+        }
 
 //        Bullet bullet = null;
 
-        for (int i = 0; i < maxBullets; i++)
+        for (int i = 0; i < bulletList.size(); i++)
         {
             bullet = bulletList.get(i);
             // move bullet
             bullet.y = (int)(bullet.y - backgroundSpeed * deltaTime);
-//                 recycling a bullet
-                if (bullet.y < 0 - Bullet.HEIGHT-300)// - 30 for testing purposes
-                {
-                    bullet.x = vehicle.x+vehicle.WIDTH/2;
-                    bullet.y = vehicle.y;
-                    Log.d("World", "Just recycled a bullet.");
-                }
+////                 recycling a bullet
+//                if (bullet.y < 0 - Bullet.HEIGHT-300)// - 30 for testing purposes
+//                {
+//                    bullet.x = vehicle.x+vehicle.WIDTH/2;
+//                    bullet.y = vehicle.y;
+//                    Log.d("World", "Just recycled a bullet.");
+//                }
         }
 
 
@@ -160,7 +156,7 @@ public class World
     private void collideBulletEnemy()
     {
         Bullet bullet = null;
-        for (int i=0; i < maxBullets; i++)
+        for (int i=0; i < bulletList.size(); i++)
         {
             bullet = bulletList.get(i);
 
