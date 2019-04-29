@@ -37,6 +37,7 @@ public class World
     double ShootingTimer = 0.5;
     float passedTime = 0;
     long startTime;
+    long updateCounter = 0;
 
     public World(GameEngine gameEngine, CollisionListener listener, int backgroundSpeed, int backgroundSpeed2, int backgroundSpeed3)
     {
@@ -53,6 +54,7 @@ public class World
 
     public void update(float deltaTime, float accelY)
     {
+        updateCounter++;
 
 
         // move the Vehicle based on the phone accelerometer. For finished game.
@@ -99,8 +101,24 @@ public class World
                 Log.d("World", "Just recycled a monster.");
             }
         }
-//        Bullet bullet = null;
+
         Bullet bullet;
+//        if (updateCounter % 5 ==0)
+//        {
+//            if (bulletList.size()<100)
+//            {
+////                bullet = new Bullet(vehicle.x+vehicle.WIDTH/2, 480-vehicle.HEIGHT-vehicle.HEIGHT/2, true); // middle vehicle coordonates
+//                bullet = new Bullet(vehicle.x+vehicle.WIDTH/2, vehicle.y, true);
+////            Bullet bullet = new Bullet(100, -200+(i*20), true); // middle vehicle coordonates
+////            Bullet bullet = new Bullet(100, -500, true); // middle vehicle coordonates
+//                bulletList.add(bullet);
+//                maxBullets ++;
+//
+//            }
+//        }
+
+//        Bullet bullet = null;
+
         for (int i = 0; i < maxBullets; i++)
         {
             bullet = bulletList.get(i);
