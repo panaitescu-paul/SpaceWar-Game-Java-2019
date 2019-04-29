@@ -38,6 +38,7 @@ public class World
     float passedTime = 0;
     long startTime;
     long updateCounter = 0;
+    int movementAngle = 1;
 
     public World(GameEngine gameEngine, CollisionListener listener, int backgroundSpeed, int backgroundSpeed2, int backgroundSpeed3)
     {
@@ -46,7 +47,7 @@ public class World
         this.backgroundSpeed3 = backgroundSpeed3;
         this.gameEngine = gameEngine;
         this.listener = listener;
-        initializeBullets();
+//        initializeBullets();
         initializeMonsters();
 
 
@@ -90,7 +91,24 @@ public class World
             monster = monsterList.get(i);
             // make monster move
 //            monster.x = (int)(monster.x - backgroundSpeed * deltaTime);
+
             monster.y = (int)(monster.y + backgroundSpeed * deltaTime);
+            Random random2 = new Random();
+            int randDirectionChangeRate = 100 + random2.nextInt(500); // between 100 and 600
+            if (updateCounter % randDirectionChangeRate ==0)
+            {
+                monster.direction = -monster.direction; // individual enemy direction
+            }
+            if (monster.x < 0 || monster.x > 320-monster.WIDTH)
+            {
+                monster.direction = -monster.direction; // individual enemy direction
+                monster.x = (int)(monster.x + backgroundSpeed * deltaTime * monster.direction);
+            }
+
+
+            monster.x = (int)(monster.x + backgroundSpeed * deltaTime * monster.direction);
+
+
             if (monster.y > 480 - Monster.HEIGHT) // if monster disappears off screen
             {
                 Random random = new Random();
@@ -105,7 +123,7 @@ public class World
         Bullet bullet;
         if (updateCounter % 10 ==0)
         {
-            if (bulletList.size() < 100)
+            if (bulletList.size() < 5)
             {
                 bullet = new Bullet(vehicle.x+vehicle.WIDTH/2, vehicle.y); // middle vehicle coordonates
                 bulletList.add(bullet);
@@ -197,7 +215,8 @@ public class World
             int randX = random.nextInt(320-30); // between 0 and 50
             int randY = random.nextInt(20);
 //            Monster monster = new Monster(((500 + randX) + i*50), 30 + randY);
-            Monster monster = new Monster(randX, ((-450 + randY) + i*100));
+//            Monster monster = new Monster(randX, ((-450 + randY) + i*100));
+            Monster monster = new Monster(randX, ((-450 + randY) + i*100), 1);
             monsterList.add(monster);
         }
     }
