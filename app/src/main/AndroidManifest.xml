@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.survivingmotorcycle.SpaceWar"
+    package="com.example.spacewar.SpaceWar"
     android:installLocation="preferExternal">
 
     <application
@@ -10,7 +10,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="com.example.survivingmotorcycle.SpaceWar.SpaceWar"
+        <activity android:name="com.example.spacewar.SpaceWar.SpaceWar"
             android:configChanges="keyboard|keyboardHidden|orientation"
             android:screenOrientation="portrait">
             <intent-filter>

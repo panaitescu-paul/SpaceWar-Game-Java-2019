@@ -1,4 +1,4 @@
-package com.example.survivingmotorcycle;
+package com.example.spacewar;
 
 public abstract class Screen
 {

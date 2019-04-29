@@ -1,12 +1,12 @@
-package com.example.survivingmotorcycle.SpaceWar;
+package com.example.spacewar.SpaceWar;
 
 import android.graphics.Bitmap;
 import android.util.Log;
 
-import com.example.survivingmotorcycle.GameEngine;
-import com.example.survivingmotorcycle.Screen;
-import com.example.survivingmotorcycle.Sound;
-import com.example.survivingmotorcycle.TouchEvent;
+import com.example.spacewar.GameEngine;
+import com.example.spacewar.Screen;
+import com.example.spacewar.Sound;
+import com.example.spacewar.TouchEvent;
 
 import java.util.List;
 
@@ -52,18 +52,18 @@ public class GameScreen extends Screen
         super(gameEngine);
         Log.d("Carscroller", "Starting the GameScreen");
 
-        background = gameEngine.loadBitmap("survivingmotorcycle/images/maps/space_map1.png");
-        background2 = gameEngine.loadBitmap("survivingmotorcycle/images/maps/star_map1.png");
-        background3 = gameEngine.loadBitmap("survivingmotorcycle/images/maps/star_map2.png");
-        resume = gameEngine.loadBitmap("survivingmotorcycle/images/resume.png");
-        pause = gameEngine.loadBitmap("survivingmotorcycle/images/ui/btn_pause.png");
-        start = gameEngine.loadBitmap("survivingmotorcycle/images/ui/btn_start.png");
-        gameOver = gameEngine.loadBitmap("survivingmotorcycle/images/gameover.png");
-        bounce = gameEngine.loadSound("survivingmotorcycle/music/bounce.wav");
-        crash = gameEngine.loadSound("survivingmotorcycle/music/blocksplosion.wav");
-        gameOverSound = gameEngine.loadSound("survivingmotorcycle/music/gameover.wav");
-        bulletSound = gameEngine.loadSound("survivingmotorcycle/music/laser1.mp3");
-        bulletSound2 = gameEngine.loadSound("survivingmotorcycle/music/laser2.mp3");
+        background = gameEngine.loadBitmap("spacewar/images/maps/space_map1.png");
+        background2 = gameEngine.loadBitmap("spacewar/images/maps/star_map1.png");
+        background3 = gameEngine.loadBitmap("spacewar/images/maps/star_map2.png");
+        resume = gameEngine.loadBitmap("spacewar/images/resume.png");
+        pause = gameEngine.loadBitmap("spacewar/images/ui/btn_pause.png");
+        start = gameEngine.loadBitmap("spacewar/images/ui/btn_start.png");
+        gameOver = gameEngine.loadBitmap("spacewar/images/gameover.png");
+        bounce = gameEngine.loadSound("spacewar/music/bounce.wav");
+        crash = gameEngine.loadSound("spacewar/music/blocksplosion.wav");
+        gameOverSound = gameEngine.loadSound("spacewar/music/gameover.wav");
+        bulletSound = gameEngine.loadSound("spacewar/music/laser1.mp3");
+        bulletSound2 = gameEngine.loadSound("spacewar/music/laser2.mp3");
 
         world = new World(gameEngine, new CollisionListener()
         {

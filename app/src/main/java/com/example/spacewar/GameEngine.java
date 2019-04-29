@@ -1,4 +1,4 @@
-package com.example.survivingmotorcycle;
+package com.example.spacewar;
 
 import android.app.Activity;
 import android.content.Context;

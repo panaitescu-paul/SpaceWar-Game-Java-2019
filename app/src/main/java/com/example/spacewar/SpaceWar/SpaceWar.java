@@ -1,14 +1,14 @@
-package com.example.survivingmotorcycle.SpaceWar;
+package com.example.spacewar.SpaceWar;
 
-import com.example.survivingmotorcycle.GameEngine;
-import com.example.survivingmotorcycle.Screen;
+import com.example.spacewar.GameEngine;
+import com.example.spacewar.Screen;
 
 public class SpaceWar extends GameEngine
 {
     @Override
     public Screen createStartScreen()
     {
-        music = this.loadMusic("survivingmotorcycle/music/bg_music.mp3");
+        music = this.loadMusic("spacewar/music/bg_music.mp3");
         return new MainMenuScreen(this);
     }
 

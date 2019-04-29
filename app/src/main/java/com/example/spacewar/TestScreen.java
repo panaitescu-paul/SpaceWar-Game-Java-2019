@@ -1,4 +1,4 @@
-package com.example.survivingmotorcycle;
+package com.example.spacewar;
 
 import android.graphics.Bitmap;
 import android.graphics.Color;

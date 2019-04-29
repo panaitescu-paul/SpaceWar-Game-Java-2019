@@ -1,8 +1,8 @@
-package com.example.survivingmotorcycle.SpaceWar;
+package com.example.spacewar.SpaceWar;
 
 import android.graphics.Bitmap;
 
-import com.example.survivingmotorcycle.GameEngine;
+import com.example.spacewar.GameEngine;
 
 
 public class WorldRenderer
@@ -17,9 +17,9 @@ public class WorldRenderer
     {
         gameEngine = ge;
         world = w;
-        carImage = gameEngine.loadBitmap("survivingmotorcycle/images/vehicles/ship2.png");
-        monsterImage = gameEngine.loadBitmap("survivingmotorcycle/images/vehicles/e3.png");
-        bulletImage = gameEngine.loadBitmap("survivingmotorcycle/images/vehicles/bullet1.png");
+        carImage = gameEngine.loadBitmap("spacewar/images/vehicles/ship2.png");
+        monsterImage = gameEngine.loadBitmap("spacewar/images/vehicles/e3.png");
+        bulletImage = gameEngine.loadBitmap("spacewar/images/vehicles/bullet1.png");
     }
 
     public void render()

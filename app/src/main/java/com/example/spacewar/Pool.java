@@ -1,4 +1,4 @@
-package com.example.survivingmotorcycle;
+package com.example.spacewar;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,8 +1,8 @@
-package com.example.survivingmotorcycle.SpaceWar;
+package com.example.spacewar.SpaceWar;
 
 import android.util.Log;
 
-import com.example.survivingmotorcycle.GameEngine;
+import com.example.spacewar.GameEngine;
 
 import java.util.ArrayList;
 import java.util.List;

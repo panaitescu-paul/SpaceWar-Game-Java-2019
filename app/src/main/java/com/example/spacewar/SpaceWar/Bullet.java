@@ -1,4 +1,4 @@
-package com.example.survivingmotorcycle.SpaceWar;
+package com.example.spacewar.SpaceWar;
 
 public class Bullet
 {

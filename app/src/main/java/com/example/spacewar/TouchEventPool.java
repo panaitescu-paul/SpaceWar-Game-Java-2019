@@ -1,4 +1,4 @@
-package com.example.survivingmotorcycle;
+package com.example.spacewar;
 
 public class TouchEventPool extends Pool<TouchEvent>
 {
