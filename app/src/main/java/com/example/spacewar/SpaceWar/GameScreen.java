@@ -50,7 +50,7 @@ public class GameScreen extends Screen
     public GameScreen(GameEngine gameEngine)
     {
         super(gameEngine);
-        Log.d("Carscroller", "Starting the GameScreen");
+        Log.d("Spacewar", "Starting the GameScreen");
 
         background = gameEngine.loadBitmap("spacewar/images/maps/space_map1.png");
         background2 = gameEngine.loadBitmap("spacewar/images/maps/star_map1.png");
