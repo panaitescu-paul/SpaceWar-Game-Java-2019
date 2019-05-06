@@ -67,11 +67,23 @@ public class GameScreen extends Screen
         crash = gameEngine.loadSound("spacewar/music/blocksplosion.wav");
         gameOverSound = gameEngine.loadSound("spacewar/music/gameover.wav");
         bulletSound = gameEngine.loadSound("spacewar/music/laser1.mp3");
-        bulletSound2 = gameEngine.loadSound("spacewar/music/laser2.mp3");
+        bulletSound2 = gameEngine.loadSound("spacewar/music/laser4.mp3");
         font = gameEngine.loadFont("spacewar/images/ui/font.ttf");
 
         world = new World(gameEngine, new CollisionListener()
         {
+            @Override
+            public void generateBullet()
+            {
+                bulletSound2.play(1);
+            }
+
+            @Override
+            public void collideBulletEnemy()
+            {
+                bulletSound.play(1);
+            }
+
             @Override
             public void collisionRoadSide()
             {
@@ -81,8 +93,10 @@ public class GameScreen extends Screen
             @Override
             public void collisionMonster()
             {
-                crash.play(1);
+                bulletSound2.play(1);
             }
+
+
 
             @Override
             public void gameOver()

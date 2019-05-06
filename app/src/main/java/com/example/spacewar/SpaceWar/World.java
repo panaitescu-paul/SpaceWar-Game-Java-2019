@@ -29,6 +29,7 @@ public class World
 
     GameEngine gameEngine;
     CollisionListener listener;
+//    private final CollisionListener collisionListener;
 
     boolean gameOver = false;
     int points = 0;
@@ -46,6 +47,7 @@ public class World
     int bulletsOffCounter = 0;
     boolean bulletsOn = true;
     int scorePoints = 0;
+//    bulletSound3 = gameEngine.loadSound("spacewar/music/laser1.mp3");
 
     public World(GameEngine gameEngine, CollisionListener listener, int backgroundSpeed, int backgroundSpeed2, int backgroundSpeed3)
     {
@@ -165,18 +167,19 @@ public class World
 //                bullet = new Bullet(vehicle.x+vehicle.WIDTH/2, vehicle.y); // middle vehicle coordonates
 //                bulletList.add(bullet);
 
-                bullet = new Bullet(vehicle.x+vehicle.WIDTH/2-2-20-20, vehicle.y+8); // middle vehicle coordonates
+//                bullet = new Bullet(vehicle.x+vehicle.WIDTH/2-2-20-20, vehicle.y+8); // middle vehicle coordonates
+//                bulletList.add(bullet);
+//                bullet = new Bullet(vehicle.x+vehicle.WIDTH/2-2-20, vehicle.y); // middle vehicle coordonates
+//                bulletList.add(bullet);
+                bullet = new Bullet(vehicle.x+vehicle.WIDTH/2-2, vehicle.y); // middle vehicle coordonates
                 bulletList.add(bullet);
-                bullet = new Bullet(vehicle.x+vehicle.WIDTH/2-2-20, vehicle.y); // middle vehicle coordonates
-                bulletList.add(bullet);
-                bullet = new Bullet(vehicle.x+vehicle.WIDTH/2-2, vehicle.y-8); // middle vehicle coordonates
-                bulletList.add(bullet);
-                bullet = new Bullet(vehicle.x+vehicle.WIDTH/2-2+20, vehicle.y); // middle vehicle coordonates
-                bulletList.add(bullet);
-                bullet = new Bullet(vehicle.x+vehicle.WIDTH/2-2+20+20, vehicle.y+8); // middle vehicle coordonates
-                bulletList.add(bullet);
+//                bullet = new Bullet(vehicle.x+vehicle.WIDTH/2-2+20, vehicle.y); // middle vehicle coordonates
+//                bulletList.add(bullet);
+//                bullet = new Bullet(vehicle.x+vehicle.WIDTH/2-2+20+20, vehicle.y+8); // middle vehicle coordonates
+//                bulletList.add(bullet);
 //                maxBullets ++;
                 bulletsOnCounter ++;
+                listener.generateBullet();
             }
 
         }
@@ -221,7 +224,8 @@ public class World
         }
     }
 
-    private void collideBulletEnemy()
+//    private void collideBulletEnemy()
+    public void collideBulletEnemy()
     {
         Bullet bullet = null;
         for (int i=0; i < bulletList.size(); i++)
@@ -243,11 +247,20 @@ public class World
                     Log.d("World", "The bullet just hit an enemy");
                     // add points
                     scorePoints+=10;
+                    listener.collideBulletEnemy();
+//                    collideBulletEnemySound();
+
+
+//                    bulletSound3.play(1);
                 }
             }
 
         }
     }
+//    public void collideBulletEnemySound()
+//    {
+//
+//    }
 
     private boolean collideRects(float x, float y, float width, float height,
                                  float x2, float y2, float width2, float height2)
