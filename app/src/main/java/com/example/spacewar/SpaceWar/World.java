@@ -22,8 +22,10 @@ public class World
     Vehicle vehicle = new Vehicle();
     List<Monster> monsterList = new ArrayList<>();
     List<Bullet> bulletList = new ArrayList<>();
+    List<Item> itemList = new ArrayList<>();
     public int maxMonsters = 5;
     public int maxBullets = 10;
+    public int maxItems = 2;
 
     GameEngine gameEngine;
     CollisionListener listener;
@@ -43,6 +45,7 @@ public class World
     int bulletsOnCounter = 0;
     int bulletsOffCounter = 0;
     boolean bulletsOn = true;
+    int scorePoints = 0;
 
     public World(GameEngine gameEngine, CollisionListener listener, int backgroundSpeed, int backgroundSpeed2, int backgroundSpeed3)
     {
@@ -53,6 +56,7 @@ public class World
         this.listener = listener;
 //        initializeBullets();
         initializeMonsters();
+        initializeItems();
 
 
     }
@@ -61,6 +65,11 @@ public class World
     {
         updateCounter++;
 
+
+        if (updateCounter % 10 ==0)
+        {
+            scorePoints++; // add 1 point for every
+        }
 
         // move the Vehicle based on the phone accelerometer. For finished game.
 //        vehicle.y = (int)(vehicle.y + accelY * deltaTime * 40);
@@ -94,8 +103,6 @@ public class World
         {
             monster = monsterList.get(i);
             // make monster move
-//            monster.x = (int)(monster.x - backgroundSpeed * deltaTime);
-
             monster.y = (int)(monster.y + backgroundSpeed * deltaTime);
             Random random2 = new Random();
             int randDirectionChangeRate = 100 + random2.nextInt(500); // between 100 and 600
@@ -108,11 +115,7 @@ public class World
                 monster.direction = -monster.direction; // individual enemy direction
                 monster.x = (int)(monster.x + backgroundSpeed * deltaTime * monster.direction);
             }
-
-
             monster.x = (int)(monster.x + backgroundSpeed * deltaTime * monster.direction);
-
-
             if (monster.y > 480 - Monster.HEIGHT) // if monster disappears off screen
             {
                 Random random = new Random();
@@ -124,11 +127,40 @@ public class World
             }
         }
 
+        Item item = null;
+        for (int i = 0; i < maxItems; i++)
+        {
+            item = itemList.get(i);
+            // make item move
+            item.y = (int)(item.y + backgroundSpeed * deltaTime);
+            Random random3 = new Random();
+            int randDirectionChangeRate = 100 + random3.nextInt(500); // between 100 and 600
+            if (updateCounter % randDirectionChangeRate ==0)
+            {
+                item.direction = -item.direction; // individual item direction
+            }
+            if (item.x < 0 || item.x > 320-item.WIDTH)
+            {
+                item.direction = -item.direction; // individual item direction
+                item.x = (int)(item.x + backgroundSpeed * deltaTime * item.direction);
+            }
+            item.x = (int)(item.x + backgroundSpeed * deltaTime * item.direction);
+            if (item.y > 480 - Item.HEIGHT) // if item disappears off screen
+            {
+                Random random4 = new Random();
+                int randX = random4.nextInt(320-30); // between 0 and 50
+                int randY = random4.nextInt(20);
+                item.x = (randX);
+                item.y = ((-450 + randY) + i*100);
+                Log.d("World", "Just recycled a monster.");
+            }
+        }
+
         Bullet bullet;
         if (updateCounter % 10 ==0)
         {
             checkBulletShooting();
-            if (bulletList.size() < 100 && bulletsOn)
+            if (bulletList.size() < 300 && bulletsOn)
             {
 //                bullet = new Bullet(vehicle.x+vehicle.WIDTH/2, vehicle.y); // middle vehicle coordonates
 //                bulletList.add(bullet);
@@ -209,6 +241,8 @@ public class World
                     bullet.y = -500; // move bullet off screen for recycling
                     monster.y = 500; // move monster off screen for recycling
                     Log.d("World", "The bullet just hit an enemy");
+                    // add points
+                    scorePoints+=10;
                 }
             }
 
@@ -236,6 +270,18 @@ public class World
 //            Monster monster = new Monster(randX, ((-450 + randY) + i*100));
             Monster monster = new Monster(randX, ((-450 + randY) + i*100), 1);
             monsterList.add(monster);
+        }
+    }
+
+    private void initializeItems()
+    {
+        Random random = new Random();
+        for(int i=0; i< maxItems; i++)
+        {
+            int randX = random.nextInt(320-30); // between 0 and 50
+            int randY = random.nextInt(20);
+            Item item = new Item(randX, ((-450 + randY) + i*100), 1);
+            itemList.add(item);
         }
     }
 

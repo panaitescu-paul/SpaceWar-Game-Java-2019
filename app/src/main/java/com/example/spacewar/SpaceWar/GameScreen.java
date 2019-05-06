@@ -1,6 +1,8 @@
 package com.example.spacewar.SpaceWar;
 
 import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.util.Log;
 
 import com.example.spacewar.GameEngine;
@@ -40,6 +42,8 @@ public class GameScreen extends Screen
     int backgroundSpeed = 100;
     int backgroundSpeed2 = 150;
     int backgroundSpeed3 = 80;
+    Typeface font;
+    String showText = "dummy";
 //    boolean bgMusicOn = false;
 
 
@@ -64,6 +68,7 @@ public class GameScreen extends Screen
         gameOverSound = gameEngine.loadSound("spacewar/music/gameover.wav");
         bulletSound = gameEngine.loadSound("spacewar/music/laser1.mp3");
         bulletSound2 = gameEngine.loadSound("spacewar/music/laser2.mp3");
+        font = gameEngine.loadFont("spacewar/images/ui/font.ttf");
 
         world = new World(gameEngine, new CollisionListener()
         {
@@ -184,6 +189,9 @@ public class GameScreen extends Screen
 
         // draw the game object, no matter what state (paused, running)
         renderer.render();
+//        showText = "Lives: " + Integer.toString(world.lives) + "   Points: " + Integer.toString(world.points);
+        showText = "Score: " + Integer.toString(world.scorePoints) ;
+        gameEngine.drawText(font, showText, 22, 22, Color.GREEN, 12);
 
         if (state == State.Paused)
         {
