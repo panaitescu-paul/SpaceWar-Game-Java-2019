@@ -28,7 +28,7 @@ public class WorldRenderer
     {
         gameEngine.drawBitmap(carImage, world.vehicle.x, world.vehicle.y);
 //        gameEngine.drawBitmap(bulletImage, world.bullet.x, world.bullet.y);
-        //
+
         for (int i=0; i< world.monsterList.size(); i++)
         {
             gameEngine.drawBitmap(monsterImage, world.monsterList.get(i).x, world.monsterList.get(i).y);

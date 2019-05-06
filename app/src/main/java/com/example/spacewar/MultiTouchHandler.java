@@ -26,8 +26,8 @@ public class MultiTouchHandler implements TouchHandler, View.OnTouchListener
     {
         TouchEvent touchEvent = null;
         int action = event.getAction() & MotionEvent.ACTION_MASK;
-        int pointerIndex = (event.getAction() & MotionEvent.ACTION_POINTER_INDEX_MASK) >> MotionEvent.ACTION_POINTER_INDEX_MASK;
-        int pointerId = event.getPointerId(pointerIndex);
+        //int pointerIndex = (event.getAction() & MotionEvent.ACTION_POINTER_INDEX_MASK) >> MotionEvent.ACTION_POINTER_INDEX_MASK;
+        int pointerId = event.getPointerId(0);
 
         switch (action)
         {
