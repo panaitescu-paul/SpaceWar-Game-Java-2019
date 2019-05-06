@@ -39,6 +39,10 @@ public class World
     long startTime;
     long updateCounter = 0;
     int movementAngle = 1;
+    int bulletSet = 5;
+    int bulletsOnCounter = 0;
+    int bulletsOffCounter = 0;
+    boolean bulletsOn = true;
 
     public World(GameEngine gameEngine, CollisionListener listener, int backgroundSpeed, int backgroundSpeed2, int backgroundSpeed3)
     {
@@ -123,12 +127,26 @@ public class World
         Bullet bullet;
         if (updateCounter % 10 ==0)
         {
-            if (bulletList.size() < 5)
+            checkBulletShooting();
+            if (bulletList.size() < 100 && bulletsOn)
             {
-                bullet = new Bullet(vehicle.x+vehicle.WIDTH/2, vehicle.y); // middle vehicle coordonates
+//                bullet = new Bullet(vehicle.x+vehicle.WIDTH/2, vehicle.y); // middle vehicle coordonates
+//                bulletList.add(bullet);
+
+                bullet = new Bullet(vehicle.x+vehicle.WIDTH/2-2-20-20, vehicle.y+8); // middle vehicle coordonates
+                bulletList.add(bullet);
+                bullet = new Bullet(vehicle.x+vehicle.WIDTH/2-2-20, vehicle.y); // middle vehicle coordonates
+                bulletList.add(bullet);
+                bullet = new Bullet(vehicle.x+vehicle.WIDTH/2-2, vehicle.y-8); // middle vehicle coordonates
+                bulletList.add(bullet);
+                bullet = new Bullet(vehicle.x+vehicle.WIDTH/2-2+20, vehicle.y); // middle vehicle coordonates
+                bulletList.add(bullet);
+                bullet = new Bullet(vehicle.x+vehicle.WIDTH/2-2+20+20, vehicle.y+8); // middle vehicle coordonates
                 bulletList.add(bullet);
 //                maxBullets ++;
+                bulletsOnCounter ++;
             }
+
         }
 
 //        Bullet bullet = null;
@@ -228,6 +246,24 @@ public class World
 //            Bullet bullet = new Bullet(vehicle.x+vehicle.WIDTH/2, 480-vehicle.HEIGHT-10+(i*20)); // middle vehicle coordonates
             Bullet bullet = new Bullet(100, -200+(i*20)); // middle vehicle coordonates
             bulletList.add(bullet);
+        }
+    }
+
+    private void checkBulletShooting()
+    {
+        if (bulletsOnCounter >= 3)
+        {
+            bulletsOn = false;      // pause the bullet generation
+        }
+        if (!bulletsOn)
+        {
+            bulletsOffCounter++;   // count when the bullet is not generated
+        }
+        if (bulletsOffCounter > 3)
+        {
+            bulletsOn = true;       // start the bullet generation
+            bulletsOnCounter = 0;   // reset counter
+            bulletsOffCounter = 0;  // reset counter
         }
     }
 
