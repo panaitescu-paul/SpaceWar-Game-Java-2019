@@ -22,7 +22,7 @@ public class GameScreen extends Screen
         GameOver
     }
 
-    int bgImgHeight = 4096;
+    int bgImgHeight = 4000;
     Bitmap background = null;
     Bitmap background2 = null;
     Bitmap background3 = null;
