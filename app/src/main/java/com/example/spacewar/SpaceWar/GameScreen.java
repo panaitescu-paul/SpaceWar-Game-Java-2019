@@ -207,6 +207,7 @@ public class GameScreen extends Screen
         showText = "Score: " + Integer.toString(world.scorePoints) ;
         gameEngine.drawText(font, showText, 22, 22, Color.GREEN, 12);
 
+
         if (state == State.Paused)
         {
             pause();
