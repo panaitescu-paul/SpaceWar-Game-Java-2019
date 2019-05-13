@@ -218,9 +218,6 @@ public class World
 //                }
         }
 
-
-
-
         // check if the car collides with a monster
         collideCarMonster();
         collideBulletEnemy();
@@ -236,18 +233,8 @@ public class World
             if (collideRects(vehicle.x, vehicle.y, Vehicle.WIDTH, Vehicle.HEIGHT,
                     monster.x, monster.y, Monster.WIDTH, Monster.HEIGHT))
             {
-
-
                 gameOver = true;
                 Log.d("World", "Game Over - Lives: 0");
-
-//                monster.hp -=1;
-//                Log.d("World", "The ship just hit a monster: HP -1" + monster.hp);
-//                if (monster.hp <= 0)
-//                {
-//                    gameOver = true;
-//                    Log.d("World", "Game Over - Lives: 0");
-//                }
             }
         }
     }
