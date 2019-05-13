@@ -9,7 +9,6 @@ public class SpaceWar extends GameEngine
     public Screen createStartScreen()
     {
         music = this.loadMusic("spacewar/music/bg_music.mp3");
-//        music = this.loadMusic("spacewar/music/laser2.mp3");
         return new MainMenuScreen(this);
     }
 
