@@ -61,8 +61,13 @@ public class World
 
     }
 
-    public void update(float deltaTime, float accelY)
+    public void update(float deltaTime, float accelX, float accelY)
     {
+
+        vehicle.x = (int)(vehicle.x - accelX * 50 * deltaTime); // accelerometer control
+        vehicle.y = (int)(vehicle.y - accelY * 40 * deltaTime); // accelerometer control
+
+
         updateCounter++;
 
 
@@ -77,7 +82,8 @@ public class World
         // move the vehicle based on user touch. Only for testing. Remove before publishing.
         if (gameEngine.isTouchDown(0));
         {
-            vehicle.x = gameEngine.getTouchX(0) - Vehicle.WIDTH/2; // position vehicle after touch x
+            //vehicle.x = gameEngine.getTouchX(0) - Vehicle.WIDTH/2; // position vehicle after touch x
+
             // check for vehicle to be in the lower part of the screen
             if (gameEngine.getTouchY(0) < 480/2) // check if touch is on the upper part
             {
@@ -92,6 +98,17 @@ public class World
                 vehicle.y = 480 - Vehicle.HEIGHT - 10; // reposition vehicle on the lower part of the screen
             }
         }
+
+        /*if(vehicle.y < 480/2)
+        {
+            vehicle.y = 480 / 2 - Vehicle.HEIGHT / 2;
+        }
+        else
+        {
+            vehicle.y = gameEngine.getTouchY(0) - Vehicle.HEIGHT/2;
+        }
+        if(vehicle.y > 480 - Vehicle.HEIGHT) vehicle.y = 480 - Vehicle.HEIGHT - 10;*/
+
 
         // check left screen boundary
         if (vehicle.x < MIN_X) vehicle.x = (int) MIN_X + 1;
