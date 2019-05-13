@@ -335,7 +335,7 @@ public class World
         {
             bulletsOffCounter++;   // count when the bullet is not generated
         }
-        if (bulletsOffCounter > 5)
+        if (bulletsOffCounter > 3)
         {
             bulletsOn = true;       // start the bullet generation
             bulletsOnCounter = 0;   // reset counter
