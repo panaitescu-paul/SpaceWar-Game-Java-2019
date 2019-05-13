@@ -189,7 +189,7 @@ public class GameScreen extends Screen
                 backgroundY3 = bgImgHeight - 480;
             }
             // update the objects
-            world.update(deltaTime, gameEngine.getAccelerometer()[1]);
+            world.update(deltaTime, gameEngine.getAccelerometer()[0], gameEngine.getAccelerometer()[1]);
 //            world.update(deltaTime, gameEngine.getTouchY(0));
         }
 
@@ -228,8 +228,8 @@ public class GameScreen extends Screen
     @Override
     public void pause()
     {
-        if (state == State.Running) state = State.Paused;
         gameEngine.music.pause();
+        if (state == State.Running) state = State.Paused;
 //        bgMusicOn = false;
     }
 

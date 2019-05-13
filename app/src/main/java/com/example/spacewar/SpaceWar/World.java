@@ -63,8 +63,13 @@ public class World
 
     }
 
-    public void update(float deltaTime, float accelY)
+    public void update(float deltaTime, float accelX, float accelY)
     {
+
+        vehicle.x = (int)(vehicle.x - accelX * 50 * deltaTime); // accelerometer control
+        vehicle.y = (int)(vehicle.y - accelY * 40 * deltaTime); // accelerometer control
+
+
         updateCounter++;
 
 
@@ -79,7 +84,8 @@ public class World
         // move the vehicle based on user touch. Only for testing. Remove before publishing.
         if (gameEngine.isTouchDown(0));
         {
-            vehicle.x = gameEngine.getTouchX(0) - Vehicle.WIDTH/2; // position vehicle after touch x
+            //vehicle.x = gameEngine.getTouchX(0) - Vehicle.WIDTH/2; // position vehicle after touch x
+
             // check for vehicle to be in the lower part of the screen
             if (gameEngine.getTouchY(0) < 480/2) // check if touch is on the upper part
             {
@@ -95,13 +101,24 @@ public class World
             }
         }
 
+        /*if(vehicle.y < 480/2)
+        {
+            vehicle.y = 480 / 2 - Vehicle.HEIGHT / 2;
+        }
+        else
+        {
+            vehicle.y = gameEngine.getTouchY(0) - Vehicle.HEIGHT/2;
+        }
+        if(vehicle.y > 480 - Vehicle.HEIGHT) vehicle.y = 480 - Vehicle.HEIGHT - 10;*/
+
+
         // check left screen boundary
         if (vehicle.x < MIN_X) vehicle.x = (int) MIN_X + 1;
         // check right screen boundary
         if (vehicle.x + vehicle.WIDTH > MAX_X) vehicle.x = (int)(MAX_X - vehicle.WIDTH - 1);
 
         Monster monster = null;
-        for (int i = 0; i < maxMonsters; i++)
+        for (int i = 0; i < monsterList.size(); i++)
         {
             monster = monsterList.get(i);
             // make monster move
@@ -164,19 +181,19 @@ public class World
             checkBulletShooting();
             if (bulletList.size() < 300 && bulletsOn)
             {
-//                bullet = new Bullet(vehicle.x+vehicle.WIDTH/2, vehicle.y); // middle vehicle coordonates
-//                bulletList.add(bullet);
-
-//                bullet = new Bullet(vehicle.x+vehicle.WIDTH/2-2-20-20, vehicle.y+8); // middle vehicle coordonates
-//                bulletList.add(bullet);
-//                bullet = new Bullet(vehicle.x+vehicle.WIDTH/2-2-20, vehicle.y); // middle vehicle coordonates
-//                bulletList.add(bullet);
-                bullet = new Bullet(vehicle.x+vehicle.WIDTH/2-2, vehicle.y); // middle vehicle coordonates
+                bullet = new Bullet(vehicle.x+vehicle.WIDTH/2, vehicle.y); // middle vehicle coordonates
                 bulletList.add(bullet);
-//                bullet = new Bullet(vehicle.x+vehicle.WIDTH/2-2+20, vehicle.y); // middle vehicle coordonates
-//                bulletList.add(bullet);
-//                bullet = new Bullet(vehicle.x+vehicle.WIDTH/2-2+20+20, vehicle.y+8); // middle vehicle coordonates
-//                bulletList.add(bullet);
+
+                /*bullet = new Bullet(vehicle.x+vehicle.WIDTH/2-2-20-20, vehicle.y+8); // middle vehicle coordonates
+                bulletList.add(bullet);
+                bullet = new Bullet(vehicle.x+vehicle.WIDTH/2-2-20, vehicle.y); // middle vehicle coordonates
+                bulletList.add(bullet);
+                bullet = new Bullet(vehicle.x+vehicle.WIDTH/2-2, vehicle.y-8); // middle vehicle coordonates
+                bulletList.add(bullet);*/
+                /*bullet = new Bullet(vehicle.x+vehicle.WIDTH/2-2+20, vehicle.y); // middle vehicle coordonates
+                bulletList.add(bullet);
+                bullet = new Bullet(vehicle.x+vehicle.WIDTH/2-2+20+20, vehicle.y+8); // middle vehicle coordonates
+                bulletList.add(bullet);*/
 //                maxBullets ++;
                 bulletsOnCounter ++;
                 listener.generateBullet();
@@ -191,7 +208,7 @@ public class World
             bullet = bulletList.get(i);
             // move bullet
             bullet.y = (int)(bullet.y - backgroundSpeed * deltaTime);
-////                 recycling a bullet
+//                recycling a bullet
 //                if (bullet.y < 0 - Bullet.HEIGHT-300)// - 30 for testing purposes
 //                {
 //                    bullet.x = vehicle.x+vehicle.WIDTH/2;
@@ -310,7 +327,7 @@ public class World
 
     private void checkBulletShooting()
     {
-        if (bulletsOnCounter >= 3)
+        if (bulletsOnCounter >= 1)
         {
             bulletsOn = false;      // pause the bullet generation
         }
@@ -318,7 +335,7 @@ public class World
         {
             bulletsOffCounter++;   // count when the bullet is not generated
         }
-        if (bulletsOffCounter > 3)
+        if (bulletsOffCounter > 5)
         {
             bulletsOn = true;       // start the bullet generation
             bulletsOnCounter = 0;   // reset counter

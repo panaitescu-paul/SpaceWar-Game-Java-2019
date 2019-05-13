@@ -15,7 +15,6 @@ public class MainMenuScreen extends Screen
     public MainMenuScreen(GameEngine gameEngine)
     {
         super(gameEngine);
-//        background = gameEngine.loadBitmap("spacewar/images/maps/map4.jpg");
         background = gameEngine.loadBitmap("spacewar/images/maps/bg_start.png");
         startGame = gameEngine.loadBitmap("spacewar/images/xstartgame.png");
         startTime = System.nanoTime();
