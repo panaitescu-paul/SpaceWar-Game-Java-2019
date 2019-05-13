@@ -89,6 +89,11 @@ public class GameScreen extends Screen
 //            {
 //                bounce.play(1);
 //            }
+            @Override
+            public void collideShipItem()
+            {
+
+            }
 
             @Override
             public void collisionMonster()
@@ -110,14 +115,6 @@ public class GameScreen extends Screen
     @Override
     public void update(float deltaTime)
     {
-        // add bg music
-
-//        if (!bgMusicOn)
-//        {
-//            gameEngine.music.play();
-//            bgMusicOn = true;
-//        }
-
         if (world.gameOver)
         {
             state = State.GameOver;
@@ -161,7 +158,7 @@ public class GameScreen extends Screen
             Log.d("GameScreen", "Pausing the game.");
             state = State.Paused;
             pause();
-//            return;  //maybe don;t draw anything more?
+//            return;  //maybe don't draw anything more?
         }
 
         if (state == State.Running)
@@ -204,7 +201,7 @@ public class GameScreen extends Screen
         // draw the game object, no matter what state (paused, running)
         renderer.render();
 //        showText = "Lives: " + Integer.toString(world.lives) + "   Points: " + Integer.toString(world.points);
-        showText = "Score: " + Integer.toString(world.scorePoints) ;
+        showText = "Score: " + world.scorePoints + "    Lives: " + world.vehicle.lives ;
         gameEngine.drawText(font, showText, 22, 22, Color.GREEN, 12);
 
 
@@ -231,21 +228,19 @@ public class GameScreen extends Screen
     {
         gameEngine.music.pause();
         if (state == State.Running) state = State.Paused;
-//        bgMusicOn = false;
     }
 
     @Override
     public void resume()
     {
         gameEngine.music.play();
-//        bgMusicOn = true;
     }
 
     @Override
     public void dispose()
     {
         gameEngine.music.pause();
-//        gameEngine.music.stop();
-//        gameEngine.music.dispose();
+        //gameEngine.music.stop();
+        //gameEngine.music.dispose();
     }
 }

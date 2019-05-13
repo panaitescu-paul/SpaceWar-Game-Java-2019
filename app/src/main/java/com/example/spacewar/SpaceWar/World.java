@@ -25,7 +25,7 @@ public class World
     List<Item> itemList = new ArrayList<>();
     public int maxMonsters = 5;
     public int maxBullets = 10;
-    public int maxItems = 2;
+    public int maxItems = 1;
 
     GameEngine gameEngine;
     CollisionListener listener;
@@ -33,7 +33,7 @@ public class World
 
     boolean gameOver = false;
     int points = 0;
-    int lives = 3;
+    //int lives = 1;
     int backgroundSpeed = 0;
     int backgroundSpeed2 = 0;
     int backgroundSpeed3 = 0;
@@ -222,12 +222,13 @@ public class World
 
 
         // check if the car collides with a monster
-        collideCarMonster();
+        collideShipEnemy();
+        collideShipItem();
         collideBulletEnemy();
 
     }
 
-    private void collideCarMonster()
+    private void collideShipEnemy()
     {
         Monster monster = null;
         for (int i=0; i < maxMonsters; i++)
@@ -236,18 +237,27 @@ public class World
             if (collideRects(vehicle.x, vehicle.y, Vehicle.WIDTH, Vehicle.HEIGHT,
                     monster.x, monster.y, Monster.WIDTH, Monster.HEIGHT))
             {
+                monster.y = 500; // move monster off screen for recycling
+                vehicle.lives = vehicle.lives - 1;
+                Log.d("World", "The ship just hit an enemy");
+            }
+            if(vehicle.lives==0) gameOver = true;
+        }
+    }
 
-
-                gameOver = true;
-                Log.d("World", "Game Over - Lives: 0");
-
-//                monster.hp -=1;
-//                Log.d("World", "The ship just hit a monster: HP -1" + monster.hp);
-//                if (monster.hp <= 0)
-//                {
-//                    gameOver = true;
-//                    Log.d("World", "Game Over - Lives: 0");
-//                }
+    private void collideShipItem()
+    {
+        Item item = null;
+        for (int i=0; i < maxItems; i++)
+        {
+            item = itemList.get(i);
+            if (collideRects(vehicle.x, vehicle.y, Vehicle.WIDTH, Vehicle.HEIGHT,
+                    item.x, item.y, Item.WIDTH, Item.HEIGHT))
+            {
+                vehicle.lives = vehicle.lives + 1;
+                item.y = 500; // move item off screen for recycling
+                listener.collideShipItem();
+                Log.d("World", "The ship just collected an item.");
             }
         }
     }
