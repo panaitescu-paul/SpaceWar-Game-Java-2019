@@ -84,11 +84,11 @@ public class GameScreen extends Screen
                 bulletSound.play(1);
             }
 
-            @Override
-            public void collisionRoadSide()
-            {
-                bounce.play(1);
-            }
+//            @Override
+//            public void collisionRoadSide()
+//            {
+//                bounce.play(1);
+//            }
 
             @Override
             public void collisionMonster()

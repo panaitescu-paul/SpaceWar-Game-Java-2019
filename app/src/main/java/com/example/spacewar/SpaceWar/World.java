@@ -138,6 +138,7 @@ public class World
             if (monster.y > 480 - Monster.HEIGHT) // if monster disappears off screen
             {
                 Random random = new Random();
+                monster.hp = 3;
                 int randX = random.nextInt(320-30); // between 0 and 50
                 int randY = random.nextInt(20);
                 monster.x = (randX);
@@ -181,7 +182,7 @@ public class World
             checkBulletShooting();
             if (bulletList.size() < 300 && bulletsOn)
             {
-                bullet = new Bullet(vehicle.x+vehicle.WIDTH/2, vehicle.y); // middle vehicle coordonates
+                bullet = new Bullet(vehicle.x+vehicle.WIDTH/2-2, vehicle.y-15); // middle vehicle coordonates
                 bulletList.add(bullet);
 
                 /*bullet = new Bullet(vehicle.x+vehicle.WIDTH/2-2-20-20, vehicle.y+8); // middle vehicle coordonates
@@ -235,8 +236,18 @@ public class World
             if (collideRects(vehicle.x, vehicle.y, Vehicle.WIDTH, Vehicle.HEIGHT,
                     monster.x, monster.y, Monster.WIDTH, Monster.HEIGHT))
             {
+
+
                 gameOver = true;
-                Log.d("World", "The car just hit a monster");
+                Log.d("World", "Game Over - Lives: 0");
+
+//                monster.hp -=1;
+//                Log.d("World", "The ship just hit a monster: HP -1" + monster.hp);
+//                if (monster.hp <= 0)
+//                {
+//                    gameOver = true;
+//                    Log.d("World", "Game Over - Lives: 0");
+//                }
             }
         }
     }
@@ -257,17 +268,22 @@ public class World
                 if (collideRects(bullet.x, bullet.y, Bullet.WIDTH, Bullet.HEIGHT,
                         monster.x, monster.y, Monster.WIDTH, Monster.HEIGHT))
                 {
+
+                    monster.hp -=1;
+                    Log.d("World", "The enemy was hit: Enemy HP -1" + monster.hp);
                     // bullet dissapears
-                    // enemy dissapears
                     bullet.y = -500; // move bullet off screen for recycling
-                    monster.y = 500; // move monster off screen for recycling
                     Log.d("World", "The bullet just hit an enemy");
+
+                    if (monster.hp <= 0)
+                    {
+                        // enemy dissapears
+                        monster.y = 500; // move monster off screen for recycling
+                    }
                     // add points
                     scorePoints+=10;
                     listener.collideBulletEnemy();
 //                    collideBulletEnemySound();
-
-
 //                    bulletSound3.play(1);
                 }
             }
@@ -298,7 +314,7 @@ public class World
             int randY = random.nextInt(20);
 //            Monster monster = new Monster(((500 + randX) + i*50), 30 + randY);
 //            Monster monster = new Monster(randX, ((-450 + randY) + i*100));
-            Monster monster = new Monster(randX, ((-450 + randY) + i*100), 1);
+            Monster monster = new Monster(randX, ((-450 + randY) + i*100), 1, 3);
             monsterList.add(monster);
         }
     }
@@ -335,7 +351,7 @@ public class World
         {
             bulletsOffCounter++;   // count when the bullet is not generated
         }
-        if (bulletsOffCounter > 3)
+        if (bulletsOffCounter > 2)
         {
             bulletsOn = true;       // start the bullet generation
             bulletsOnCounter = 0;   // reset counter
