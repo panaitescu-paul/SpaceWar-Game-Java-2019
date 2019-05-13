@@ -33,7 +33,6 @@ public class World
 
     boolean gameOver = false;
     int points = 0;
-    //int lives = 1;
     int backgroundSpeed = 0;
     int backgroundSpeed2 = 0;
     int backgroundSpeed3 = 0;
