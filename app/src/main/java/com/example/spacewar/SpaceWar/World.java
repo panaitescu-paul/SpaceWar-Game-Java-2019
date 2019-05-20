@@ -235,6 +235,7 @@ public class World
             {
                 monster.y = 500; // move monster off screen for recycling
                 vehicle.lives = vehicle.lives - 1;
+                listener.collideShipEnemy();
                 Log.d("World", "The ship just hit an enemy");
             }
             if(vehicle.lives==0) gameOver = true;
@@ -250,7 +251,11 @@ public class World
             if (collideRects(vehicle.x, vehicle.y, Vehicle.WIDTH, Vehicle.HEIGHT,
                     item.x, item.y, Item.WIDTH, Item.HEIGHT))
             {
-                vehicle.lives = vehicle.lives + 1;
+                if(vehicle.lives < 3)
+                {
+                    vehicle.lives = vehicle.lives + 1;
+                }
+
                 item.y = 500; // move item off screen for recycling
                 listener.collideShipItem();
                 Log.d("World", "The ship just collected an item.");
@@ -258,7 +263,6 @@ public class World
         }
     }
 
-//    private void collideBulletEnemy()
     public void collideBulletEnemy()
     {
         Bullet bullet = null;

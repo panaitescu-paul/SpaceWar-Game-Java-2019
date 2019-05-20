@@ -84,11 +84,6 @@ public class GameScreen extends Screen
                 bulletSound.play(1);
             }
 
-//            @Override
-//            public void collisionRoadSide()
-//            {
-//                bounce.play(1);
-//            }
             @Override
             public void collideShipItem()
             {
@@ -96,12 +91,10 @@ public class GameScreen extends Screen
             }
 
             @Override
-            public void collisionMonster()
+            public void collideShipEnemy()
             {
                 bulletSound2.play(1);
             }
-
-
 
             @Override
             public void gameOver()
@@ -129,13 +122,6 @@ public class GameScreen extends Screen
             state = State.Running;
             resume();
         }
-
-//        if (state == State.GameOver && gameEngine.getTouchEvents().size() > 0)
-//        {
-//            Log.d("GameScreen", "Starting the game again");
-//            state = State.Running;
-//            resume();
-//        }
 
         if (state == State.GameOver)
         {
