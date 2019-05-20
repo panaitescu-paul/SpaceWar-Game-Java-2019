@@ -17,6 +17,7 @@ public class WorldRenderer
     Bitmap healthItemImage;
     Bitmap bulletItemImage;
     Bitmap shieldItemImage;
+    Bitmap enemyBulletImage;
 
     public WorldRenderer(GameEngine ge, World w)
     {
@@ -30,6 +31,7 @@ public class WorldRenderer
         healthItemImage = gameEngine.loadBitmap("spacewar/images/items/item-health30.png");
         bulletItemImage = gameEngine.loadBitmap("spacewar/images/items/item-bullet30.png");
         shieldItemImage = gameEngine.loadBitmap("spacewar/images/items/item-shield30.png");
+        enemyBulletImage = gameEngine.loadBitmap("spacewar/images/vehicles/bullet1.png");
 
     }
 
@@ -41,25 +43,25 @@ public class WorldRenderer
             gameEngine.drawBitmap(shieldImage, world.vehicle.x-10, world.vehicle.y-18);
         }
 
-        for (int i=0; i< world.monsterList.size(); i++)
+        for (int i = 0; i< world.enemyList.size(); i++)
         {
-            gameEngine.drawBitmap(enemyImage, world.monsterList.get(i).x, world.monsterList.get(i).y);
+            gameEngine.drawBitmap(enemyImage, world.enemyList.get(i).x, world.enemyList.get(i).y);
 
-            if (world.monsterList.get(i).hp == 3) // render image for enemy with HP 3
+            if (world.enemyList.get(i).hp == 3) // render image for enemy with HP 3
             {
-                gameEngine.drawBitmap(enemyHealthImage, world.monsterList.get(i).x, world.monsterList.get(i).y-10,
+                gameEngine.drawBitmap(enemyHealthImage, world.enemyList.get(i).x, world.enemyList.get(i).y-10,
                         4, 5,
                         37, 5);
             }
-            else if (world.monsterList.get(i).hp == 2) // render image for enemy with HP 2
+            else if (world.enemyList.get(i).hp == 2) // render image for enemy with HP 2
             {
-                gameEngine.drawBitmap(enemyHealthImage, world.monsterList.get(i).x, world.monsterList.get(i).y-10,
+                gameEngine.drawBitmap(enemyHealthImage, world.enemyList.get(i).x, world.enemyList.get(i).y-10,
                         4, 15,
                         37, 5);
             }
-            else if (world.monsterList.get(i).hp == 1) // render image for enemy with HP 1
+            else if (world.enemyList.get(i).hp == 1) // render image for enemy with HP 1
             {
-                gameEngine.drawBitmap(enemyHealthImage, world.monsterList.get(i).x, world.monsterList.get(i).y-10,
+                gameEngine.drawBitmap(enemyHealthImage, world.enemyList.get(i).x, world.enemyList.get(i).y-10,
                         4, 34,
                         37, 5);
             }
@@ -75,6 +77,10 @@ public class WorldRenderer
         for (int i=0; i< world.bulletsItemList.size(); i++)
         {
             gameEngine.drawBitmap(bulletItemImage, world.bulletsItemList.get(i).x, world.bulletsItemList.get(i).y);
+        }
+        for (int i=0; i< world.enemyBulletList.size(); i++)
+        {
+            gameEngine.drawBitmap(enemyBulletImage, world.enemyBulletList.get(i).x, world.enemyBulletList.get(i).y);
         }
         for (int i=0; i< world.shieldItemList.size(); i++)
         {

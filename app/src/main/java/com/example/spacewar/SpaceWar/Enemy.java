@@ -1,6 +1,6 @@
 package com.example.spacewar.SpaceWar;
 
-public class Monster
+public class Enemy
 {
     public static final int WIDTH = 30;
     public static final int HEIGHT = 30;
@@ -8,8 +8,13 @@ public class Monster
     public int y = 0;
     public int hp = 0;
     public int direction = 1; // 1: right or -1: left
+//    public enum Type {
+//        BASIC,
+//        SHIELDED,
+//        SHOOTING
+//    }
 
-    public Monster(int x, int y, int direction, int hp)
+    public Enemy(int x, int y, int direction, int hp)
     {
         this.x = x;
         this.y = y;

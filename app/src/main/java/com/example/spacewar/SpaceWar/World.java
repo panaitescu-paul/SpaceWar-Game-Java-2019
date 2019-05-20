@@ -19,13 +19,13 @@ public class World
     public static final float MAX_Y = 285;
 
     Vehicle vehicle = new Vehicle();
-    List<Monster> monsterList = new ArrayList<>();
+    List<Enemy> enemyList = new ArrayList<>();
     List<Bullet> bulletList = new ArrayList<>();
     List<Item> healthItemList = new ArrayList<>();
     List<Item> bulletsItemList = new ArrayList<>();
     List<Item> shieldItemList = new ArrayList<>();
-
-    public int maxMonsters = 5;
+    List<Bullet> enemyBulletList = new ArrayList<>();
+    public int maxEnemies = 2;
     public int maxBullets = 10;
     public int maxItems = 1;
 
@@ -47,6 +47,9 @@ public class World
     int bulletsOnCounter = 0;
     int bulletsOffCounter = 0;
     boolean bulletsOn = true;
+    int bulletsOnCounter2 = 0;
+    int bulletsOffCounter2 = 0;
+    boolean bulletsOn2 = true;
     int scorePoints = 0;
 //    bulletSound3 = gameEngine.loadSound("spacewar/music/laser1.mp3");
 
@@ -58,7 +61,7 @@ public class World
         this.gameEngine = gameEngine;
         this.listener = listener;
 //        initializeBullets();
-        initializeMonsters();
+        initializeEnemies();
         initializeItems();
 
 
@@ -118,33 +121,33 @@ public class World
         // check right screen boundary
         if (vehicle.x + vehicle.WIDTH > MAX_X) vehicle.x = (int)(MAX_X - vehicle.WIDTH - 1);
 
-        Monster monster = null;
-        for (int i = 0; i < monsterList.size(); i++)
+        Enemy enemy = null;
+        for (int i = 0; i < enemyList.size(); i++)
         {
-            monster = monsterList.get(i);
-            // make monster move
-            monster.y = (int)(monster.y + backgroundSpeed * deltaTime);
+            enemy = enemyList.get(i);
+            // make enemy move
+            enemy.y = (int)(enemy.y + backgroundSpeed * deltaTime);
             Random random2 = new Random();
             int randDirectionChangeRate = 100 + random2.nextInt(500); // between 100 and 600
             if (updateCounter % randDirectionChangeRate ==0)
             {
-                monster.direction = -monster.direction; // individual enemy direction
+                enemy.direction = -enemy.direction; // individual enemy direction
             }
-            if (monster.x < 0 || monster.x > 320-monster.WIDTH)
+            if (enemy.x < 0 || enemy.x > 320- enemy.WIDTH)
             {
-                monster.direction = -monster.direction; // individual enemy direction
-                monster.x = (int)(monster.x + backgroundSpeed * deltaTime * monster.direction);
+                enemy.direction = -enemy.direction; // individual enemy direction
+                enemy.x = (int)(enemy.x + backgroundSpeed * deltaTime * enemy.direction);
             }
-            monster.x = (int)(monster.x + backgroundSpeed * deltaTime * monster.direction);
-            if (monster.y > 480 - Monster.HEIGHT) // if monster disappears off screen
+            enemy.x = (int)(enemy.x + backgroundSpeed * deltaTime * enemy.direction);
+            if (enemy.y > 480 - Enemy.HEIGHT) // if enemy disappears off screen
             {
                 Random random = new Random();
-                monster.hp = 3;
+                enemy.hp = 3;
                 int randX = random.nextInt(320-30); // between 0 and 50
                 int randY = random.nextInt(20);
-                monster.x = (randX);
-                monster.y = ((-450 + randY) + i*100);
-                Log.d("World", "Just recycled a monster.");
+                enemy.x = (randX);
+                enemy.y = ((-450 + randY) + i*100);
+                Log.d("World", "Just recycled a enemy.");
             }
         }
 
@@ -238,8 +241,8 @@ public class World
         Bullet bullet;
         if (updateCounter % 10 ==0)
         {
-            checkBulletShooting();
-            if (bulletList.size() < 300 && bulletsOn)
+            checkBulletShooting(1, 1);
+            if (bulletList.size() < 500 && bulletsOn)
             {
                 //bullet = new Bullet(vehicle.x+vehicle.WIDTH/2-2, vehicle.y-15); // middle vehicle coordonates
                 //bulletList.add(bullet);
@@ -306,6 +309,33 @@ public class World
             }
 
         }
+        Bullet enemyBullet;
+        if (updateCounter % 10 ==0)
+        {
+            checkEnemyBulletShooting(1, 12);
+            if (enemyBulletList.size() < 500 && bulletsOn2)
+            {
+                Enemy enemy2 = null;
+                for (int i = 0; i < enemyList.size(); i++)
+                {
+                    enemy2 = enemyList.get(i);
+
+                    enemyBullet = new Bullet(enemy2.x + enemy2.WIDTH / 2 - 2, enemy2.y + 30); // middle enemy coordonates
+                    enemyBulletList.add(enemyBullet);
+                    bulletsOnCounter2++;
+                    listener.generateBullet();
+                }
+            }
+        }
+
+        Bullet enemyBullet2;
+        for (int i = 0; i < enemyBulletList.size(); i++)
+        {
+            enemyBullet2 = enemyBulletList.get(i);
+            // move enemy bullet
+            enemyBullet2.y = (int) (enemyBullet2.y+2 + backgroundSpeed * deltaTime);
+        }
+
 
 //        Bullet bullet = null;
 
@@ -323,26 +353,27 @@ public class World
 //                }
         }
 
-        // check if the car collides with a monster
+        // check if the car collides with a enemy
         collideShipEnemy();
         collideShipHealthItem();
         collideShipBulletsItem();
         collideShipShieldItem();
-        collideBulletEnemy();
+        collideShipBulletWithEnemy();
+        collideEnemyBulletWithShip();
 
     }
 
     private void collideShipEnemy()
     {
-        Monster monster = null;
-        for (int i=0; i < maxMonsters; i++)
+        Enemy enemy = null;
+        for (int i=0; i < maxEnemies; i++)
         {
-            monster = monsterList.get(i);
+            enemy = enemyList.get(i);
             if (collideRects(vehicle.x, vehicle.y, Vehicle.WIDTH, Vehicle.HEIGHT,
-                    monster.x, monster.y, Monster.WIDTH, Monster.HEIGHT))
+                    enemy.x, enemy.y, Enemy.WIDTH, Enemy.HEIGHT))
             {
-                monster.y = 500; // move monster off screen for recycling
-
+                enemy.y = 500; // move enemy off screen for recycling
+                vehicle.lives = vehicle.lives - 1;
 
                 if(vehicle.bullets > 1)
                 {
@@ -422,32 +453,32 @@ public class World
         }
     }
 
-    public void collideBulletEnemy()
+    public void collideShipBulletWithEnemy()
     {
         Bullet bullet = null;
         for (int i=0; i < bulletList.size(); i++)
         {
             bullet = bulletList.get(i);
 
-            Monster monster = null;
-            for (int j=0; j < maxMonsters; j++)
+            Enemy enemy = null;
+            for (int j=0; j < maxEnemies; j++)
             {
-                monster = monsterList.get(j);
+                enemy = enemyList.get(j);
                 // check collision of a bullet with a enemy
                 if (collideRects(bullet.x, bullet.y, Bullet.WIDTH, Bullet.HEIGHT,
-                        monster.x, monster.y, Monster.WIDTH, Monster.HEIGHT))
+                        enemy.x, enemy.y, Enemy.WIDTH, Enemy.HEIGHT))
                 {
 
-                    monster.hp -=1;
-                    Log.d("World", "The enemy was hit: Enemy HP -1" + monster.hp);
+                    enemy.hp -=1;
+                    Log.d("World", "The enemy was hit: Enemy HP -1" + enemy.hp);
                     // bullet dissapears
                     bullet.y = -500; // move bullet off screen for recycling
                     Log.d("World", "The bullet just hit an enemy");
 
-                    if (monster.hp <= 0)
+                    if (enemy.hp <= 0)
                     {
                         // enemy dissapears
-                        monster.y = 500; // move monster off screen for recycling
+                        enemy.y = 500; // move enemy off screen for recycling
                     }
                     // add points
                     scorePoints+=10;
@@ -459,10 +490,31 @@ public class World
 
         }
     }
-//    public void collideBulletEnemySound()
-//    {
-//
-//    }
+
+    public void collideEnemyBulletWithShip()
+    {
+        Bullet enemyBullet = null;
+        for (int i=0; i < enemyBulletList.size(); i++)
+        {
+            enemyBullet = enemyBulletList.get(i);
+            // check collision of a bullet with a enemy
+            if (collideRects(enemyBullet.x, enemyBullet.y, Bullet.WIDTH, Bullet.HEIGHT,
+                    vehicle.x, vehicle.y, Vehicle.WIDTH, Vehicle.HEIGHT))
+            {
+                vehicle.lives -=1;
+                Log.d("World", "The enemy bullet hit the ship: Ship lives -1" + vehicle.lives);
+                // bullet dissapears
+                enemyBullet.y = -500; // move bullet off screen for recycling
+                Log.d("World", "The bullet just hit an enemy");
+                // add points
+//                    scorePoints+=10;
+                listener.collideBulletEnemy();
+//                    collideBulletEnemySound();
+//                    bulletSound3.play(1);
+            }
+            if(vehicle.lives==0) gameOver = true;
+        }
+    }
 
     private boolean collideRects(float x, float y, float width, float height,
                                  float x2, float y2, float width2, float height2)
@@ -474,17 +526,17 @@ public class World
         return false;
     }
 
-    private void initializeMonsters()
+    private void initializeEnemies()
     {
         Random random = new Random();
-        for(int i=0; i< maxMonsters; i++)
+        for(int i=0; i< maxEnemies; i++)
         {
             int randX = random.nextInt(320-30); // between 0 and 50
             int randY = random.nextInt(20);
-//            Monster monster = new Monster(((500 + randX) + i*50), 30 + randY);
-//            Monster monster = new Monster(randX, ((-450 + randY) + i*100));
-            Monster monster = new Monster(randX, ((-450 + randY) + i*100), 1, 3);
-            monsterList.add(monster);
+//            Enemy enemy = new Enemy(((500 + randX) + i*50), 30 + randY);
+//            Enemy enemy = new Enemy(randX, ((-450 + randY) + i*100));
+            Enemy enemy = new Enemy(randX, ((-450 + randY) + i*100), 1, 3);
+            enemyList.add(enemy);
         }
     }
 
@@ -532,9 +584,9 @@ public class World
         }
     }
 
-    private void checkBulletShooting()
+    private void checkBulletShooting(int onUnits, int offUnits)
     {
-        if (bulletsOnCounter >= 1)
+        if (bulletsOnCounter >= onUnits)
         {
             bulletsOn = false;      // pause the bullet generation
         }
@@ -542,11 +594,29 @@ public class World
         {
             bulletsOffCounter++;   // count when the bullet is not generated
         }
-        if (bulletsOffCounter > 2)
+        if (bulletsOffCounter > offUnits)
         {
             bulletsOn = true;       // start the bullet generation
             bulletsOnCounter = 0;   // reset counter
             bulletsOffCounter = 0;  // reset counter
+        }
+    }
+
+    private void checkEnemyBulletShooting(int onUnits, int offUnits)
+    {
+        if (bulletsOnCounter2 >= onUnits)
+        {
+            bulletsOn2 = false;      // pause the bullet generation
+        }
+        if (!bulletsOn2)
+        {
+            bulletsOffCounter2++;   // count when the bullet is not generated
+        }
+        if (bulletsOffCounter2 > offUnits)
+        {
+            bulletsOn2 = true;       // start the bullet generation
+            bulletsOnCounter2 = 0;   // reset counter
+            bulletsOffCounter2 = 0;  // reset counter
         }
     }
 
