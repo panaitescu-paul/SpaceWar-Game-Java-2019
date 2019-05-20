@@ -18,11 +18,13 @@ public class World
     public static final float MIN_Y = 37;
     public static final float MAX_Y = 285;
 
-
     Vehicle vehicle = new Vehicle();
     List<Monster> monsterList = new ArrayList<>();
     List<Bullet> bulletList = new ArrayList<>();
-    List<Item> itemList = new ArrayList<>();
+    List<Item> healthItemList = new ArrayList<>();
+    List<Item> bulletsItemList = new ArrayList<>();
+    List<Item> shieldItemList = new ArrayList<>();
+
     public int maxMonsters = 5;
     public int maxBullets = 10;
     public int maxItems = 1;
@@ -146,32 +148,90 @@ public class World
             }
         }
 
-        Item item = null;
+        Item healthItem = null;
         for (int i = 0; i < maxItems; i++)
         {
-            item = itemList.get(i);
-            // make item move
-            item.y = (int)(item.y + backgroundSpeed * deltaTime);
+            healthItem = healthItemList.get(i);
+            // make shieldItem move
+            healthItem.y = (int)(healthItem.y + backgroundSpeed * deltaTime);
             Random random3 = new Random();
             int randDirectionChangeRate = 100 + random3.nextInt(500); // between 100 and 600
             if (updateCounter % randDirectionChangeRate ==0)
             {
-                item.direction = -item.direction; // individual item direction
+                healthItem.direction = -healthItem.direction; // individual shieldItem direction
             }
-            if (item.x < 0 || item.x > 320-item.WIDTH)
+            if (healthItem.x < 0 || healthItem.x > 320-healthItem.WIDTH)
             {
-                item.direction = -item.direction; // individual item direction
-                item.x = (int)(item.x + backgroundSpeed * deltaTime * item.direction);
+                healthItem.direction = -healthItem.direction; // individual shieldItem direction
+                healthItem.x = (int)(healthItem.x + backgroundSpeed * deltaTime * healthItem.direction);
             }
-            item.x = (int)(item.x + backgroundSpeed * deltaTime * item.direction);
-            if (item.y > 480 - Item.HEIGHT) // if item disappears off screen
+            healthItem.x = (int)(healthItem.x + backgroundSpeed * deltaTime * healthItem.direction);
+            if (healthItem.y > 480 - Item.HEIGHT) // if shieldItem disappears off screen
             {
                 Random random4 = new Random();
                 int randX = random4.nextInt(320-30); // between 0 and 50
                 int randY = random4.nextInt(20);
-                item.x = (randX);
-                item.y = ((-450 + randY) + i*100);
-                Log.d("World", "Just recycled a monster.");
+                healthItem.x = (randX);
+                healthItem.y = ((-450 + randY) + i*100);
+                Log.d("World", "Just recycled an item.");
+            }
+        }
+
+        Item bulletsItem = null;
+        for (int i = 0; i < maxItems; i++)
+        {
+            bulletsItem = bulletsItemList.get(i);
+            // make shieldItem move
+            bulletsItem.y = (int)(bulletsItem.y + backgroundSpeed * deltaTime);
+            Random random3 = new Random();
+            int randDirectionChangeRate = 100 + random3.nextInt(500); // between 100 and 600
+            if (updateCounter % randDirectionChangeRate ==0)
+            {
+                bulletsItem.direction = -bulletsItem.direction; // individual bulletsItem direction
+            }
+            if (bulletsItem.x < 0 || bulletsItem.x > 320-bulletsItem.WIDTH)
+            {
+                bulletsItem.direction = -bulletsItem.direction; // individual bulletsItem direction
+                bulletsItem.x = (int)(bulletsItem.x + backgroundSpeed * deltaTime * bulletsItem.direction);
+            }
+            bulletsItem.x = (int)(bulletsItem.x + backgroundSpeed * deltaTime * healthItem.direction);
+            if (bulletsItem.y > 480 - Item.HEIGHT) // if bulletsItem disappears off screen
+            {
+                Random random4 = new Random();
+                int randX = random4.nextInt(320-30); // between 0 and 50
+                int randY = random4.nextInt(20);
+                bulletsItem.x = (randX);
+                bulletsItem.y = ((-450 + randY) + i*100);
+                Log.d("World", "Just recycled an item.");
+            }
+        }
+
+        Item shieldItem = null;
+        for (int i = 0; i < maxItems; i++)
+        {
+            shieldItem = shieldItemList.get(i);
+            // make shieldItem move
+            shieldItem.y = (int)(shieldItem.y + backgroundSpeed * deltaTime);
+            Random random3 = new Random();
+            int randDirectionChangeRate = 100 + random3.nextInt(500); // between 100 and 600
+            if (updateCounter % randDirectionChangeRate ==0)
+            {
+                shieldItem.direction = -shieldItem.direction; // individual shieldItem direction
+            }
+            if (shieldItem.x < 0 || shieldItem.x > 320- shieldItem.WIDTH)
+            {
+                shieldItem.direction = -shieldItem.direction; // individual shieldItem direction
+                shieldItem.x = (int)(shieldItem.x + backgroundSpeed * deltaTime * shieldItem.direction);
+            }
+            shieldItem.x = (int)(shieldItem.x + backgroundSpeed * deltaTime * shieldItem.direction);
+            if (shieldItem.y > 480 - Item.HEIGHT) // if shieldItem disappears off screen
+            {
+                Random random4 = new Random();
+                int randX = random4.nextInt(320-30); // between 0 and 50
+                int randY = random4.nextInt(20);
+                shieldItem.x = (randX);
+                shieldItem.y = ((-450 + randY) + i*100);
+                Log.d("World", "Just recycled an item.");
             }
         }
 
@@ -181,16 +241,62 @@ public class World
             checkBulletShooting();
             if (bulletList.size() < 300 && bulletsOn)
             {
-                bullet = new Bullet(vehicle.x+vehicle.WIDTH/2-2, vehicle.y-15); // middle vehicle coordonates
-                bulletList.add(bullet);
+                //bullet = new Bullet(vehicle.x+vehicle.WIDTH/2-2, vehicle.y-15); // middle vehicle coordonates
+                //bulletList.add(bullet);
+                if(vehicle.bullets == 1)
+                {
+                    bullet = new Bullet(vehicle.x+vehicle.WIDTH/2-2, vehicle.y-15); // middle vehicle coordonates
+                    bulletList.add(bullet);
+                }
+                else if(vehicle.bullets == 2)
+                {
+                    bullet = new Bullet(vehicle.x+vehicle.WIDTH/2-2-20, vehicle.y);
+                    bulletList.add(bullet);
+                    bullet = new Bullet(vehicle.x+vehicle.WIDTH/2-2+20, vehicle.y);
+                    bulletList.add(bullet);
+                }
+                else if(vehicle.bullets == 3)
+                {
+                    bullet = new Bullet(vehicle.x+vehicle.WIDTH/2-2-20, vehicle.y);
+                    bulletList.add(bullet);
+                    bullet = new Bullet(vehicle.x+vehicle.WIDTH/2-2, vehicle.y-8); // middle vehicle coordonates
+                    bulletList.add(bullet);
+                    bullet = new Bullet(vehicle.x+vehicle.WIDTH/2-2+20, vehicle.y);
+                    bulletList.add(bullet);
+                }
+                else if(vehicle.bullets == 4)
+                {
+                    bullet = new Bullet(vehicle.x+vehicle.WIDTH/2-2-20-20, vehicle.y+8);
+                    bulletList.add(bullet);
+                    bullet = new Bullet(vehicle.x+vehicle.WIDTH/2-2-20, vehicle.y);
+                    bulletList.add(bullet);
+                    bullet = new Bullet(vehicle.x+vehicle.WIDTH/2-2+20, vehicle.y);
+                    bulletList.add(bullet);
+                    bullet = new Bullet(vehicle.x+vehicle.WIDTH/2-2+20+20, vehicle.y+8);
+                    bulletList.add(bullet);
+                }
+                else if(vehicle.bullets == 5)
+                {
+                    bullet = new Bullet(vehicle.x+vehicle.WIDTH/2-2-20-20, vehicle.y+8);
+                    bulletList.add(bullet);
+                    bullet = new Bullet(vehicle.x+vehicle.WIDTH/2-2-20, vehicle.y);
+                    bulletList.add(bullet);
+                    bullet = new Bullet(vehicle.x+vehicle.WIDTH/2-2, vehicle.y-8); // middle vehicle coordonates
+                    bulletList.add(bullet);
+                    bullet = new Bullet(vehicle.x+vehicle.WIDTH/2-2+20, vehicle.y);
+                    bulletList.add(bullet);
+                    bullet = new Bullet(vehicle.x+vehicle.WIDTH/2-2+20+20, vehicle.y+8);
+                    bulletList.add(bullet);
+                }
+
 
                 /*bullet = new Bullet(vehicle.x+vehicle.WIDTH/2-2-20-20, vehicle.y+8); // middle vehicle coordonates
                 bulletList.add(bullet);
                 bullet = new Bullet(vehicle.x+vehicle.WIDTH/2-2-20, vehicle.y); // middle vehicle coordonates
                 bulletList.add(bullet);
                 bullet = new Bullet(vehicle.x+vehicle.WIDTH/2-2, vehicle.y-8); // middle vehicle coordonates
-                bulletList.add(bullet);*/
-                /*bullet = new Bullet(vehicle.x+vehicle.WIDTH/2-2+20, vehicle.y); // middle vehicle coordonates
+                bulletList.add(bullet);
+                bullet = new Bullet(vehicle.x+vehicle.WIDTH/2-2+20, vehicle.y); // middle vehicle coordonates
                 bulletList.add(bullet);
                 bullet = new Bullet(vehicle.x+vehicle.WIDTH/2-2+20+20, vehicle.y+8); // middle vehicle coordonates
                 bulletList.add(bullet);*/
@@ -219,7 +325,9 @@ public class World
 
         // check if the car collides with a monster
         collideShipEnemy();
-        collideShipItem();
+        collideShipHealthItem();
+        collideShipBulletsItem();
+        collideShipShieldItem();
         collideBulletEnemy();
 
     }
@@ -234,7 +342,20 @@ public class World
                     monster.x, monster.y, Monster.WIDTH, Monster.HEIGHT))
             {
                 monster.y = 500; // move monster off screen for recycling
-                vehicle.lives = vehicle.lives - 1;
+
+
+                if(vehicle.bullets > 1)
+                {
+                    vehicle.bullets = vehicle.bullets - 1; // multiple bullets decrease when collide with enemy
+                }
+                if(vehicle.shield) // if shield is on
+                {
+                    vehicle.shield = false; // shield goes off after colliding an enemy
+                }
+                else
+                {
+                    vehicle.lives = vehicle.lives - 1; // lives decrease when collide with enemy
+                }
                 listener.collideShipEnemy();
                 Log.d("World", "The ship just hit an enemy");
             }
@@ -242,23 +363,61 @@ public class World
         }
     }
 
-    private void collideShipItem()
+    private void collideShipHealthItem()
     {
-        Item item = null;
-        for (int i=0; i < maxItems; i++)
+        Item healthItem = null;
+        for (int i = 0; i < maxItems; i++)
         {
-            item = itemList.get(i);
+            healthItem = healthItemList.get(i);
             if (collideRects(vehicle.x, vehicle.y, Vehicle.WIDTH, Vehicle.HEIGHT,
-                    item.x, item.y, Item.WIDTH, Item.HEIGHT))
+                    healthItem.x, healthItem.y, Item.WIDTH, Item.HEIGHT))
             {
                 if(vehicle.lives < 3)
                 {
                     vehicle.lives = vehicle.lives + 1;
                 }
 
-                item.y = 500; // move item off screen for recycling
+                healthItem.y = 500; // move healthItem off screen for recycling
                 listener.collideShipItem();
-                Log.d("World", "The ship just collected an item.");
+                Log.d("World", "The ship just collected an healthItem.");
+            }
+        }
+    }
+
+    private void collideShipBulletsItem()
+    {
+        Item bulletsItem = null;
+        for (int i = 0; i < maxItems; i++)
+        {
+            bulletsItem = bulletsItemList.get(i);
+            if (collideRects(vehicle.x, vehicle.y, Vehicle.WIDTH, Vehicle.HEIGHT,
+                    bulletsItem.x, bulletsItem.y, Item.WIDTH, Item.HEIGHT))
+            {
+                if(vehicle.bullets < 5)
+                {
+                    vehicle.bullets = vehicle.bullets + 1;
+                }
+                bulletsItem.y = 500; // move bulletsItem off screen for recycling
+                listener.collideShipItem();
+                Log.d("World", "The ship just collected an bulletsItem.");
+            }
+        }
+    }
+
+    private void collideShipShieldItem()
+    {
+        Item shieldItem = null;
+        for (int i = 0; i < maxItems; i++)
+        {
+            shieldItem = shieldItemList.get(i);
+            if (collideRects(vehicle.x, vehicle.y, Vehicle.WIDTH, Vehicle.HEIGHT,
+                    shieldItem.x, shieldItem.y, Item.WIDTH, Item.HEIGHT))
+            {
+
+                vehicle.shield = true; // shield is on
+                shieldItem.y = 500; // move shieldItem off screen for recycling
+                listener.collideShipItem();
+                Log.d("World", "The ship just collected an shieldItem.");
             }
         }
     }
@@ -332,13 +491,35 @@ public class World
     private void initializeItems()
     {
         Random random = new Random();
-        for(int i=0; i< maxItems; i++)
+        for(int i = 0; i< maxItems; i++)
         {
             int randX = random.nextInt(320-30); // between 0 and 50
             int randY = random.nextInt(20);
-            Item item = new Item(randX, ((-450 + randY) + i*100), 1);
-            itemList.add(item);
+            Item healthItem = new Item(randX, ((-450 + randY) + i*100), 1);
+            healthItemList.add(healthItem);
+
         }
+
+        Random random2 = new Random();
+        for(int i = 0; i< maxItems; i++)
+        {
+            int randX = random2.nextInt(320-30); // between 0 and 50
+            int randY = random2.nextInt(20);
+            Item bulletsItem = new Item(randX, ((-450 + randY) + i*100), 1);
+            bulletsItemList.add(bulletsItem);
+
+        }
+
+        Random random3 = new Random();
+        for(int i = 0; i< maxItems; i++)
+        {
+            int randX = random3.nextInt(320-30); // between 0 and 50
+            int randY = random3.nextInt(20);
+            Item shieldItem = new Item(randX, ((-450 + randY) + i*100), 1);
+            shieldItemList.add(shieldItem);
+
+        }
+
     }
 
     private void initializeBullets()

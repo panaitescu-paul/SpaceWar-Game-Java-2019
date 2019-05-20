@@ -9,47 +9,57 @@ public class WorldRenderer
 {
     GameEngine gameEngine;
     World world;
-    Bitmap carImage;
-    Bitmap monsterImage;
-    Bitmap monsterHealthImage;
+    Bitmap shipImage;
+    Bitmap enemyImage;
+    Bitmap enemyHealthImage;
     Bitmap bulletImage;
-    Bitmap itemImage;
+    Bitmap shieldImage;
+    Bitmap healthItemImage;
+    Bitmap bulletItemImage;
+    Bitmap shieldItemImage;
 
     public WorldRenderer(GameEngine ge, World w)
     {
         gameEngine = ge;
         world = w;
-        carImage = gameEngine.loadBitmap("spacewar/images/vehicles/ship2.png");
-        monsterImage = gameEngine.loadBitmap("spacewar/images/vehicles/e3.png");
-        monsterHealthImage = gameEngine.loadBitmap("spacewar/images/health/health_bar3.png");
+        shipImage = gameEngine.loadBitmap("spacewar/images/vehicles/ship2.png");
+        enemyImage = gameEngine.loadBitmap("spacewar/images/vehicles/e3.png");
+        enemyHealthImage = gameEngine.loadBitmap("spacewar/images/health/health_bar3.png");
         bulletImage = gameEngine.loadBitmap("spacewar/images/vehicles/bullet1.png");
-        itemImage = gameEngine.loadBitmap("spacewar/images/items/item-health30.png");
+        shieldImage = gameEngine.loadBitmap("spacewar/images/items/item-shield-on110.png");
+        healthItemImage = gameEngine.loadBitmap("spacewar/images/items/item-health30.png");
+        bulletItemImage = gameEngine.loadBitmap("spacewar/images/items/item-bullet30.png");
+        shieldItemImage = gameEngine.loadBitmap("spacewar/images/items/item-shield30.png");
 
     }
 
     public void render()
     {
-        gameEngine.drawBitmap(carImage, world.vehicle.x, world.vehicle.y);
+        gameEngine.drawBitmap(shipImage, world.vehicle.x, world.vehicle.y);
+        if(world.vehicle.shield)
+        {
+            gameEngine.drawBitmap(shieldImage, world.vehicle.x-10, world.vehicle.y-18);
+        }
 
         for (int i=0; i< world.monsterList.size(); i++)
         {
-            gameEngine.drawBitmap(monsterImage, world.monsterList.get(i).x, world.monsterList.get(i).y);
+            gameEngine.drawBitmap(enemyImage, world.monsterList.get(i).x, world.monsterList.get(i).y);
 
             if (world.monsterList.get(i).hp == 3) // render image for enemy with HP 3
             {
-                gameEngine.drawBitmap(monsterHealthImage, world.monsterList.get(i).x, world.monsterList.get(i).y-10,
+                gameEngine.drawBitmap(enemyHealthImage, world.monsterList.get(i).x, world.monsterList.get(i).y-10,
                         4, 5,
                         37, 5);
             }
             else if (world.monsterList.get(i).hp == 2) // render image for enemy with HP 2
             {
-                gameEngine.drawBitmap(monsterHealthImage, world.monsterList.get(i).x, world.monsterList.get(i).y-10,
+                gameEngine.drawBitmap(enemyHealthImage, world.monsterList.get(i).x, world.monsterList.get(i).y-10,
                         4, 15,
                         37, 5);
             }
             else if (world.monsterList.get(i).hp == 1) // render image for enemy with HP 1
             {
-                gameEngine.drawBitmap(monsterHealthImage, world.monsterList.get(i).x, world.monsterList.get(i).y-10,
+                gameEngine.drawBitmap(enemyHealthImage, world.monsterList.get(i).x, world.monsterList.get(i).y-10,
                         4, 34,
                         37, 5);
             }
@@ -58,9 +68,17 @@ public class WorldRenderer
         {
             gameEngine.drawBitmap(bulletImage, world.bulletList.get(i).x, world.bulletList.get(i).y);
         }
-        for (int i=0; i< world.itemList.size(); i++)
+        for (int i=0; i< world.healthItemList.size(); i++)
         {
-            gameEngine.drawBitmap(itemImage, world.itemList.get(i).x, world.itemList.get(i).y);
+            gameEngine.drawBitmap(healthItemImage, world.healthItemList.get(i).x, world.healthItemList.get(i).y);
+        }
+        for (int i=0; i< world.bulletsItemList.size(); i++)
+        {
+            gameEngine.drawBitmap(bulletItemImage, world.bulletsItemList.get(i).x, world.bulletsItemList.get(i).y);
+        }
+        for (int i=0; i< world.shieldItemList.size(); i++)
+        {
+            gameEngine.drawBitmap(shieldItemImage, world.shieldItemList.get(i).x, world.shieldItemList.get(i).y);
         }
     }
 }

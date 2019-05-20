@@ -7,6 +7,9 @@ public class Vehicle
     public int x = 0;
     public int y = 0;
     public int lives = 1;
+    public int bullets = 1;
+    public boolean shield = false;
+
 
     public Vehicle()
     {
