@@ -24,6 +24,7 @@ public class WorldRenderer
         monsterHealthImage = gameEngine.loadBitmap("spacewar/images/health/health_bar3.png");
         bulletImage = gameEngine.loadBitmap("spacewar/images/vehicles/bullet1.png");
         itemImage = gameEngine.loadBitmap("spacewar/images/items/item-health30.png");
+
     }
 
     public void render()
