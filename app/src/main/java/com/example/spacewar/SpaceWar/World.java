@@ -242,7 +242,8 @@ public class World
         if (updateCounter % 10 ==0)
         {
             checkBulletShooting(1, 1);
-            if (bulletList.size() < 500 && bulletsOn)
+            //if (bulletList.size() < 500 && bulletsOn)
+            if (bulletsOn)
             {
                 //bullet = new Bullet(vehicle.x+vehicle.WIDTH/2-2, vehicle.y-15); // middle vehicle coordonates
                 //bulletList.add(bullet);
