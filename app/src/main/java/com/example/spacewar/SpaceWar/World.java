@@ -242,7 +242,8 @@ public class World
         if (updateCounter % 10 ==0)
         {
             checkBulletShooting(1, 1);
-            if (bulletList.size() < 500 && bulletsOn)
+            //if (bulletList.size() < 500 && bulletsOn)
+            if (bulletsOn)
             {
                 //bullet = new Bullet(vehicle.x+vehicle.WIDTH/2-2, vehicle.y-15); // middle vehicle coordonates
                 //bulletList.add(bullet);
@@ -309,8 +310,9 @@ public class World
             }
 
         }
+
         Bullet enemyBullet;
-        if (updateCounter % 10 ==0)
+        if (updateCounter % 10 == 0)
         {
             checkEnemyBulletShooting(1, 12);
             if (enemyBulletList.size() < 500 && bulletsOn2)
@@ -319,7 +321,7 @@ public class World
                 for (int i = 0; i < enemyList.size(); i++)
                 {
                     enemy2 = enemyList.get(i);
-                    if (enemy2.shooting) // shoot only if it is a shooting enemy type
+                    if (enemy2.shooting && enemy2.y > 0) // shoot only if it is a shooting enemy type
                     {
                         enemyBullet = new Bullet(enemy2.x + enemy2.WIDTH / 2 - 2, enemy2.y + 30); // middle enemy coordonates
                         enemyBulletList.add(enemyBullet);
@@ -330,12 +332,14 @@ public class World
             }
         }
 
+
+
         Bullet enemyBullet2;
         for (int i = 0; i < enemyBulletList.size(); i++)
         {
             enemyBullet2 = enemyBulletList.get(i);
             // move enemy bullet
-            enemyBullet2.y = (int) (enemyBullet2.y+2 + backgroundSpeed * deltaTime);
+            enemyBullet2.y = (int) (enemyBullet2.y + 2 + backgroundSpeed * deltaTime);
         }
 
 
@@ -371,31 +375,35 @@ public class World
         for (int i=0; i < maxEnemies; i++)
         {
             enemy = enemyList.get(i);
-            if (collideRects(vehicle.x, vehicle.y, Vehicle.WIDTH, Vehicle.HEIGHT,
+            // if shield is off then check collide rectangles of the ship with enemy
+            if (!vehicle.shield && collideRects(vehicle.x, vehicle.y, Vehicle.WIDTH, Vehicle.HEIGHT,
                     enemy.x, enemy.y, Enemy.WIDTH, Enemy.HEIGHT))
             {
+                enemy.y = -500; // move enemy off screen for recycling
+
+                vehicle.lives = vehicle.lives - 1; // lives decrease when collide with enemy
 
                 if (!enemy.shield) // if enemy has shield, then it will stay alive, even after ship collision
                 {
-                    enemy.y = 500; // move enemy off screen for recycling
+                    enemy.y = -500; // move enemy off screen for recycling
                 }
 
                 if(vehicle.bullets > 1)
                 {
                     vehicle.bullets = vehicle.bullets - 1; // multiple bullets decrease when collide with enemy
                 }
-                if(vehicle.shield) // if shield is on
-                {
-                    vehicle.shield = false; // shield goes off after colliding an enemy
-                }
-                else
-                {
-                    vehicle.lives = vehicle.lives - 1; // lives decrease when collide with enemy
-                }
+
                 listener.collideShipEnemy();
                 Log.d("World", "The ship just hit an enemy");
             }
-            if(vehicle.lives <= 0) gameOver = true;
+            // if shield is on then check collide rectangles of the shield on the ship with enemy
+            else if(vehicle.shield && collideRects(vehicle.x, vehicle.y, Vehicle.WIDTH, Vehicle.HEIGHT,
+                    enemy.x, enemy.y, Enemy.WIDTH, Enemy.HEIGHT))
+            {
+                enemy.y = -500; // move bullet off screen for recycling
+                vehicle.shield = false; // shield goes off after colliding an enemy
+            }
+            if(vehicle.lives==0) gameOver = true;
         }
     }
 
@@ -483,7 +491,7 @@ public class World
                     if (enemy.hp <= 0 && !enemy.shield) // shielded enemy is immune
                     {
                         // enemy dissapears
-                        enemy.y = 500; // move enemy off screen for recycling
+                        enemy.y = -500; // move enemy off screen for recycling
                     }
                     // add points
                     scorePoints+=10;
@@ -503,19 +511,29 @@ public class World
         {
             enemyBullet = enemyBulletList.get(i);
             // check collision of a bullet with a enemy
-            if (collideRects(enemyBullet.x, enemyBullet.y, Bullet.WIDTH, Bullet.HEIGHT,
+            // if shield is off then check collide rectangles of the ship with bullet of enemy
+            if (!vehicle.shield && collideRects(enemyBullet.x, enemyBullet.y, Bullet.WIDTH, Bullet.HEIGHT,
                     vehicle.x, vehicle.y, Vehicle.WIDTH, Vehicle.HEIGHT))
             {
-                vehicle.lives -=1;
-                Log.d("World", "The enemy bullet hit the ship: Ship lives -1" + vehicle.lives);
-                // bullet dissapears
                 enemyBullet.y = -500; // move bullet off screen for recycling
+                vehicle.lives = vehicle.lives - 1; // lives decrease when collide with enemy
+
+                if(vehicle.bullets > 1)
+                {
+                    vehicle.bullets = vehicle.bullets - 1; // multiple bullets decrease when collide with enemy
+                }
+
                 Log.d("World", "The bullet just hit an enemy");
-                // add points
-//                    scorePoints+=10;
                 listener.collideBulletEnemy();
 //                    collideBulletEnemySound();
 //                    bulletSound3.play(1);
+            }
+            // if shield is on then check collide rectangles of the shield on the ship with bullet of enemy
+            else if(vehicle.shield && collideRects(enemyBullet.x, enemyBullet.y, Bullet.WIDTH, Bullet.HEIGHT,
+                    vehicle.x, vehicle.y, Vehicle.WIDTH, Vehicle.HEIGHT))
+            {
+                enemyBullet.y = -500; // move bullet off screen for recycling
+                vehicle.shield = false; // shield goes off after colliding an enemy
             }
             if(vehicle.lives==0) gameOver = true;
         }
