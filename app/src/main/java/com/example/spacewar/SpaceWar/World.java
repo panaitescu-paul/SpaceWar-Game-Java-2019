@@ -25,7 +25,7 @@ public class World
     List<Item> bulletsItemList = new ArrayList<>();
     List<Item> shieldItemList = new ArrayList<>();
     List<Bullet> enemyBulletList = new ArrayList<>();
-    public int maxEnemies = 3;
+    public int maxEnemies = 6;
     public int maxBullets = 10;
     public int maxItems = 1;
 

@@ -10,9 +10,11 @@ public class WorldRenderer
     GameEngine gameEngine;
     World world;
     Bitmap shipImage;
-    Bitmap enemyImage;
+    Bitmap enemy1Image;
+    Bitmap enemy2Image;
+    Bitmap enemy3Image;
     Bitmap enemyHealthImage;
-    Bitmap bulletImage;
+    Bitmap bullet1Image;
     Bitmap shipShieldImage;
     Bitmap enemyShieldImage;
     Bitmap healthItemImage;
@@ -25,15 +27,23 @@ public class WorldRenderer
         gameEngine = ge;
         world = w;
         shipImage = gameEngine.loadBitmap("spacewar/images/vehicles/ship2.png");
-        enemyImage = gameEngine.loadBitmap("spacewar/images/vehicles/e3.png");
+//        enemy1Image = gameEngine.loadBitmap("spacewar/images/vehicles/1/enemy2-8.png");
+//        enemy1Image = gameEngine.loadBitmap("spacewar/images/vehicles/1/enemy1-4.png");
+//        enemy1Image = gameEngine.loadBitmap("spacewar/images/vehicles/1/enemy2-8.png");
+        enemy1Image = gameEngine.loadBitmap("spacewar/images/vehicles/1/enemy1-30.png");
+        enemy2Image = gameEngine.loadBitmap("spacewar/images/vehicles/1/enemy2-30.png");
+        enemy3Image = gameEngine.loadBitmap("spacewar/images/vehicles/1/enemy3-30.png");
+//        enemy1Image = gameEngine.loadBitmap("spacewar/images/vehicles/1/enemy1-9.png");
+//        enemy1Image = gameEngine.loadBitmap("spacewar/images/vehicles/1/enemy1-9.png");
         enemyHealthImage = gameEngine.loadBitmap("spacewar/images/health/health_bar3.png");
-        bulletImage = gameEngine.loadBitmap("spacewar/images/vehicles/bullet1.png");
+        bullet1Image = gameEngine.loadBitmap("spacewar/images/vehicles/1/bullet3-1.png");
         shipShieldImage = gameEngine.loadBitmap("spacewar/images/items/item-shield-on110.png");
         enemyShieldImage = gameEngine.loadBitmap("spacewar/images/items/item-shield-on50.png");
         healthItemImage = gameEngine.loadBitmap("spacewar/images/items/item-health30.png");
         bulletItemImage = gameEngine.loadBitmap("spacewar/images/items/item-bullet30.png");
         shieldItemImage = gameEngine.loadBitmap("spacewar/images/items/item-shield30.png");
-        enemyBulletImage = gameEngine.loadBitmap("spacewar/images/vehicles/bullet1.png");
+//        enemyBulletImage = gameEngine.loadBitmap("spacewar/images/vehicles/bullet1.png");
+        enemyBulletImage = gameEngine.loadBitmap("spacewar/images/vehicles/1/bullet2-2.png");
 
     }
 
@@ -47,21 +57,36 @@ public class WorldRenderer
 
         for (int i = 0; i< world.enemyList.size(); i++)
         {
-            gameEngine.drawBitmap(enemyImage, world.enemyList.get(i).x, world.enemyList.get(i).y);
+            // Render Basic enemy
+            // Render Shooting enemy
+            // Render Shield enemy
 
-            if (world.enemyList.get(i).hp == 3) // render image for enemy with HP 3
+            if (!world.enemyList.get(i).shooting && !world.enemyList.get(i).shield) // Render Basic enemy
+            {
+                gameEngine.drawBitmap(enemy1Image, world.enemyList.get(i).x, world.enemyList.get(i).y);
+            }
+            else if (world.enemyList.get(i).shooting) // Render Shooting enemy
+            {
+                gameEngine.drawBitmap(enemy2Image, world.enemyList.get(i).x, world.enemyList.get(i).y);
+            }
+            else if (world.enemyList.get(i).shield) // Render Shield enemy
+            {
+                gameEngine.drawBitmap(enemy3Image, world.enemyList.get(i).x, world.enemyList.get(i).y);
+            }
+
+            if (world.enemyList.get(i).hp == 3 && !world.enemyList.get(i).shield) // render image for enemy with HP 3, if it is not a shielded enemy
             {
                 gameEngine.drawBitmap(enemyHealthImage, world.enemyList.get(i).x, world.enemyList.get(i).y-10,
                         4, 5,
                         37, 5);
             }
-            else if (world.enemyList.get(i).hp == 2) // render image for enemy with HP 2
+            else if (world.enemyList.get(i).hp == 2 && !world.enemyList.get(i).shield) // render image for enemy with HP 2
             {
                 gameEngine.drawBitmap(enemyHealthImage, world.enemyList.get(i).x, world.enemyList.get(i).y-10,
                         4, 15,
                         37, 5);
             }
-            else if (world.enemyList.get(i).hp == 1) // render image for enemy with HP 1
+            else if (world.enemyList.get(i).hp == 1 && !world.enemyList.get(i).shield) // render image for enemy with HP 1
             {
                 gameEngine.drawBitmap(enemyHealthImage, world.enemyList.get(i).x, world.enemyList.get(i).y-10,
                         4, 34,
@@ -74,7 +99,7 @@ public class WorldRenderer
         }
         for (int i=0; i< world.bulletList.size(); i++)
         {
-            gameEngine.drawBitmap(bulletImage, world.bulletList.get(i).x, world.bulletList.get(i).y);
+            gameEngine.drawBitmap(bullet1Image, world.bulletList.get(i).x, world.bulletList.get(i).y);
         }
         for (int i=0; i< world.healthItemList.size(); i++)
         {
