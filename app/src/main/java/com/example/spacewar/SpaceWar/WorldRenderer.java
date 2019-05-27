@@ -13,7 +13,8 @@ public class WorldRenderer
     Bitmap enemyImage;
     Bitmap enemyHealthImage;
     Bitmap bulletImage;
-    Bitmap shieldImage;
+    Bitmap shipShieldImage;
+    Bitmap enemyShieldImage;
     Bitmap healthItemImage;
     Bitmap bulletItemImage;
     Bitmap shieldItemImage;
@@ -27,7 +28,8 @@ public class WorldRenderer
         enemyImage = gameEngine.loadBitmap("spacewar/images/vehicles/e3.png");
         enemyHealthImage = gameEngine.loadBitmap("spacewar/images/health/health_bar3.png");
         bulletImage = gameEngine.loadBitmap("spacewar/images/vehicles/bullet1.png");
-        shieldImage = gameEngine.loadBitmap("spacewar/images/items/item-shield-on110.png");
+        shipShieldImage = gameEngine.loadBitmap("spacewar/images/items/item-shield-on110.png");
+        enemyShieldImage = gameEngine.loadBitmap("spacewar/images/items/item-shield-on50.png");
         healthItemImage = gameEngine.loadBitmap("spacewar/images/items/item-health30.png");
         bulletItemImage = gameEngine.loadBitmap("spacewar/images/items/item-bullet30.png");
         shieldItemImage = gameEngine.loadBitmap("spacewar/images/items/item-shield30.png");
@@ -40,7 +42,7 @@ public class WorldRenderer
         gameEngine.drawBitmap(shipImage, world.vehicle.x, world.vehicle.y);
         if(world.vehicle.shield)
         {
-            gameEngine.drawBitmap(shieldImage, world.vehicle.x-10, world.vehicle.y-18);
+            gameEngine.drawBitmap(shipShieldImage, world.vehicle.x-10, world.vehicle.y-18);
         }
 
         for (int i = 0; i< world.enemyList.size(); i++)
@@ -64,6 +66,10 @@ public class WorldRenderer
                 gameEngine.drawBitmap(enemyHealthImage, world.enemyList.get(i).x, world.enemyList.get(i).y-10,
                         4, 34,
                         37, 5);
+            }
+            if (world.enemyList.get(i).shield) // render image for enemy with shield
+            {
+                gameEngine.drawBitmap(enemyShieldImage, world.enemyList.get(i).x-10, world.enemyList.get(i).y-10);
             }
         }
         for (int i=0; i< world.bulletList.size(); i++)

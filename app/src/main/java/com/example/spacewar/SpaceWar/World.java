@@ -25,7 +25,7 @@ public class World
     List<Item> bulletsItemList = new ArrayList<>();
     List<Item> shieldItemList = new ArrayList<>();
     List<Bullet> enemyBulletList = new ArrayList<>();
-    public int maxEnemies = 2;
+    public int maxEnemies = 3;
     public int maxBullets = 10;
     public int maxItems = 1;
 
@@ -319,11 +319,13 @@ public class World
                 for (int i = 0; i < enemyList.size(); i++)
                 {
                     enemy2 = enemyList.get(i);
-
-                    enemyBullet = new Bullet(enemy2.x + enemy2.WIDTH / 2 - 2, enemy2.y + 30); // middle enemy coordonates
-                    enemyBulletList.add(enemyBullet);
-                    bulletsOnCounter2++;
-                    listener.generateBullet();
+                    if (enemy2.shooting) // shoot only if it is a shooting enemy type
+                    {
+                        enemyBullet = new Bullet(enemy2.x + enemy2.WIDTH / 2 - 2, enemy2.y + 30); // middle enemy coordonates
+                        enemyBulletList.add(enemyBullet);
+                        bulletsOnCounter2++;
+                        listener.generateBullet();
+                    }
                 }
             }
         }
@@ -372,8 +374,11 @@ public class World
             if (collideRects(vehicle.x, vehicle.y, Vehicle.WIDTH, Vehicle.HEIGHT,
                     enemy.x, enemy.y, Enemy.WIDTH, Enemy.HEIGHT))
             {
-                enemy.y = 500; // move enemy off screen for recycling
-                vehicle.lives = vehicle.lives - 1;
+
+                if (!enemy.shield) // if enemy has shield, then it will stay alive, even after ship collision
+                {
+                    enemy.y = 500; // move enemy off screen for recycling
+                }
 
                 if(vehicle.bullets > 1)
                 {
@@ -390,7 +395,7 @@ public class World
                 listener.collideShipEnemy();
                 Log.d("World", "The ship just hit an enemy");
             }
-            if(vehicle.lives==0) gameOver = true;
+            if(vehicle.lives <= 0) gameOver = true;
         }
     }
 
@@ -475,7 +480,7 @@ public class World
                     bullet.y = -500; // move bullet off screen for recycling
                     Log.d("World", "The bullet just hit an enemy");
 
-                    if (enemy.hp <= 0)
+                    if (enemy.hp <= 0 && !enemy.shield) // shielded enemy is immune
                     {
                         // enemy dissapears
                         enemy.y = 500; // move enemy off screen for recycling
@@ -529,14 +534,18 @@ public class World
     private void initializeEnemies()
     {
         Random random = new Random();
-        for(int i=0; i< maxEnemies; i++)
+        for(int i=0; i< maxEnemies/3; i++)
         {
             int randX = random.nextInt(320-30); // between 0 and 50
             int randY = random.nextInt(20);
-//            Enemy enemy = new Enemy(((500 + randX) + i*50), 30 + randY);
-//            Enemy enemy = new Enemy(randX, ((-450 + randY) + i*100));
-            Enemy enemy = new Enemy(randX, ((-450 + randY) + i*100), 1, 3);
+            Enemy enemy = new Enemy(randX, ((-450 + randY) + i*100), 1, 3, false, false);
             enemyList.add(enemy);
+
+            Enemy enemy2 = new Enemy(randX, ((-450 + randY) + i*100), 1, 3, true, false);
+            enemyList.add(enemy2);
+
+            Enemy enemy3 = new Enemy(randX, ((-450 + randY) + i*100), 1, 3, false, true);
+            enemyList.add(enemy3);
         }
     }
 

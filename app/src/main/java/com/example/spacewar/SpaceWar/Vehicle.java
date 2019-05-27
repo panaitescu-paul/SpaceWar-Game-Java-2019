@@ -6,7 +6,7 @@ public class Vehicle
     public static final int HEIGHT = 76;
     public int x = 0;
     public int y = 0;
-    public int lives = 1;
+    public int lives = 3;
     public int bullets = 1;
     public boolean shield = false;
 
