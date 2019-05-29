@@ -220,13 +220,14 @@ public class GameScreen extends Screen
     public void resume()
     {
         gameEngine.music.play();
+
     }
 
     @Override
     public void dispose()
     {
         gameEngine.music.pause();
-        //gameEngine.music.stop();
-        //gameEngine.music.dispose();
+        gameEngine.music.stop();
+        gameEngine.music.dispose();
     }
 }

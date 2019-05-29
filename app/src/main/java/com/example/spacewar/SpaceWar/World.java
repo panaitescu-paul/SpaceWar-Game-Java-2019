@@ -422,14 +422,14 @@ public class World
             {
 //                enemy.y = -500; // move enemy off screen for recycling
 
-                ship.lives = ship.lives - 1; // lives decrease when collide with enemy
 
-                if (!enemy.shield) // if enemy has shield, then it will stay alive, even after ship collision
-                {
-//                    enemy.y = -500; // move enemy off screen for recycling
-                    //delete enemy from list
-                    enemyList.remove(i);
-                }
+                //if (!enemy.shield) // if enemy has shield, then it will stay alive, even after ship collision
+                //{
+                //delete enemy from list
+                enemyList.remove(i);
+                //}
+
+                ship.lives = ship.lives - 1; // lives decrease when collide with enemy
 
                 if(ship.multipleBullets > 1)
                 {
@@ -710,7 +710,7 @@ public class World
 
         if (updateCounter == 700)
         {
-            spawnEnemyWave(0, 10, 0);
+            spawnEnemyWave(0, 5, 0);
         }
 
         if (updateCounter == 1400)

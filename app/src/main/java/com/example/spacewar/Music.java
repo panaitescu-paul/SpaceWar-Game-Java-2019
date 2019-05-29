@@ -34,6 +34,7 @@ public class Music implements MediaPlayer.OnCompletionListener
         if(mediaPlayer.isPlaying())
         {
             mediaPlayer.start();
+            //mediaPlayer.stop();
         }
         mediaPlayer.release();
     }
@@ -56,7 +57,6 @@ public class Music implements MediaPlayer.OnCompletionListener
     public void pause()
     {
         if(mediaPlayer.isPlaying()) mediaPlayer.pause();
-
     }
 
     public void play()
