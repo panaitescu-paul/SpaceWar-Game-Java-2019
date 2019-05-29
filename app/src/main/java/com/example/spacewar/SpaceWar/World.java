@@ -140,7 +140,31 @@ public class World
         Bullet bullet;
         if (updateCounter % 10 ==0)
         {
-            checkBulletShooting(1, 1);
+            // when the ship shoots 1 bulelt at a time, it will
+            if(ship.multipleBullets == 1)
+            {
+                checkBulletShooting(1, 1);
+            }
+            else if (ship.multipleBullets == 2)
+            {
+                checkBulletShooting(1, 2);
+
+            }
+            else if (ship.multipleBullets == 3)
+            {
+                checkBulletShooting(1, 3);
+
+            }
+            else if (ship.multipleBullets == 4)
+            {
+                checkBulletShooting(2, 4);
+
+            }
+            else if (ship.multipleBullets == 5)
+            {
+                checkBulletShooting(2, 5);
+
+            }
             //if (bulletList.size() < 500 && bulletsOn)
             if (bulletsOn)
             {
@@ -503,7 +527,8 @@ public class World
                 enemy = enemyList.get(j);
                 // check collision of a bullet with a enemy
                 if (collideRects(bullet.x, bullet.y, Bullet.WIDTH, Bullet.HEIGHT,
-                        enemy.x, enemy.y, Enemy.WIDTH, Enemy.HEIGHT))
+                        enemy.x, enemy.y, Enemy.WIDTH, Enemy.HEIGHT) &&
+                        bullet.y > 0)
                 {
 
                     enemy.hp -=1;
@@ -695,7 +720,7 @@ public class World
 
         if (updateCounter >= 2200 && updateCounter % 350 ==0)
         {
-            spawnEnemyWave(2, 2, 2);
+            spawnEnemyWave(5, 2, 1);
         }
 
 //
