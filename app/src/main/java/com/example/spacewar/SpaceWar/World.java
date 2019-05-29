@@ -24,11 +24,6 @@ public class World
     List<Item> itemBulletList = new ArrayList<>();
     List<Item> itemShieldList = new ArrayList<>();
     List<Bullet> enemyBulletList = new ArrayList<>();
-    // limits for enemies, bullets and items at a time(on a frame) or until it is recycled
-    public int maxEnemies = 2;
-    public int maxBullets = 10;
-    public int maxItems = 1;
-
     GameEngine gameEngine;
     CollisionListener listener;
 
