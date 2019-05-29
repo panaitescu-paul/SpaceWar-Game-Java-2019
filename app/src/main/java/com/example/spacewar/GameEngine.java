@@ -32,8 +32,8 @@ public abstract class GameEngine extends Activity implements Runnable, TouchHand
     private Thread mainLoopThread;
     private State state = State.Paused;
     private List<State> stateChanges = new ArrayList<>();
-    private SurfaceView surfaceView;
-    private SurfaceHolder surfaceHolder;
+    private SurfaceView surfaceView; // takes care of placing the surface at the correct location on the screen
+    private SurfaceHolder surfaceHolder; // control the surface size and format, edit the pixels in the surface, and monitor changes to the surface
     private Canvas canvas = null; // for drawing
     private Screen screen = null;
     private Bitmap offscreenSurface;
@@ -68,7 +68,6 @@ public abstract class GameEngine extends Activity implements Runnable, TouchHand
         surfaceView = new SurfaceView(this);
         setContentView(surfaceView);
         surfaceHolder = surfaceView.getHolder();
-        //Log.d("GameEngine class", "We just finished the onCreate method");
         screen = createStartScreen();
 
         touchHandler = new MultiTouchHandler(surfaceView, touchEventsBuffer, touchEventPool);

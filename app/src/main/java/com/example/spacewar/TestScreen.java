@@ -24,7 +24,7 @@ public class TestScreen extends Screen
     @Override
     public void update(float deltaTime)
     {
-        //Log.d("TescScreen", "FPS: " + gameEngine.getFramesPerSecond());
+        //Log.d("TestScreen", "FPS: " + gameEngine.getFramesPerSecond());
         gameEngine.clearFrameBuffer(Color.GREEN);
 
         x = x + 50 * deltaTime;

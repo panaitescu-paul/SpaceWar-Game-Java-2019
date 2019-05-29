@@ -44,8 +44,6 @@ public class GameScreen extends Screen
     int backgroundSpeed3 = 80;
     Typeface font;
     String showText = "dummy";
-//    boolean bgMusicOn = false;
-
 
     World world = null; // creating the world
     WorldRenderer renderer = null; // drawing the world
@@ -55,7 +53,7 @@ public class GameScreen extends Screen
     {
         super(gameEngine);
         Log.d("Spacewar", "Starting the GameScreen");
-
+        // load the resources
         background = gameEngine.loadBitmap("spacewar/images/maps/space_map1.png");
         background2 = gameEngine.loadBitmap("spacewar/images/maps/star_map1.png");
         background3 = gameEngine.loadBitmap("spacewar/images/maps/star_map2.png");
@@ -70,6 +68,7 @@ public class GameScreen extends Screen
         bulletSound2 = gameEngine.loadSound("spacewar/music/laser4.mp3");
         font = gameEngine.loadFont("spacewar/images/ui/font.ttf");
 
+        // add sounds effects to different actions in the game
         world = new World(gameEngine, new CollisionListener()
         {
             @Override
@@ -187,7 +186,7 @@ public class GameScreen extends Screen
         // draw the game object, no matter what state (paused, running)
         renderer.render();
 //        showText = "Lives: " + Integer.toString(world.lives) + "   Points: " + Integer.toString(world.points);
-        showText = "Score: " + world.scorePoints + "    Lives: " + world.vehicle.lives ;
+        showText = "Score: " + world.scorePoints + "    Lives: " + world.ship.lives ;
         gameEngine.drawText(font, showText, 22, 22, Color.GREEN, 12);
 
 

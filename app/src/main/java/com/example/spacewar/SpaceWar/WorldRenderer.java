@@ -49,10 +49,10 @@ public class WorldRenderer
 
     public void render()
     {
-        gameEngine.drawBitmap(shipImage, world.vehicle.x, world.vehicle.y);
-        if(world.vehicle.shield)
+        gameEngine.drawBitmap(shipImage, world.ship.x, world.ship.y);
+        if(world.ship.shield)
         {
-            gameEngine.drawBitmap(shipShieldImage, world.vehicle.x-10, world.vehicle.y-18);
+            gameEngine.drawBitmap(shipShieldImage, world.ship.x-10, world.ship.y-18);
         }
 
         for (int i = 0; i< world.enemyList.size(); i++)

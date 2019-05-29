@@ -12,7 +12,7 @@ public class InfoScreen extends Screen
     Bitmap background;
     Bitmap close;
     float passedTime = 0;
-    Typeface font;
+    Typeface font; // the font of the text
     String title = "title";
     String text1 = "text1";
     String text2 = "text2";
@@ -29,6 +29,7 @@ public class InfoScreen extends Screen
     public InfoScreen(GameEngine gameEngine)
     {
         super(gameEngine);
+        // load the resources
         background = gameEngine.loadBitmap("spacewar/images/ui/2/window_320.png");
         close = gameEngine.loadBitmap("spacewar/images/ui/btn_close.png");
         healthItemImage = gameEngine.loadBitmap("spacewar/images/items/item-health30.png");
@@ -42,6 +43,7 @@ public class InfoScreen extends Screen
     @Override
     public void update(float deltaTime)
     {
+        // draw the assets
         gameEngine.drawBitmap(background, 0, 55);
         passedTime = passedTime + deltaTime;
         gameEngine.drawBitmap(close, 320/2 - close.getWidth()/2, 480/2 - close.getHeight()/2 + 130);
