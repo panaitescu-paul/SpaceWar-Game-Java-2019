@@ -63,11 +63,11 @@ public class GameScreen extends Screen
         pause = gameEngine.loadBitmap("spacewar/images/ui/btn_pause.png");
         start = gameEngine.loadBitmap("spacewar/images/ui/btn_start.png");
         gameOver = gameEngine.loadBitmap("spacewar/images/gameover.png");
-        bounce = gameEngine.loadSound("spacewar/music/bounce.wav");
-        crash = gameEngine.loadSound("spacewar/music/blocksplosion.wav");
+//        bounce = gameEngine.loadSound("spacewar/music/bounce.wav");
+//        crash = gameEngine.loadSound("spacewar/music/blocksplosion.wav");
         gameOverSound = gameEngine.loadSound("spacewar/music/gameover.wav");
-        bulletSound = gameEngine.loadSound("spacewar/music/laser1.mp3");
-        bulletSound2 = gameEngine.loadSound("spacewar/music/laser4.mp3");
+        bulletSound = gameEngine.loadSound("spacewar/music/laser1-2.wav");
+        bulletSound2 = gameEngine.loadSound("spacewar/music/laser4-2.wav");
         font = gameEngine.loadFont("spacewar/images/ui/font.ttf");
 
         world = new World(gameEngine, new CollisionListener()
