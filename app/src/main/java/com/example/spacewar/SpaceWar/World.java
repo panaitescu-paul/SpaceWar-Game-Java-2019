@@ -14,9 +14,6 @@ public class World
 
     public static final float MIN_X = -30;
     public static final float MAX_X = 320 + 30; // logical screen + ship size
-    public static final float MIN_Y = 37;
-    public static final float MAX_Y = 285;
-
 
     // making a new instance of the Ship object
     Ship ship = new Ship();
@@ -393,11 +390,11 @@ public class World
                     enemy.x, enemy.y, Enemy.WIDTH, Enemy.HEIGHT))
             {
                 ship.lives = ship.lives - 1; // lives decrease when collide with enemy
-                if (!enemy.shield) // if enemy has shield, then it will stay alive, even after ship collision
-                {
+//                if (!enemy.shield) // if enemy has shield, then it will stay alive, even after ship collision
+//                {
                     //delete enemy from list
                     enemyList.remove(i);
-                }
+//                }
                 if(ship.multipleBullets > 1)
                 {
                     ship.multipleBullets = ship.multipleBullets - 1; // multipleBullets decrease when collide with enemy
@@ -435,6 +432,8 @@ public class World
                 itemHealthList.remove(i);
                 listener.collideShipItem();
                 Log.d("World", "The ship just collected an healthItem.");
+                // add points
+                scorePoints+=10;
             }
         }
     }
@@ -456,6 +455,8 @@ public class World
                 itemBulletList.remove(i);
                 listener.collideShipItem();
                 Log.d("World", "The ship just collected an bulletsItem.");
+                // add points
+                scorePoints+=10;
             }
         }
     }
@@ -474,6 +475,8 @@ public class World
                 itemShieldList.remove(i);
                 listener.collideShipItem();
                 Log.d("World", "The ship just collected an shieldItem.");
+                // add points
+                scorePoints+=10;
             }
         }
     }
@@ -505,7 +508,18 @@ public class World
                         enemyList.remove(j);
                     }
                     // add points
-                    scorePoints+=10;
+                    if (!enemy.shooting && !enemy.shield) // basic enemy
+                    {
+                        scorePoints+=10;
+                    }
+                    else if (enemy.shooting) // shooting enemy
+                    {
+                        scorePoints+=25;
+                    }
+                    else if (enemy.shield) // shield enemy
+                    {
+                        scorePoints+=1;
+                    }
                     listener.collideBulletEnemy();
 //                    collideBulletEnemySound();
                 }

@@ -226,7 +226,7 @@ public class GameScreen extends Screen
     public void dispose()
     {
         gameEngine.music.pause();
-        //gameEngine.music.stop();
-        //gameEngine.music.dispose();
+//        gameEngine.music.stop();
+//        gameEngine.music.dispose();
     }
 }

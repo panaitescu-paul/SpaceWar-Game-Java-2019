@@ -63,11 +63,11 @@ public class WorldRenderer
 
             if (!world.enemyList.get(i).shooting && !world.enemyList.get(i).shield) // Render Basic enemy
             {
-                gameEngine.drawBitmap(enemy1Image, world.enemyList.get(i).x, world.enemyList.get(i).y);
+                gameEngine.drawBitmap(enemy1Image, world.enemyList.get(i).x+3, world.enemyList.get(i).y);
             }
             else if (world.enemyList.get(i).shooting) // Render Shooting enemy
             {
-                gameEngine.drawBitmap(enemy2Image, world.enemyList.get(i).x, world.enemyList.get(i).y);
+                gameEngine.drawBitmap(enemy2Image, world.enemyList.get(i).x-1, world.enemyList.get(i).y);
             }
             else if (world.enemyList.get(i).shield) // Render Shield enemy
             {
