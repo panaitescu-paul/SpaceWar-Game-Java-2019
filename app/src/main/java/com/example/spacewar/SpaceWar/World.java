@@ -54,17 +54,11 @@ public class World
         this.backgroundSpeed3 = backgroundSpeed3;
         this.gameEngine = gameEngine;
         this.listener = listener;
-        initializeEnemies();
         initializeItems();
     }
 
     public void update(float deltaTime, float accelX, float accelY)
     {
-
-//        ship.x = (int)(ship.x - accelX * 50 * deltaTime); // accelerometer control
-//        ship.y = (int)(ship.y - accelY * 40 * deltaTime); // accelerometer control
-
-
         updateCounter++;
         configureEnemyWaves(updateCounter);
         scoreCounter();
@@ -96,7 +90,6 @@ public class World
         }
     }
 
-        if (updateCounter % 10 == 0)
     private void moveShipBullets(float deltaTime)
     {
 
@@ -110,8 +103,8 @@ public class World
 //                recycling a bullet
 //                if (bullet.y < 0 - Bullet.HEIGHT-300)// - 30 for testing purposes
 //                {
-//                    bullet.x = vehicle.x+vehicle.WIDTH/2;
-//                    bullet.y = vehicle.y;
+//                    bullet.x = ship.x+Ship.WIDTH/2;
+//                    bullet.y = ship.y;
 //                    Log.d("World", "Just recycled a bullet.");
 //                }
         }
@@ -122,53 +115,9 @@ public class World
         Bullet enemyBullet;
         if (updateCounter % 10 == 0)
         {
-            scorePoints++; // add 1 point for every millisecond
-        }
-
-        // move the Ship based on the phone accelerometer. For finished game.
-//        ship.y = (int)(ship.y + accelY * deltaTime * 40);
-//        ship.y = (int)(ship.y - accelY * deltaTime * 40);
-        // move the ship based on user touch. Only for testing. Remove before publishing.
-        if (gameEngine.isTouchDown(0));
-        {
-            ship.x = gameEngine.getTouchX(0) - Ship.WIDTH/2; // position ship after touch x
-
-            // check for ship to be in the lower part of the screen
-            if (gameEngine.getTouchY(0) < 480/2) // check if touch is on the upper part
             checkEnemyBulletShooting(1, 12);
             if (enemyBulletList.size() < 500 && bulletsOn2)
             {
-                ship.y = 480/2 - Ship.HEIGHT/2; // reposition ship on the lower part of the screen
-            }else
-            {
-                ship.y = gameEngine.getTouchY(0) - Ship.HEIGHT/2; // position ship after touch y
-            }
-
-            if (gameEngine.getTouchY(0) > 480 - Ship.HEIGHT)  // check if ship is out of screen (lower)
-            {
-                ship.y = 480 - Ship.HEIGHT - 10; // reposition ship on the lower part of the screen
-            }
-        }
-
-
-
-        // check left screen boundary
-        if (ship.x < MIN_X) ship.x = (int) MIN_X + 1;
-        // check right screen boundary
-        if (ship.x + ship.WIDTH > MAX_X) ship.x = (int)(MAX_X - ship.WIDTH - 1);
-
-        // making the enemies
-        Enemy enemy = null;
-        for (int i = 0; i < enemyList.size(); i++)
-        {
-            enemy = enemyList.get(i);
-            // make enemy move
-            enemy.y = (int)(enemy.y + backgroundSpeed * deltaTime);
-            Random random2 = new Random();
-            int randDirectionChangeRate = 100 + random2.nextInt(500); // between 100 and 600
-            if (updateCounter % randDirectionChangeRate ==0)
-            {
-                enemy.direction = -enemy.direction; // individual enemy direction
                 Enemy enemy2 = null;
                 for (int i = 0; i < enemyList.size(); i++)
                 {
@@ -194,49 +143,49 @@ public class World
             //if (bulletList.size() < 500 && bulletsOn)
             if (bulletsOn)
             {
-                if(vehicle.bullets == 1)
+                if(ship.multipleBullets == 1)
                 {
-                    bullet = new Bullet(vehicle.x+vehicle.WIDTH/2-2, vehicle.y-15); // middle vehicle coordonates
+                    bullet = new Bullet(ship.x+ship.WIDTH/2-2, ship.y-15); // middle ship coordonates
                     bulletList.add(bullet);
                 }
-                else if(vehicle.bullets == 2)
+                else if(ship.multipleBullets == 2)
                 {
-                    bullet = new Bullet(vehicle.x+vehicle.WIDTH/2-2-20, vehicle.y);
+                    bullet = new Bullet(ship.x+ship.WIDTH/2-2-20, ship.y);
                     bulletList.add(bullet);
-                    bullet = new Bullet(vehicle.x+vehicle.WIDTH/2-2+20, vehicle.y);
+                    bullet = new Bullet(ship.x+ship.WIDTH/2-2+20, ship.y);
                     bulletList.add(bullet);
                 }
-                else if(vehicle.bullets == 3)
+                else if(ship.multipleBullets == 3)
                 {
-                    bullet = new Bullet(vehicle.x+vehicle.WIDTH/2-2-20, vehicle.y);
+                    bullet = new Bullet(ship.x+ship.WIDTH/2-2-20, ship.y);
                     bulletList.add(bullet);
-                    bullet = new Bullet(vehicle.x+vehicle.WIDTH/2-2, vehicle.y-8); // middle vehicle coordonates
+                    bullet = new Bullet(ship.x+ship.WIDTH/2-2, ship.y-8); // middle ship coordonates
                     bulletList.add(bullet);
-                    bullet = new Bullet(vehicle.x+vehicle.WIDTH/2-2+20, vehicle.y);
+                    bullet = new Bullet(ship.x+ship.WIDTH/2-2+20, ship.y);
                     bulletList.add(bullet);
                 }
-                else if(vehicle.bullets == 4)
+                else if(ship.multipleBullets == 4)
                 {
-                    bullet = new Bullet(vehicle.x+vehicle.WIDTH/2-2-20-20, vehicle.y+8);
+                    bullet = new Bullet(ship.x+ship.WIDTH/2-2-20-20, ship.y+8);
                     bulletList.add(bullet);
-                    bullet = new Bullet(vehicle.x+vehicle.WIDTH/2-2-20, vehicle.y);
+                    bullet = new Bullet(ship.x+ship.WIDTH/2-2-20, ship.y);
                     bulletList.add(bullet);
-                    bullet = new Bullet(vehicle.x+vehicle.WIDTH/2-2+20, vehicle.y);
+                    bullet = new Bullet(ship.x+ship.WIDTH/2-2+20, ship.y);
                     bulletList.add(bullet);
-                    bullet = new Bullet(vehicle.x+vehicle.WIDTH/2-2+20+20, vehicle.y+8);
+                    bullet = new Bullet(ship.x+ship.WIDTH/2-2+20+20, ship.y+8);
                     bulletList.add(bullet);
                 }
-                else if(vehicle.bullets == 5)
+                else if(ship.multipleBullets == 5)
                 {
-                    bullet = new Bullet(vehicle.x+vehicle.WIDTH/2-2-20-20, vehicle.y+8);
+                    bullet = new Bullet(ship.x+ship.WIDTH/2-2-20-20, ship.y+8);
                     bulletList.add(bullet);
-                    bullet = new Bullet(vehicle.x+vehicle.WIDTH/2-2-20, vehicle.y);
+                    bullet = new Bullet(ship.x+ship.WIDTH/2-2-20, ship.y);
                     bulletList.add(bullet);
-                    bullet = new Bullet(vehicle.x+vehicle.WIDTH/2-2, vehicle.y-8); // middle vehicle coordonates
+                    bullet = new Bullet(ship.x+ship.WIDTH/2-2, ship.y-8); // middle vehicle coordonates
                     bulletList.add(bullet);
-                    bullet = new Bullet(vehicle.x+vehicle.WIDTH/2-2+20, vehicle.y);
+                    bullet = new Bullet(ship.x+ship.WIDTH/2-2+20, ship.y);
                     bulletList.add(bullet);
-                    bullet = new Bullet(vehicle.x+vehicle.WIDTH/2-2+20+20, vehicle.y+8);
+                    bullet = new Bullet(ship.x+ship.WIDTH/2-2+20+20, ship.y+8);
                     bulletList.add(bullet);
                 }
                 bulletsOnCounter ++;
@@ -337,97 +286,8 @@ public class World
             }
         }
 
-        // making the ship bullets
-        Bullet bullet;
-        if (updateCounter % 10 ==0)
-        {
-            checkBulletShooting(1, 1);
-            if (bulletsOn)
-            {
-                if(ship.multipleBullets == 1)
-                {
-                    bullet = new Bullet(ship.x+ ship.WIDTH/2-2, ship.y-15); // middle ship coordonates
-                    bulletList.add(bullet);
-                }
-                else if(ship.multipleBullets == 2)
-                {
-                    bullet = new Bullet(ship.x+ ship.WIDTH/2-2-20, ship.y);
-                    bulletList.add(bullet);
-                    bullet = new Bullet(ship.x+ ship.WIDTH/2-2+20, ship.y);
-                    bulletList.add(bullet);
-                }
-                else if(ship.multipleBullets == 3)
-                {
-                    bullet = new Bullet(ship.x+ ship.WIDTH/2-2-20, ship.y);
-                    bulletList.add(bullet);
-                    bullet = new Bullet(ship.x+ ship.WIDTH/2-2, ship.y-8); // middle ship coordonates
-                    bulletList.add(bullet);
-                    bullet = new Bullet(ship.x+ ship.WIDTH/2-2+20, ship.y);
-                    bulletList.add(bullet);
-                }
-                else if(ship.multipleBullets == 4)
-                {
-                    bullet = new Bullet(ship.x+ ship.WIDTH/2-2-20-20, ship.y+8);
-                    bulletList.add(bullet);
-                    bullet = new Bullet(ship.x+ ship.WIDTH/2-2-20, ship.y);
-                    bulletList.add(bullet);
-                    bullet = new Bullet(ship.x+ ship.WIDTH/2-2+20, ship.y);
-                    bulletList.add(bullet);
-                    bullet = new Bullet(ship.x+ ship.WIDTH/2-2+20+20, ship.y+8);
-                    bulletList.add(bullet);
-                }
-                else if(ship.multipleBullets == 5)
-                {
-                    bullet = new Bullet(ship.x+ ship.WIDTH/2-2-20-20, ship.y+8);
-                    bulletList.add(bullet);
-                    bullet = new Bullet(ship.x+ ship.WIDTH/2-2-20, ship.y);
-                    bulletList.add(bullet);
-                    bullet = new Bullet(ship.x+ ship.WIDTH/2-2, ship.y-8); // middle ship coordonates
-                    bulletList.add(bullet);
-                    bullet = new Bullet(ship.x+ ship.WIDTH/2-2+20, ship.y);
-                    bulletList.add(bullet);
-                    bullet = new Bullet(ship.x+ ship.WIDTH/2-2+20+20, ship.y+8);
-                    bulletList.add(bullet);
-                }
     }
 
-
-                /*bullet = new Bullet(ship.x+ship.WIDTH/2-2-20-20, ship.y+8); // middle ship coordonates
-                bulletList.add(bullet);
-                bullet = new Bullet(ship.x+ship.WIDTH/2-2-20, ship.y); // middle ship coordonates
-                bulletList.add(bullet);
-                bullet = new Bullet(ship.x+ship.WIDTH/2-2, ship.y-8); // middle ship coordonates
-                bulletList.add(bullet);
-                bullet = new Bullet(ship.x+ship.WIDTH/2-2+20, ship.y); // middle ship coordonates
-                bulletList.add(bullet);
-                bullet = new Bullet(ship.x+ship.WIDTH/2-2+20+20, ship.y+8); // middle ship coordonates
-                bulletList.add(bullet);*/
-//                maxBullets ++;
-                bulletsOnCounter ++;
-                listener.generateBullet();
-            }
-
-        }
-
-        Bullet enemyBullet;
-        if (updateCounter % 10 == 0)
-        {
-            checkEnemyBulletShooting(1, 12);
-            if (enemyBulletList.size() < 500 && bulletsOn2)
-            {
-                Enemy enemy2 = null;
-                for (int i = 0; i < enemyList.size(); i++)
-                {
-                    enemy2 = enemyList.get(i);
-                    if (enemy2.shooting && enemy2.y > 0) // shoot only if it is a shooting enemy type
-                    {
-                        enemyBullet = new Bullet(enemy2.x + enemy2.WIDTH / 2 - 2, enemy2.y + 30); // middle enemy coordonates
-                        enemyBulletList.add(enemyBullet);
-                        bulletsOnCounter2++;
-                        listener.generateBullet();
-                    }
-                }
-            }
     private void moveEnemies(float deltaTime)
     {
         Enemy enemy = null;
@@ -465,40 +325,40 @@ public class World
     {
         if (updateCounter % 10 ==0)
         {
-            scorePoints++; // add 1 point for every
+            scorePoints++; // add 1 point for every 1/6 seconds
         }
     }
 
     private void moveShip(float accelX, float accelY)
     {
-        //        vehicle.x = (int)(vehicle.x - accelX * 50 * deltaTime); // accelerometer control
-        //        vehicle.y = (int)(vehicle.y - accelY * 40 * deltaTime); // accelerometer control
+        //        ship.x = (int)(ship.x - accelX * 50 * deltaTime); // accelerometer control
+        //        ship.y = (int)(ship.y - accelY * 40 * deltaTime); // accelerometer control
 
 
-        // move the Vehicle based on the phone accelerometer. For finished game.
-//        vehicle.y = (int)(vehicle.y + accelY * deltaTime * 40);
-//        vehicle.y = (int)(vehicle.y - accelY * deltaTime * 40);
-        // move the vehicle based on user touch. Only for testing. Remove before publishing.
+        // move the Ship based on the phone accelerometer. For finished game.
+//        ship.y = (int)(ship.y + accelY * deltaTime * 40);
+//        ship.y = (int)(ship.y - accelY * deltaTime * 40);
+        // move the ship based on user touch. Only for testing. Remove before publishing.
         if (gameEngine.isTouchDown(0));
         {
-            vehicle.x = gameEngine.getTouchX(0) - Vehicle.WIDTH/2; // position vehicle after touch x
+            ship.x = gameEngine.getTouchX(0) - Ship.WIDTH/2; // position ship after touch x
 
-            // check for vehicle to be in the lower part of the screen
+            // check for ship to be in the lower part of the screen
             if (gameEngine.getTouchY(0) < 480/2) // check if touch is on the upper part
             {
-                vehicle.y = 480/2 - Vehicle.HEIGHT/2; // reposition vehicle on the lower part of the screen
+                ship.y = 480/2 - Ship.HEIGHT/2; // reposition ship on the lower part of the screen
             }else
             {
-                vehicle.y = gameEngine.getTouchY(0) - Vehicle.HEIGHT/2; // position vehicle after touch y
+                ship.y = gameEngine.getTouchY(0) - Ship.HEIGHT/2; // position ship after touch y
             }
 
-            if (gameEngine.getTouchY(0) > 480 - Vehicle.HEIGHT)  // check if vehicle is out of screen (lower)
+            if (gameEngine.getTouchY(0) > 480 - Ship.HEIGHT)  // check if ship is out of screen (lower)
             {
-                vehicle.y = 480 - Vehicle.HEIGHT - 10; // reposition vehicle on the lower part of the screen
+                ship.y = 480 - Ship.HEIGHT - 10; // reposition ship on the lower part of the screen
             }
         }
 
-        /*if(vehicle.y < 480/2)
+        /*if(ship.y < 480/2)
         {
             bullet = bulletList.get(i);
             // move bullet
@@ -510,19 +370,19 @@ public class World
 //                    bullet.y = ship.y;
 //                    Log.d("World", "Just recycled a bullet.");
 //                }
-            vehicle.y = 480 / 2 - Vehicle.HEIGHT / 2;
+            ship.y = 480 / 2 - Ship.HEIGHT / 2;
         }
         else
         {
-            vehicle.y = gameEngine.getTouchY(0) - Vehicle.HEIGHT/2;
+            ship.y = gameEngine.getTouchY(0) - Ship.HEIGHT/2;
         }
-        if(vehicle.y > 480 - Vehicle.HEIGHT) vehicle.y = 480 - Vehicle.HEIGHT - 10;*/
+        if(ship.y > 480 - Ship.HEIGHT) ship.y = 480 - Ship.HEIGHT - 10;*/
 
 
         // check left screen boundary
-        if (vehicle.x < MIN_X) vehicle.x = (int) MIN_X + 1;
+        if (ship.x < MIN_X) ship.x = (int) MIN_X + 1;
         // check right screen boundary
-        if (vehicle.x + vehicle.WIDTH > MAX_X) vehicle.x = (int)(MAX_X - vehicle.WIDTH - 1);
+        if (ship.x + ship.WIDTH > MAX_X) ship.x = (int)(MAX_X - Ship.WIDTH - 1);
     }
 
     private void collideShipEnemy()
@@ -558,12 +418,10 @@ public class World
             else if(ship.shield && collideRects(ship.x, ship.y, Ship.WIDTH, Ship.HEIGHT,
                     enemy.x, enemy.y, Enemy.WIDTH, Enemy.HEIGHT))
             {
-                enemy.y = -500; // move bullet off screen for recycling
-                ship.shield = false; // shield goes off after colliding an enemy
                 //delete enemy from list
                 enemyList.remove(i);
 //                enemy.y = -500; // move bullet off screen for recycling
-                vehicle.shield = false; // shield goes off after colliding an enemy
+                ship.shield = false; // shield goes off after colliding an enemy
             }
             // if there are no lives left then it's game over
             if(ship.lives==0) gameOver = true;
