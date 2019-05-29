@@ -55,7 +55,6 @@ public class World
         this.backgroundSpeed3 = backgroundSpeed3;
         this.gameEngine = gameEngine;
         this.listener = listener;
-//        initializeItems();
     }
 
     public void update(float deltaTime, float accelX, float accelY)
@@ -89,26 +88,25 @@ public class World
             enemyBullet2 = enemyBulletList.get(i);
             // move enemy bullet
             enemyBullet2.y = (int) (enemyBullet2.y + 2 + backgroundSpeed * deltaTime);
+            if (enemyBullet2.y > 480 - Bullet.HEIGHT) // if enemy bullet disappears off screen
+            {
+                enemyBulletList.remove(i);
+            }
         }
     }
 
     private void moveShipBullets(float deltaTime)
     {
-
-//        Bullet bullet = null;
         Bullet bullet;
         for (int i = 0; i < bulletList.size(); i++)
         {
             bullet = bulletList.get(i);
             // move bullet
             bullet.y = (int)(bullet.y - backgroundSpeed * deltaTime);
-//                recycling a bullet
-//                if (bullet.y < 0 - Bullet.HEIGHT-300)// - 30 for testing purposes
-//                {
-//                    bullet.x = ship.x+Ship.WIDTH/2;
-//                    bullet.y = ship.y;
-//                    Log.d("World", "Just recycled a bullet.");
-//                }
+            if (bullet.y < 0 - Bullet.HEIGHT)
+            {
+                bulletList.remove(i);
+            }
         }
     }
 
@@ -149,24 +147,19 @@ public class World
             else if (ship.multipleBullets == 2)
             {
                 checkBulletShooting(1, 2);
-
             }
             else if (ship.multipleBullets == 3)
             {
                 checkBulletShooting(1, 3);
-
             }
             else if (ship.multipleBullets == 4)
             {
                 checkBulletShooting(2, 4);
-
             }
             else if (ship.multipleBullets == 5)
             {
                 checkBulletShooting(2, 5);
-
             }
-            //if (bulletList.size() < 500 && bulletsOn)
             if (bulletsOn)
             {
                 if(ship.multipleBullets == 1)
@@ -220,7 +213,7 @@ public class World
         }
     }
 
-        // making the health item power up
+    // making the health item power up
     private void moveItems(float deltaTime)
     {
         Item healthItem = null;
@@ -321,13 +314,6 @@ public class World
             if (enemy.y > 480 - Enemy.HEIGHT) // if enemy disappears off screen
             {
                 enemyList.remove(i);
-//                Random random = new Random();
-//                enemy.hp = 3;
-//                int randX = random.nextInt(320-30); // between 0 and 50
-//                int randY = random.nextInt(20);
-//                enemy.x = (randX);
-//                enemy.y = ((-450 + randY) + i*100);
-//                Log.d("World", "Just recycled a enemy.");
             }
         }
     }
@@ -345,10 +331,10 @@ public class World
         //        ship.x = (int)(ship.x - accelX * 50 * deltaTime); // accelerometer control
         //        ship.y = (int)(ship.y - accelY * 40 * deltaTime); // accelerometer control
 
-
         // move the Ship based on the phone accelerometer. For finished game.
-//        ship.y = (int)(ship.y + accelY * deltaTime * 40);
-//        ship.y = (int)(ship.y - accelY * deltaTime * 40);
+        //        ship.y = (int)(ship.y + accelY * deltaTime * 40);
+        //        ship.y = (int)(ship.y - accelY * deltaTime * 40);
+
         // move the ship based on user touch. Only for testing. Remove before publishing.
         if (gameEngine.isTouchDown(0));
         {
@@ -406,22 +392,16 @@ public class World
             if (!ship.shield && collideRects(ship.x, ship.y, Ship.WIDTH, Ship.HEIGHT,
                     enemy.x, enemy.y, Enemy.WIDTH, Enemy.HEIGHT))
             {
-//                enemy.y = -500; // move enemy off screen for recycling
-
                 ship.lives = ship.lives - 1; // lives decrease when collide with enemy
-
                 if (!enemy.shield) // if enemy has shield, then it will stay alive, even after ship collision
                 {
-//                    enemy.y = -500; // move enemy off screen for recycling
                     //delete enemy from list
                     enemyList.remove(i);
                 }
-
                 if(ship.multipleBullets > 1)
                 {
                     ship.multipleBullets = ship.multipleBullets - 1; // multipleBullets decrease when collide with enemy
                 }
-
                 listener.collideShipEnemy();
                 Log.d("World", "The ship just hit an enemy");
             }
@@ -431,7 +411,6 @@ public class World
             {
                 //delete enemy from list
                 enemyList.remove(i);
-//                enemy.y = -500; // move bullet off screen for recycling
                 ship.shield = false; // shield goes off after colliding an enemy
             }
             // if there are no lives left then it's game over
@@ -453,9 +432,7 @@ public class World
                 {
                     ship.lives = ship.lives + 1; // increase the lives
                 }
-
                 itemHealthList.remove(i);
-//                healthItem.y = 500; // move healthItem off screen for recycling
                 listener.collideShipItem();
                 Log.d("World", "The ship just collected an healthItem.");
             }
@@ -477,7 +454,6 @@ public class World
                     ship.multipleBullets = ship.multipleBullets + 1; // increase the multiple bullets
                 }
                 itemBulletList.remove(i);
-//                bulletsItem.y = 500; // move bulletsItem off screen for recycling
                 listener.collideShipItem();
                 Log.d("World", "The ship just collected an bulletsItem.");
             }
@@ -496,7 +472,6 @@ public class World
                 // put the shield on
                 ship.shield = true; // shield is on
                 itemShieldList.remove(i);
-//                shieldItem.y = 500; // move shieldItem off screen for recycling
                 listener.collideShipItem();
                 Log.d("World", "The ship just collected an shieldItem.");
             }
@@ -509,7 +484,6 @@ public class World
         for (int i=0; i < bulletList.size(); i++)
         {
             bullet = bulletList.get(i);
-
             Enemy enemy = null;
             for (int j=0; j < enemyList.size(); j++)
             {
@@ -519,26 +493,21 @@ public class World
                         enemy.x, enemy.y, Enemy.WIDTH, Enemy.HEIGHT) &&
                         bullet.y > 0)
                 {
-
                     enemy.hp -=1;
                     Log.d("World", "The enemy was hit: Enemy HP -1" + enemy.hp);
                     // bullet dissapears
                     bulletList.remove(i);
-//                    bullet.y = -500; // move bullet off screen for recycling
                     Log.d("World", "The bullet just hit an enemy");
 
                     if (enemy.hp <= 0 && !enemy.shield) // shielded enemy is immune
                     {
                         //delete enemy from list
                         enemyList.remove(j);
-//                        // enemy dissapears
-//                        enemy.y = -500; // move enemy off screen for recycling
                     }
                     // add points
                     scorePoints+=10;
                     listener.collideBulletEnemy();
 //                    collideBulletEnemySound();
-//                    bulletSound3.play(1);
                 }
             }
 
@@ -557,26 +526,21 @@ public class World
                     ship.x, ship.y, Ship.WIDTH, Ship.HEIGHT))
             {
                 enemyBulletList.remove(i);
-//                enemyBullet.y = -500; // move bullet off screen for recycling
                 ship.lives = ship.lives - 1; // lives decrease when collide with enemy
-
                 // if there at at least 2 multiple bullets
                 if(ship.multipleBullets > 1)
                 {
                     ship.multipleBullets = ship.multipleBullets - 1; // multipleBullets decrease when collide with enemy bullet
                 }
-
                 Log.d("World", "The bullet just hit an enemy");
                 listener.collideBulletEnemy();
 //                    collideBulletEnemySound();
-//                    bulletSound3.play(1);
             }
             // if shield is on then check collide rectangles of the shield on the ship with bullet of enemy
             else if(ship.shield && collideRects(enemyBullet.x, enemyBullet.y, Bullet.WIDTH, Bullet.HEIGHT,
                     ship.x, ship.y, Ship.WIDTH, Ship.HEIGHT))
             {
                 enemyBulletList.remove(i);
-//                enemyBullet.y = -500; // move bullet off screen for recycling
                 ship.shield = false; // shield goes off after colliding an enemy
             }
             // if there are no lives left then it's game over
@@ -593,65 +557,6 @@ public class World
             return true;
         }
         return false;
-    }
-
-    private void initializeEnemies()
-    {
-        Random random = new Random();
-        for(int i=0; i< maxEnemies; i++)
-        {
-            int randX = random.nextInt(320-30); // between 0 and 50
-            int randY = random.nextInt(20);
-            // add to the list 3 types of enemies
-            Enemy enemy = new Enemy(randX, ((-450 + randY) + i*100), 1, 3, false, false);
-            enemyList.add(enemy);
-
-            Enemy enemy2 = new Enemy(randX, ((-450 + randY) + i*100), 1, 3, true, false);
-            enemyList.add(enemy2);
-
-            Enemy enemy3 = new Enemy(randX, ((-450 + randY) + i*100), 1, 3, false, true);
-            enemyList.add(enemy3);
-        }
-    }
-
-    private void initializeItems()
-    {
-        Random random = new Random();
-        for(int i = 0; i< maxItems; i++)
-        {
-            int randX = random.nextInt(320-30); // between 0 and 50
-            int randY = random.nextInt(20);
-            Item healthItem = new Item(randX, ((-450 + randY) + i*100), 1);
-            itemHealthList.add(healthItem);
-        }
-
-        Random random2 = new Random();
-        for(int i = 0; i< maxItems; i++)
-        {
-            int randX = random2.nextInt(320-30); // between 0 and 50
-            int randY = random2.nextInt(20);
-            Item bulletsItem = new Item(randX, ((-450 + randY) + i*100), 1);
-            itemBulletList.add(bulletsItem);
-        }
-
-        Random random3 = new Random();
-        for(int i = 0; i< maxItems; i++)
-        {
-            int randX = random3.nextInt(320-30); // between 0 and 50
-            int randY = random3.nextInt(20);
-            Item shieldItem = new Item(randX, ((-450 + randY) + i*100), 1);
-            itemShieldList.add(shieldItem);
-        }
-    }
-
-    private void initializeBullets()
-    {
-        for(int i=0; i< maxBullets; i++)
-        {
-//            Bullet bullet = new Bullet(ship.x+ship.WIDTH/2, 480-ship.HEIGHT-10+(i*20)); // middle ship coordonates
-            Bullet bullet = new Bullet(100, -200+(i*20)); // middle ship coordonates
-            bulletList.add(bullet);
-        }
     }
 
     private void checkBulletShooting(int onUnits, int offUnits)
