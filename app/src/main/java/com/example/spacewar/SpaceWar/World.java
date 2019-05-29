@@ -17,6 +17,7 @@ public class World
     public static final float MIN_Y = 37;
     public static final float MAX_Y = 285;
 
+
     // making a new instance of the Ship object
     Ship ship = new Ship();
     // array lists of enemies, power ups, ship and enemy bullets
