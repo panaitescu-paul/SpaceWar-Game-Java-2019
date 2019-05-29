@@ -49,13 +49,14 @@ public class World
         this.listener = listener;
     }
 
-    public void update(float deltaTime, float accelX, float accelY)
+    public void update(float deltaTime)
     {
+        Log.d("World", "deltaTime" + deltaTime);
         updateCounter++;
         configureEnemyWaves(updateCounter);
         configureItemWaves(updateCounter);
         scoreCounter();
-        moveShip(accelX, accelY);
+        moveShip();
         moveEnemies(deltaTime);
         moveItems(deltaTime);
         spawnShipBullets();
@@ -318,20 +319,12 @@ public class World
         }
     }
 
-    private void moveShip(float accelX, float accelY)
+    private void moveShip()
     {
-        //        ship.x = (int)(ship.x - accelX * 50 * deltaTime); // accelerometer control
-        //        ship.y = (int)(ship.y - accelY * 40 * deltaTime); // accelerometer control
-
-        // move the Ship based on the phone accelerometer. For finished game.
-        //        ship.y = (int)(ship.y + accelY * deltaTime * 40);
-        //        ship.y = (int)(ship.y - accelY * deltaTime * 40);
-
-        // move the ship based on user touch. Only for testing. Remove before publishing.
+        // move the ship based on user touch.
         if (gameEngine.isTouchDown(0));
         {
             ship.x = gameEngine.getTouchX(0) - Ship.WIDTH/2; // position ship after touch x
-
             // check for ship to be in the lower part of the screen
             if (gameEngine.getTouchY(0) < 480/2) // check if touch is on the upper part
             {
@@ -340,34 +333,11 @@ public class World
             {
                 ship.y = gameEngine.getTouchY(0) - Ship.HEIGHT/2; // position ship after touch y
             }
-
             if (gameEngine.getTouchY(0) > 480 - Ship.HEIGHT)  // check if ship is out of screen (lower)
             {
                 ship.y = 480 - Ship.HEIGHT - 10; // reposition ship on the lower part of the screen
             }
         }
-
-        /*if(ship.y < 480/2)
-        {
-            bullet = bulletList.get(i);
-            // move bullet
-            bullet.y = (int)(bullet.y - backgroundSpeed * deltaTime);
-//                recycling a bullet
-//                if (bullet.y < 0 - Bullet.HEIGHT-300)// - 30 for testing purposes
-//                {
-//                    bullet.x = ship.x+ship.WIDTH/2;
-//                    bullet.y = ship.y;
-//                    Log.d("World", "Just recycled a bullet.");
-//                }
-            ship.y = 480 / 2 - Ship.HEIGHT / 2;
-        }
-        else
-        {
-            ship.y = gameEngine.getTouchY(0) - Ship.HEIGHT/2;
-        }
-        if(ship.y > 480 - Ship.HEIGHT) ship.y = 480 - Ship.HEIGHT - 10;*/
-
-
         // check left screen boundary
         if (ship.x < MIN_X) ship.x = (int) MIN_X + 1;
         // check right screen boundary
@@ -406,7 +376,11 @@ public class World
                 ship.shield = false; // shield goes off after colliding an enemy
             }
             // if there are no lives left then it's game over
-            if(ship.lives==0) gameOver = true;
+            if(ship.lives==0)
+            {
+                gameOver = true;
+                listener.gameOver();
+            }
         }
     }
 
@@ -491,13 +465,13 @@ public class World
                         enemy.x, enemy.y, Enemy.WIDTH, Enemy.HEIGHT) &&
                         bullet.y > 0)
                 {
-                    enemy.hp -=1;
-                    Log.d("World", "The enemy was hit: Enemy HP -1" + enemy.hp);
+                    enemy.health -=1;
+                    Log.d("World", "The enemy was hit: Enemy HP -1" + enemy.health);
                     // bullet dissapears
                     bulletList.remove(i);
                     Log.d("World", "The bullet just hit an enemy");
 
-                    if (enemy.hp <= 0 && !enemy.shield) // shielded enemy is immune
+                    if (enemy.health <= 0 && !enemy.shield) // shielded enemy is immune
                     {
                         //delete enemy from list
                         enemyList.remove(j);
@@ -553,7 +527,11 @@ public class World
                 ship.shield = false; // shield goes off after colliding an enemy
             }
             // if there are no lives left then it's game over
-            if(ship.lives==0) gameOver = true;
+            if(ship.lives==0)
+            {
+                gameOver = true;
+                listener.gameOver();
+            }
         }
     }
 

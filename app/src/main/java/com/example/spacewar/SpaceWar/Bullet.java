@@ -2,10 +2,12 @@ package com.example.spacewar.SpaceWar;
 
 public class Bullet
 {
+    // dimensions of the bullet asset
     public static final int WIDTH = 5;
     public static final int HEIGHT = 16;
-    public int x = 0;
-    public int y = 0;
+    // coordinates for positioning the asset on the screen
+    public int x;
+    public int y;
 
     public Bullet(int x, int y)
     {

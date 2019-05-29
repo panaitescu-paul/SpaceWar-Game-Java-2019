@@ -74,19 +74,19 @@ public class WorldRenderer
                 gameEngine.drawBitmap(enemy3Image, world.enemyList.get(i).x, world.enemyList.get(i).y);
             }
 
-            if (world.enemyList.get(i).hp == 3 && !world.enemyList.get(i).shield) // render image for enemy with HP 3, if it is not a shielded enemy
+            if (world.enemyList.get(i).health == 3 && !world.enemyList.get(i).shield) // render image for enemy with HP 3, if it is not a shielded enemy
             {
                 gameEngine.drawBitmap(enemyHealthImage, world.enemyList.get(i).x, world.enemyList.get(i).y-10,
                         4, 5,
                         37, 5);
             }
-            else if (world.enemyList.get(i).hp == 2 && !world.enemyList.get(i).shield) // render image for enemy with HP 2
+            else if (world.enemyList.get(i).health == 2 && !world.enemyList.get(i).shield) // render image for enemy with HP 2
             {
                 gameEngine.drawBitmap(enemyHealthImage, world.enemyList.get(i).x, world.enemyList.get(i).y-10,
                         4, 15,
                         37, 5);
             }
-            else if (world.enemyList.get(i).hp == 1 && !world.enemyList.get(i).shield) // render image for enemy with HP 1
+            else if (world.enemyList.get(i).health == 1 && !world.enemyList.get(i).shield) // render image for enemy with HP 1
             {
                 gameEngine.drawBitmap(enemyHealthImage, world.enemyList.get(i).x, world.enemyList.get(i).y-10,
                         4, 34,
