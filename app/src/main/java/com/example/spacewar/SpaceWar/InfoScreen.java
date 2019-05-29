@@ -9,26 +9,27 @@ import com.example.spacewar.Screen;
 
 public class InfoScreen extends Screen
 {
+    // Assets
     Bitmap background;
     Bitmap close;
-    float passedTime = 0;
-    Typeface font; // the font of the text
-    String title = "title";
-    String text1 = "text1";
-    String text2 = "text2";
-    String text3 = "text3";
-    String text4 = "text4";
     Bitmap healthItemImage;
     Bitmap bulletItemImage;
     Bitmap shieldItemImage;
     Bitmap enemy1Image;
     Bitmap enemy2Image;
     Bitmap enemy3Image;
-
+    // Text to write on the screen
+    String title = "title";
+    String text1 = "text1";
+    String text2 = "text2";
+    String text3 = "text3";
+    String text4 = "text4";
+    float passedTime = 0;
+    Typeface font; // the text font
 
     public InfoScreen(GameEngine gameEngine)
     {
-        super(gameEngine);
+        super(gameEngine);  // call the constructor from Screen
         // load the resources
         background = gameEngine.loadBitmap("spacewar/images/ui/2/window_320.png");
         close = gameEngine.loadBitmap("spacewar/images/ui/btn_close.png");
@@ -43,57 +44,46 @@ public class InfoScreen extends Screen
     @Override
     public void update(float deltaTime)
     {
-        // draw the assets
+        // draw images and text
         gameEngine.drawBitmap(background, 0, 55);
-        passedTime = passedTime + deltaTime;
         gameEngine.drawBitmap(close, 320/2 - close.getWidth()/2, 480/2 - close.getHeight()/2 + 130);
-
         title = "Guidelines" ;
         gameEngine.drawText(font, title, 90, 90, Color.WHITE, 30);
-
         text1 = "Stay alive and shoot enemies to" ;
         gameEngine.drawText(font, text1, 20, 130, Color.WHITE, 18);
-
         text2 = "get a higher score" ;
         gameEngine.drawText(font, text2, 20, 150, Color.WHITE, 18);
-
         text3 = "Pick Up power ups:" ;
         gameEngine.drawText(font, text3, 20, 200, Color.WHITE, 18);
         gameEngine.drawBitmap(healthItemImage, 80, 210);
         gameEngine.drawBitmap(bulletItemImage, 140, 210);
         gameEngine.drawBitmap(shieldItemImage, 200, 210);
-
         text4 = "Avoid enemies:" ;
         gameEngine.drawText(font, text4, 20, 280, Color.WHITE, 18);
         gameEngine.drawBitmap(enemy1Image, 80, 290);
         gameEngine.drawBitmap(enemy2Image, 140, 295);
         gameEngine.drawBitmap(enemy3Image, 200, 295);
+        passedTime = passedTime + deltaTime; // global counter
+        // 123,4
+        // 0,4 > 0,5  false
+        // 123,8
+        // 0,8 > 0,5  true
+        // updateCounter % 25
 
-        if (gameEngine.isTouchDown(0) && (passedTime) > 0.5f) // wait half a second after the main menu shows, then interact
+        if (gameEngine.isTouchDown(0) && (passedTime) > 0.5f) // wait half a second after the info menu shows, then interact
         {
+            // check if x button from info screen is pressed
             if (gameEngine.getTouchY(0) > 370 - 30 && gameEngine.getTouchY(0) < 370 + 30
                     && gameEngine.getTouchX(0) > 160 - 30 && gameEngine.getTouchX(0) < 160 + 30)
             {
-                gameEngine.setScreen(new MainMenuScreen(gameEngine));
+                gameEngine.setScreen(new MainMenuScreen(gameEngine)); // change to main menu screen
             }
         }
     }
-
     @Override
-    public void pause()
-    {
-
-    }
-
+    public void pause() {}
     @Override
-    public void resume()
-    {
-
-    }
-
+    public void resume() {}
     @Override
-    public void dispose()
-    {
-
-    }
+    public void dispose() {}
 }

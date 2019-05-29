@@ -8,21 +8,21 @@ public class SpaceWar extends GameEngine
     @Override
     public Screen createStartScreen()
     {
+        // load background music
         music = this.loadMusic("spacewar/music/bg_music-2.ogg");
-        return new MainMenuScreen(this);
+        return new MainMenuScreen(this); // return the main menu screen
     }
 
     public void onResume()
     {
-        super.onResume();
-        music.setLooping(true);
-        music.play();
+        super.onResume(); // call onResume() method from GameEngine
+        music.setLooping(true); // replay music after ending
+        music.play(); // play music
     }
 
     public void onPause()
     {
-        super.onPause();
-        music.pause();
+        super.onPause(); // call onPause() method from GameEngine
+        music.pause(); // pause music
     }
-
 }

@@ -23,7 +23,7 @@ public class GameScreen extends Screen
     }
 
     int bgImgHeight = 4000; //asset size
-    //Assets
+    // Assets
     Bitmap backgroundLayer1;
     Bitmap backgroundLayer2;
     Bitmap backgroundLayer3;
@@ -35,7 +35,7 @@ public class GameScreen extends Screen
     Sound bulletSound;
     Sound bulletSound2;
     //    used to move the background
-    float backgroundY = bgImgHeight - 480;
+    float backgroundY = bgImgHeight - 480; // img size - screen size
     float backgroundY2 = bgImgHeight - 480;
     float backgroundY3 = bgImgHeight - 480;
     //  3 different background speeds for the parallax effect
@@ -52,7 +52,7 @@ public class GameScreen extends Screen
     {
         super(gameEngine); // call the constructor from Screen
         Log.d("Spacewar", "Starting the GameScreen");
-        // load the assets
+        // load the resources
         backgroundLayer1 = gameEngine.loadBitmap("spacewar/images/maps/space_map1.png");
         backgroundLayer2 = gameEngine.loadBitmap("spacewar/images/maps/star_map1.png");
         backgroundLayer3 = gameEngine.loadBitmap("spacewar/images/maps/star_map2.png");
@@ -107,9 +107,7 @@ public class GameScreen extends Screen
         {
             Log.d("GameScreen", "Starting the game again");
             state = State.Running;
-//            resume(); // continue background music
-//            gameEngine.music.pause();
-            gameEngine.music.play();
+            resume(); // continue background music
         }
         if (state == State.GameOver) // if game is over
         {
@@ -120,63 +118,61 @@ public class GameScreen extends Screen
                 if (events.get(i).type == TouchEvent.TouchEventType.Down) // look for touch down event
                 {
                     gameEngine.setScreen(new MainMenuScreen(gameEngine)); // change screen to main menu
-                    gameEngine.music.stop();  // stop music to reset
-                    gameEngine.music.play();  // play music from the beginning
+                    gameEngine.music.play();  // play music
                     return;
                 }
             }
         }
-        // press invisible pause button
+        // press pause button
         if (state == State.Running && gameEngine.getTouchY(0) < 50 && gameEngine.getTouchX(0) > 320-50)
         {
             Log.d("GameScreen", "Pausing the game.");
             state = State.Paused;
-//            pause();
-            gameEngine.music.pause();
+            pause(); // pause music
         }
         if (state == State.Running)
         {
-            // makes the backgroundLayer1 move
-            backgroundY = backgroundY - backgroundSpeed * deltaTime;
-            backgroundY2 = backgroundY2 - backgroundSpeed2 * deltaTime;
-            backgroundY3 = backgroundY3 - backgroundSpeed3 * deltaTime;
-            if (backgroundY < 0) // img size - screen size
+            // makes the background layers move on each update
+            backgroundY = backgroundY - backgroundSpeed * deltaTime; // background moves with medium speed - aprox. 1 pixel per update
+            backgroundY2 = backgroundY2 - backgroundSpeed2 * deltaTime; // background moves faster
+            backgroundY3 = backgroundY3 - backgroundSpeed3 * deltaTime; // background moves slower
+            if (backgroundY < 0)
             {
-                backgroundY = bgImgHeight - 480;
+                backgroundY = bgImgHeight - 480; //reset background image
             }
-            if (backgroundY2 < 0) // img size - screen size
+            if (backgroundY2 < 0)
             {
-                backgroundY2 = bgImgHeight - 480;
+                backgroundY2 = bgImgHeight - 480; //reset background image
             }
-            if (backgroundY3 < 0) // img size - screen size
+            if (backgroundY3 < 0)
             {
-                backgroundY3 = bgImgHeight - 480;
+                backgroundY3 = bgImgHeight - 480; //reset background image
             }
             // update the objects
             world.update(deltaTime);
         }
-        // draw the backgraound, no matter what state (paused, running)
+        // draw the background, no matter what state (paused, running)
         gameEngine.drawBitmap(backgroundLayer1, 0,0, 0, (int)backgroundY, 320, 480);
         gameEngine.drawBitmap(backgroundLayer2, 0,0, 0, (int)backgroundY2, 320, 480);
         gameEngine.drawBitmap(backgroundLayer3, 0,0, 0, (int)backgroundY3, 320, 480);
         gameEngine.drawBitmap(pause, 320-50, 10, 0, 0, 80 , 80);
-
-        // draw the game object, no matter what state (paused, running)
+        // draw the game objects, no matter what state (paused, running)
         renderer.render();
+        // write on screen
         showText = "Score: " + world.scorePoints + "    Lives: " + world.ship.lives ;
         gameEngine.drawText(font, showText, 22, 22, Color.GREEN, 12);
 
         if (state == State.Paused)
         {
-//            pause();
-            gameEngine.music.pause();
+            pause();
+            //draw images
             gameEngine.drawBitmap(resume, 160 - resume.getWidth()/2, 240 - resume.getHeight()/2);
             gameEngine.drawBitmap(start, 320-50, 10, 0, 0, 80 , 80);
         }
         if (state == State.GameOver)
         {
-//            pause();
-            gameEngine.music.play();
+            pause();
+            //draw image
             gameEngine.drawBitmap(gameOver, 320/2 - gameOver.getWidth()/2, 480/2 - gameOver.getHeight()/2);
         }
     }
@@ -184,18 +180,18 @@ public class GameScreen extends Screen
     @Override
     public void pause()
     {
-        gameEngine.music.pause();
+        gameEngine.music.pause(); // pause the background music
         if (state == State.Running) state = State.Paused;
     }
     @Override
     public void resume()
     {
-        gameEngine.music.play();
+        gameEngine.music.play(); // play the background music
     }
     @Override
     public void dispose()
     {
-        gameEngine.music.pause();
+        gameEngine.music.pause(); // pause the background music
 //        gameEngine.music.stop();
 //        gameEngine.music.dispose();
     }
