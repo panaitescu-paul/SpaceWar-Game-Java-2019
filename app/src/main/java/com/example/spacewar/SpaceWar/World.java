@@ -710,7 +710,7 @@ public class World
 
         if (updateCounter == 700)
         {
-            spawnEnemyWave(0, 5, 0);
+            spawnEnemyWave(0, 10, 0);
         }
 
         if (updateCounter == 1400)
