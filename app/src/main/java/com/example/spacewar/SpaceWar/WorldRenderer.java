@@ -101,21 +101,21 @@ public class WorldRenderer
         {
             gameEngine.drawBitmap(bullet1Image, world.bulletList.get(i).x, world.bulletList.get(i).y);
         }
-        for (int i=0; i< world.healthItemList.size(); i++)
+        for (int i = 0; i< world.itemHealthList.size(); i++)
         {
-            gameEngine.drawBitmap(healthItemImage, world.healthItemList.get(i).x, world.healthItemList.get(i).y);
+            gameEngine.drawBitmap(healthItemImage, world.itemHealthList.get(i).x, world.itemHealthList.get(i).y);
         }
-        for (int i=0; i< world.bulletsItemList.size(); i++)
+        for (int i = 0; i< world.itemBulletList.size(); i++)
         {
-            gameEngine.drawBitmap(bulletItemImage, world.bulletsItemList.get(i).x, world.bulletsItemList.get(i).y);
+            gameEngine.drawBitmap(bulletItemImage, world.itemBulletList.get(i).x, world.itemBulletList.get(i).y);
         }
         for (int i=0; i< world.enemyBulletList.size(); i++)
         {
             gameEngine.drawBitmap(enemyBulletImage, world.enemyBulletList.get(i).x, world.enemyBulletList.get(i).y);
         }
-        for (int i=0; i< world.shieldItemList.size(); i++)
+        for (int i = 0; i< world.itemShieldList.size(); i++)
         {
-            gameEngine.drawBitmap(shieldItemImage, world.shieldItemList.get(i).x, world.shieldItemList.get(i).y);
+            gameEngine.drawBitmap(shieldItemImage, world.itemShieldList.get(i).x, world.itemShieldList.get(i).y);
         }
     }
 }

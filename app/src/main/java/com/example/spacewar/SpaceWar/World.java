@@ -23,9 +23,9 @@ public class World
     // array lists of enemies, power ups, ship and enemy bullets
     List<Enemy> enemyList = new ArrayList<>();
     List<Bullet> bulletList = new ArrayList<>();
-    List<Item> healthItemList = new ArrayList<>();
-    List<Item> bulletsItemList = new ArrayList<>();
-    List<Item> shieldItemList = new ArrayList<>();
+    List<Item> itemHealthList = new ArrayList<>();
+    List<Item> itemBulletList = new ArrayList<>();
+    List<Item> itemShieldList = new ArrayList<>();
     List<Bullet> enemyBulletList = new ArrayList<>();
     // limits for enemies, bullets and items at a time(on a frame) or until it is recycled
     public int maxEnemies = 2;
@@ -55,13 +55,14 @@ public class World
         this.backgroundSpeed3 = backgroundSpeed3;
         this.gameEngine = gameEngine;
         this.listener = listener;
-        initializeItems();
+//        initializeItems();
     }
 
     public void update(float deltaTime, float accelX, float accelY)
     {
         updateCounter++;
         configureEnemyWaves(updateCounter);
+        configureItemWaves(updateCounter);
         scoreCounter();
         moveShip(accelX, accelY);
         moveEnemies(deltaTime);
@@ -223,9 +224,9 @@ public class World
     private void moveItems(float deltaTime)
     {
         Item healthItem = null;
-        for (int i = 0; i < maxItems; i++)
+        for (int i = 0; i < itemHealthList.size(); i++)
         {
-            healthItem = healthItemList.get(i);
+            healthItem = itemHealthList.get(i);
             // make shieldItem move
             healthItem.y = (int)(healthItem.y + backgroundSpeed * deltaTime);
             Random random3 = new Random();
@@ -242,20 +243,15 @@ public class World
             healthItem.x = (int)(healthItem.x + backgroundSpeed * deltaTime * healthItem.direction);
             if (healthItem.y > 480 - Item.HEIGHT) // if shieldItem disappears off screen
             {
-                Random random4 = new Random();
-                int randX = random4.nextInt(320-30); // between 0 and 50
-                int randY = random4.nextInt(20);
-                healthItem.x = (randX);
-                healthItem.y = ((-450 + randY) + i*100);
-                Log.d("World", "Just recycled an item.");
+                itemHealthList.remove(i);
             }
         }
 
         // making the bullets item power up
         Item bulletsItem = null;
-        for (int i = 0; i < maxItems; i++)
+        for (int i = 0; i < itemBulletList.size(); i++)
         {
-            bulletsItem = bulletsItemList.get(i);
+            bulletsItem = itemBulletList.get(i);
             // make shieldItem move
             bulletsItem.y = (int)(bulletsItem.y + backgroundSpeed * deltaTime);
             Random random3 = new Random();
@@ -269,23 +265,18 @@ public class World
                 bulletsItem.direction = -bulletsItem.direction; // individual bulletsItem direction
                 bulletsItem.x = (int)(bulletsItem.x + backgroundSpeed * deltaTime * bulletsItem.direction);
             }
-            bulletsItem.x = (int)(bulletsItem.x + backgroundSpeed * deltaTime * healthItem.direction);
+            bulletsItem.x = (int)(bulletsItem.x + backgroundSpeed * deltaTime * bulletsItem.direction);
             if (bulletsItem.y > 480 - Item.HEIGHT) // if bulletsItem disappears off screen
             {
-                Random random4 = new Random();
-                int randX = random4.nextInt(320-30); // between 0 and 50
-                int randY = random4.nextInt(20);
-                bulletsItem.x = (randX);
-                bulletsItem.y = ((-450 + randY) + i*100);
-                Log.d("World", "Just recycled an item.");
+                itemBulletList.remove(i);
             }
         }
 
         // making the shield item power up
         Item shieldItem = null;
-        for (int i = 0; i < maxItems; i++)
+        for (int i = 0; i < itemShieldList.size(); i++)
         {
-            shieldItem = shieldItemList.get(i);
+            shieldItem = itemShieldList.get(i);
             // make shieldItem move
             shieldItem.y = (int)(shieldItem.y + backgroundSpeed * deltaTime);
             Random random3 = new Random();
@@ -302,15 +293,9 @@ public class World
             shieldItem.x = (int)(shieldItem.x + backgroundSpeed * deltaTime * shieldItem.direction);
             if (shieldItem.y > 480 - Item.HEIGHT) // if shieldItem disappears off screen
             {
-                Random random4 = new Random();
-                int randX = random4.nextInt(320-30); // between 0 and 50
-                int randY = random4.nextInt(20);
-                shieldItem.x = (randX);
-                shieldItem.y = ((-450 + randY) + i*100);
-                Log.d("World", "Just recycled an item.");
+                itemShieldList.remove(i);
             }
         }
-
     }
 
     private void moveEnemies(float deltaTime)
@@ -333,8 +318,9 @@ public class World
                 enemy.x = (int)(enemy.x + backgroundSpeed * deltaTime * enemy.direction);
             }
             enemy.x = (int)(enemy.x + backgroundSpeed * deltaTime * enemy.direction);
-//            if (enemy.y > 480 - Enemy.HEIGHT) // if enemy disappears off screen
-//            {
+            if (enemy.y > 480 - Enemy.HEIGHT) // if enemy disappears off screen
+            {
+                enemyList.remove(i);
 //                Random random = new Random();
 //                enemy.hp = 3;
 //                int randX = random.nextInt(320-30); // between 0 and 50
@@ -342,7 +328,7 @@ public class World
 //                enemy.x = (randX);
 //                enemy.y = ((-450 + randY) + i*100);
 //                Log.d("World", "Just recycled a enemy.");
-//            }
+            }
         }
     }
 
@@ -456,9 +442,9 @@ public class World
     private void collideShipHealthItem()
     {
         Item healthItem = null;
-        for (int i = 0; i < maxItems; i++)
+        for (int i = 0; i < itemHealthList.size(); i++)
         {
-            healthItem = healthItemList.get(i);
+            healthItem = itemHealthList.get(i);
             if (collideRects(ship.x, ship.y, Ship.WIDTH, Ship.HEIGHT,
                     healthItem.x, healthItem.y, Item.WIDTH, Item.HEIGHT))
             {
@@ -468,7 +454,8 @@ public class World
                     ship.lives = ship.lives + 1; // increase the lives
                 }
 
-                healthItem.y = 500; // move healthItem off screen for recycling
+                itemHealthList.remove(i);
+//                healthItem.y = 500; // move healthItem off screen for recycling
                 listener.collideShipItem();
                 Log.d("World", "The ship just collected an healthItem.");
             }
@@ -478,9 +465,9 @@ public class World
     private void collideShipBulletsItem()
     {
         Item bulletsItem = null;
-        for (int i = 0; i < maxItems; i++)
+        for (int i = 0; i < itemBulletList.size(); i++)
         {
-            bulletsItem = bulletsItemList.get(i);
+            bulletsItem = itemBulletList.get(i);
             if (collideRects(ship.x, ship.y, Ship.WIDTH, Ship.HEIGHT,
                     bulletsItem.x, bulletsItem.y, Item.WIDTH, Item.HEIGHT))
             {
@@ -489,7 +476,8 @@ public class World
                 {
                     ship.multipleBullets = ship.multipleBullets + 1; // increase the multiple bullets
                 }
-                bulletsItem.y = 500; // move bulletsItem off screen for recycling
+                itemBulletList.remove(i);
+//                bulletsItem.y = 500; // move bulletsItem off screen for recycling
                 listener.collideShipItem();
                 Log.d("World", "The ship just collected an bulletsItem.");
             }
@@ -499,15 +487,16 @@ public class World
     private void collideShipShieldItem()
     {
         Item shieldItem = null;
-        for (int i = 0; i < maxItems; i++)
+        for (int i = 0; i < itemShieldList.size(); i++)
         {
-            shieldItem = shieldItemList.get(i);
+            shieldItem = itemShieldList.get(i);
             if (collideRects(ship.x, ship.y, Ship.WIDTH, Ship.HEIGHT,
                     shieldItem.x, shieldItem.y, Item.WIDTH, Item.HEIGHT))
             {
                 // put the shield on
                 ship.shield = true; // shield is on
-                shieldItem.y = 500; // move shieldItem off screen for recycling
+                itemShieldList.remove(i);
+//                shieldItem.y = 500; // move shieldItem off screen for recycling
                 listener.collideShipItem();
                 Log.d("World", "The ship just collected an shieldItem.");
             }
@@ -534,7 +523,8 @@ public class World
                     enemy.hp -=1;
                     Log.d("World", "The enemy was hit: Enemy HP -1" + enemy.hp);
                     // bullet dissapears
-                    bullet.y = -500; // move bullet off screen for recycling
+                    bulletList.remove(i);
+//                    bullet.y = -500; // move bullet off screen for recycling
                     Log.d("World", "The bullet just hit an enemy");
 
                     if (enemy.hp <= 0 && !enemy.shield) // shielded enemy is immune
@@ -566,7 +556,8 @@ public class World
             if (!ship.shield && collideRects(enemyBullet.x, enemyBullet.y, Bullet.WIDTH, Bullet.HEIGHT,
                     ship.x, ship.y, Ship.WIDTH, Ship.HEIGHT))
             {
-                enemyBullet.y = -500; // move bullet off screen for recycling
+                enemyBulletList.remove(i);
+//                enemyBullet.y = -500; // move bullet off screen for recycling
                 ship.lives = ship.lives - 1; // lives decrease when collide with enemy
 
                 // if there at at least 2 multiple bullets
@@ -584,7 +575,8 @@ public class World
             else if(ship.shield && collideRects(enemyBullet.x, enemyBullet.y, Bullet.WIDTH, Bullet.HEIGHT,
                     ship.x, ship.y, Ship.WIDTH, Ship.HEIGHT))
             {
-                enemyBullet.y = -500; // move bullet off screen for recycling
+                enemyBulletList.remove(i);
+//                enemyBullet.y = -500; // move bullet off screen for recycling
                 ship.shield = false; // shield goes off after colliding an enemy
             }
             // if there are no lives left then it's game over
@@ -630,8 +622,7 @@ public class World
             int randX = random.nextInt(320-30); // between 0 and 50
             int randY = random.nextInt(20);
             Item healthItem = new Item(randX, ((-450 + randY) + i*100), 1);
-            healthItemList.add(healthItem);
-
+            itemHealthList.add(healthItem);
         }
 
         Random random2 = new Random();
@@ -640,8 +631,7 @@ public class World
             int randX = random2.nextInt(320-30); // between 0 and 50
             int randY = random2.nextInt(20);
             Item bulletsItem = new Item(randX, ((-450 + randY) + i*100), 1);
-            bulletsItemList.add(bulletsItem);
-
+            itemBulletList.add(bulletsItem);
         }
 
         Random random3 = new Random();
@@ -650,10 +640,8 @@ public class World
             int randX = random3.nextInt(320-30); // between 0 and 50
             int randY = random3.nextInt(20);
             Item shieldItem = new Item(randX, ((-450 + randY) + i*100), 1);
-            shieldItemList.add(shieldItem);
-
+            itemShieldList.add(shieldItem);
         }
-
     }
 
     private void initializeBullets()
@@ -707,27 +695,18 @@ public class World
         {
             spawnEnemyWave(5, 0, 0);
         }
-
         if (updateCounter == 700)
         {
-            spawnEnemyWave(0, 10, 0);
+            spawnEnemyWave(0, 5, 0);
         }
-
         if (updateCounter == 1400)
         {
-            spawnEnemyWave(0, 0, 5);
+            spawnEnemyWave(0, 0, 4);
         }
-
-        if (updateCounter >= 2200 && updateCounter % 350 ==0)
+        if (updateCounter >= 2400 && updateCounter % 750 ==0)
         {
-            spawnEnemyWave(5, 2, 1);
+            spawnEnemyWave(5, 3, 2);
         }
-
-//
-//        if (updateCounter % 250 ==0)
-//        {
-//            spawnEnemyWave(0, 0, 1);
-//        }
     }
     private void spawnEnemyWave(int enemyBasic, int enemyShooting, int enemyShielded)
     {
@@ -756,4 +735,46 @@ public class World
         }
     }
 
+    //     Items
+    private void configureItemWaves(long updateCounter)
+    {
+        if (updateCounter == 400)
+        {
+            spawnItemWave(1, 1, 1);
+        }
+        if (updateCounter == 1100)
+        {
+            spawnItemWave(1, 1, 1);
+        }
+        if (updateCounter >= 2000 && updateCounter % 750 ==0)
+        {
+            spawnItemWave(1, 1, 1);
+        }
+    }
+    private void spawnItemWave(int itemHealth, int itemBullet, int itemShield)
+    {
+        Random random = new Random();
+        for (int i=0; i<itemHealth; i++)
+        {
+            int randX = random.nextInt(320-30); // between 0 and 50
+            int randY = random.nextInt(20);
+//            Item item = new Item(randX, ((-450 + randY) + i*100), 1);
+            Item item = new Item((randX + (i+1)*50), (randY + (i+1)*150)-300, 1);
+            itemHealthList.add(item);
+        }
+        for (int i=0; i<itemBullet; i++)
+        {
+            int randX = random.nextInt(320-30); // between 0 and 50
+            int randY = random.nextInt(70);
+            Item item = new Item((randX + (i+1)*50), (randY + (i+1)*150)-300, 1);
+            itemBulletList.add(item);
+        }
+        for (int i=0; i<itemShield; i++)
+        {
+            int randX = random.nextInt(320-30); // between 0 and 50
+            int randY = random.nextInt(140);
+            Item item = new Item((randX + (i+1)*50), (randY + (i+1)*150)-300, 1);
+            itemShieldList.add(item);
+        }
+    }
 }
