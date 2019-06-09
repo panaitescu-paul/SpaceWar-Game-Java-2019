@@ -623,7 +623,7 @@ public class World
         {
             int randX = random.nextInt(320-30); // between 0 and 50
             int randY = random.nextInt(20);
-            Enemy enemy3 = new Enemy(randX, ((-450 + randY) + i*150)-200, 1, 3, false, true);
+            Enemy enemy3 = new Enemy(randX, ((-450 + randY) + i*150)-200, 1, 1, false, true);
             enemyList.add(enemy3);
         }
     }
