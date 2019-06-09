@@ -1,7 +1,6 @@
 package com.example.spacewar.SpaceWar;
 
 import android.graphics.Bitmap;
-
 import com.example.spacewar.GameEngine;
 
 
@@ -46,18 +45,39 @@ public class WorldRenderer
 
     public void render()
     {
+        renderShip();
+        renderShipBullets();
+        renderEnemies();
+        renderEnemyBullets();
+        renderItems();
+    }
+
+    private void renderShip()
+    {
+        // Render ship and ship shield
         gameEngine.drawBitmap(shipImage, world.ship.x, world.ship.y);
         if(world.ship.shield)
         {
             gameEngine.drawBitmap(shipShieldImage, world.ship.x-10, world.ship.y-18);
         }
+    }
 
+    private void renderShipBullets()
+    {
+        // Render ship bullets
+        for (int i=0; i < world.bulletList.size(); i++)
+        {
+            gameEngine.drawBitmap(bullet1Image, world.bulletList.get(i).x, world.bulletList.get(i).y);
+        }
+    }
+
+    private void renderEnemies()
+    {
         for (int i = 0; i< world.enemyList.size(); i++)
         {
             // Render Basic enemy
             // Render Shooting enemy
             // Render Shield enemy
-
             if (!world.enemyList.get(i).shooting && !world.enemyList.get(i).shield) // Render Basic enemy
             {
                 gameEngine.drawBitmap(enemy1Image, world.enemyList.get(i).x+3, world.enemyList.get(i).y);
@@ -71,6 +91,7 @@ public class WorldRenderer
                 gameEngine.drawBitmap(enemy3Image, world.enemyList.get(i).x, world.enemyList.get(i).y);
             }
 
+            // Render enemy health bars
             if (world.enemyList.get(i).health == 3 && !world.enemyList.get(i).shield) // render image for enemy with HP 3, if it is not a shielded enemy
             {
                 gameEngine.drawBitmap(enemyHealthImage, world.enemyList.get(i).x, world.enemyList.get(i).y-10,
@@ -89,29 +110,36 @@ public class WorldRenderer
                         4, 34,
                         37, 5);
             }
+
+            // Render enemy shield
             if (world.enemyList.get(i).shield) // render image for enemy with shield
             {
                 gameEngine.drawBitmap(enemyShieldImage, world.enemyList.get(i).x-10, world.enemyList.get(i).y-10);
             }
         }
+    }
 
-        for (int i=0; i< world.bulletList.size(); i++)
-        {
-            gameEngine.drawBitmap(bullet1Image, world.bulletList.get(i).x, world.bulletList.get(i).y);
-        }
-        for (int i = 0; i< world.itemHealthList.size(); i++)
-        {
-            gameEngine.drawBitmap(healthItemImage, world.itemHealthList.get(i).x, world.itemHealthList.get(i).y);
-        }
-        for (int i = 0; i< world.itemBulletList.size(); i++)
-        {
-            gameEngine.drawBitmap(bulletItemImage, world.itemBulletList.get(i).x, world.itemBulletList.get(i).y);
-        }
-        for (int i=0; i< world.enemyBulletList.size(); i++)
+    private void renderEnemyBullets()
+    {
+        // Render enemy bullets
+        for (int i=0; i < world.enemyBulletList.size(); i++)
         {
             gameEngine.drawBitmap(enemyBulletImage, world.enemyBulletList.get(i).x, world.enemyBulletList.get(i).y);
         }
-        for (int i = 0; i< world.itemShieldList.size(); i++)
+    }
+
+    private void renderItems()
+    {
+        // Render items
+        for (int i = 0; i < world.itemHealthList.size(); i++)
+        {
+            gameEngine.drawBitmap(healthItemImage, world.itemHealthList.get(i).x, world.itemHealthList.get(i).y);
+        }
+        for (int i = 0; i < world.itemBulletList.size(); i++)
+        {
+            gameEngine.drawBitmap(bulletItemImage, world.itemBulletList.get(i).x, world.itemBulletList.get(i).y);
+        }
+        for (int i = 0; i < world.itemShieldList.size(); i++)
         {
             gameEngine.drawBitmap(shieldItemImage, world.itemShieldList.get(i).x, world.itemShieldList.get(i).y);
         }

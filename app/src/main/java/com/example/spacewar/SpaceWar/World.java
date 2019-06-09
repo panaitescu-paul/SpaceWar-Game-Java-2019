@@ -369,7 +369,7 @@ public class World
                 Log.d("World", "The ship just hit an enemy");
             }
             // if shield is on then check collide rectangles of the shield on the ship with enemy
-            else if(ship.shield && collideRects(ship.x, ship.y, Ship.WIDTH, Ship.HEIGHT,
+            else if(ship.shield && collideRects(ship.x, ship.y, Ship.WIDTH+10, Ship.HEIGHT+24,
                     enemy.x, enemy.y, Enemy.WIDTH, Enemy.HEIGHT))
             {
                 //delete enemy from list
@@ -522,7 +522,7 @@ public class World
             }
             // if shield is on then check collide rectangles of the shield on the ship with bullet of enemy
             else if(ship.shield && collideRects(enemyBullet.x, enemyBullet.y, Bullet.WIDTH, Bullet.HEIGHT,
-                    ship.x, ship.y, Ship.WIDTH, Ship.HEIGHT))
+                    ship.x, ship.y, Ship.WIDTH+10, Ship.HEIGHT+24))
             {
                 enemyBulletList.remove(i);
                 ship.shield = false; // shield goes off after colliding an enemy
