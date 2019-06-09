@@ -94,6 +94,7 @@ public class WorldRenderer
                 gameEngine.drawBitmap(enemyShieldImage, world.enemyList.get(i).x-10, world.enemyList.get(i).y-10);
             }
         }
+
         for (int i=0; i< world.bulletList.size(); i++)
         {
             gameEngine.drawBitmap(bullet1Image, world.bulletList.get(i).x, world.bulletList.get(i).y);
