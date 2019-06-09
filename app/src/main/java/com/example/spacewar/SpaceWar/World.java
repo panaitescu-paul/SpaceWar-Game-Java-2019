@@ -11,34 +11,40 @@ import java.util.Random;
 
 public class World
 {
-
-    public static final float MIN_X = -30;
-    public static final float MAX_X = 320 + 30; // logical screen + ship size
-
     // making a new instance of the Ship object
     Ship ship = new Ship();
-    // array lists of enemies, power ups, ship and enemy bullets
+    // array lists of enemies, items, ship bullets and enemy bullets
     List<Enemy> enemyList = new ArrayList<>();
-    List<Bullet> bulletList = new ArrayList<>();
     List<Item> itemHealthList = new ArrayList<>();
     List<Item> itemBulletList = new ArrayList<>();
     List<Item> itemShieldList = new ArrayList<>();
+    List<Bullet> bulletList = new ArrayList<>();
     List<Bullet> enemyBulletList = new ArrayList<>();
+
     GameEngine gameEngine;
     CollisionListener listener;
 
-    boolean gameOver = false;
-    int backgroundSpeed = 0;
-    int backgroundSpeed2 = 0;
-    int backgroundSpeed3 = 0;
+    // used to calculate a global speed of movement for objects
+    int backgroundSpeed;
+    // used to variate the speed for the parallax effect on backgrounds
+    int backgroundSpeed2;
+    int backgroundSpeed3;
+
+    // keeps track of the number of updates that passed
     long updateCounter = 0;
+
+    // used for creating bullet waves from ship
     int bulletsOnCounter = 0;
     int bulletsOffCounter = 0;
     boolean bulletsOn = true;
+
+    // used for creating bullet waves from enemies
     int bulletsOnCounter2 = 0;
     int bulletsOffCounter2 = 0;
     boolean bulletsOn2 = true;
+
     int scorePoints = 0;
+    boolean gameOver = false;
 
     public World(GameEngine gameEngine, CollisionListener listener, int backgroundSpeed, int backgroundSpeed2, int backgroundSpeed3)
     {
@@ -51,7 +57,6 @@ public class World
 
     public void update(float deltaTime)
     {
-        Log.d("World", "deltaTime" + deltaTime);
         updateCounter++;
         configureEnemyWaves(updateCounter);
         configureItemWaves(updateCounter);
@@ -79,9 +84,9 @@ public class World
         for (int i = 0; i < enemyBulletList.size(); i++)
         {
             enemyBullet2 = enemyBulletList.get(i);
-            // move enemy bullet
+            // move enemy bullet downwards from enemy coordinates to the bottom of the screen
             enemyBullet2.y = (int) (enemyBullet2.y + 2 + backgroundSpeed * deltaTime);
-            if (enemyBullet2.y > 480 - Bullet.HEIGHT) // if enemy bullet disappears off screen
+            if (enemyBullet2.y > 480) // if enemy bullet disappears off screen
             {
                 enemyBulletList.remove(i);
             }
@@ -94,9 +99,9 @@ public class World
         for (int i = 0; i < bulletList.size(); i++)
         {
             bullet = bulletList.get(i);
-            // move bullet
+            // move ship bullet upwards from ship coordinates to the top of the screen
             bullet.y = (int)(bullet.y - backgroundSpeed * deltaTime);
-            if (bullet.y < 0 - Bullet.HEIGHT)
+            if (bullet.y < 0 - Bullet.HEIGHT) // if ship bullet disappears off screen
             {
                 bulletList.remove(i);
             }
@@ -106,10 +111,10 @@ public class World
     private void spawnEnemyBullets()
     {
         Bullet enemyBullet;
-        if (updateCounter % 10 == 0)
+        if (updateCounter % 10 == 0) // every 10 updates
         {
-            checkEnemyBulletShooting(1, 12);
-            if (enemyBulletList.size() < 500 && bulletsOn2)
+            checkEnemyBulletShooting(1, 12); // check if the enemy should shoot or not
+            if (bulletsOn2)
             {
                 Enemy enemy2 = null;
                 for (int i = 0; i < enemyList.size(); i++)
@@ -117,10 +122,11 @@ public class World
                     enemy2 = enemyList.get(i);
                     if (enemy2.shooting && enemy2.y > 0) // shoot only if it is a shooting enemy type
                     {
+                        // create a new bullet based on the enemy coordinates
                         enemyBullet = new Bullet(enemy2.x + enemy2.WIDTH / 2 - 2, enemy2.y + 30); // middle enemy coordonates
                         enemyBulletList.add(enemyBullet);
-                        bulletsOnCounter2++;
-                        listener.generateBullet();
+                        bulletsOnCounter2++; // count as bullet shot, up until the value of onUnits
+                        listener.generateBullet(); // generate specific sound
                     }
                 }
             }
@@ -130,9 +136,9 @@ public class World
     private void spawnShipBullets()
     {
         Bullet bullet;
-        if (updateCounter % 10 ==0)
+        if (updateCounter % 10 ==0) // every 10 updates
         {
-            // when the ship shoots 1 bulelt at a time, it will
+            // check what pace to use on shooting, based on the amount of items picked (Multiple Bullets items)
             if(ship.multipleBullets == 1)
             {
                 checkBulletShooting(1, 1);
@@ -153,11 +159,11 @@ public class World
             {
                 checkBulletShooting(2, 5);
             }
-            if (bulletsOn)
+            if (bulletsOn) // check if we can shoot in this update
             {
-                if(ship.multipleBullets == 1)
+                if(ship.multipleBullets == 1) // check how many Multiple Bullets items are picked
                 {
-                    bullet = new Bullet(ship.x+ship.WIDTH/2-2, ship.y-15); // middle ship coordonates
+                    bullet = new Bullet(ship.x+ship.WIDTH/2-2, ship.y-15); // middle ship coordinates
                     bulletList.add(bullet);
                 }
                 else if(ship.multipleBullets == 2)
@@ -171,7 +177,7 @@ public class World
                 {
                     bullet = new Bullet(ship.x+ship.WIDTH/2-2-20, ship.y);
                     bulletList.add(bullet);
-                    bullet = new Bullet(ship.x+ship.WIDTH/2-2, ship.y-8); // middle ship coordonates
+                    bullet = new Bullet(ship.x+ship.WIDTH/2-2, ship.y-8); // middle ship coordinates
                     bulletList.add(bullet);
                     bullet = new Bullet(ship.x+ship.WIDTH/2-2+20, ship.y);
                     bulletList.add(bullet);
@@ -193,91 +199,92 @@ public class World
                     bulletList.add(bullet);
                     bullet = new Bullet(ship.x+ship.WIDTH/2-2-20, ship.y);
                     bulletList.add(bullet);
-                    bullet = new Bullet(ship.x+ship.WIDTH/2-2, ship.y-8); // middle vehicle coordonates
+                    bullet = new Bullet(ship.x+ship.WIDTH/2-2, ship.y-8); // middle vehicle coordinates
                     bulletList.add(bullet);
                     bullet = new Bullet(ship.x+ship.WIDTH/2-2+20, ship.y);
                     bulletList.add(bullet);
                     bullet = new Bullet(ship.x+ship.WIDTH/2-2+20+20, ship.y+8);
                     bulletList.add(bullet);
                 }
-                bulletsOnCounter ++;
-                listener.generateBullet();
+                bulletsOnCounter ++; // count as bullet shot, up until the value of onUnits
+                listener.generateBullet(); // generate specific sound
             }
         }
     }
 
-    // making the health item power up
+
     private void moveItems(float deltaTime)
     {
+        // Health item
         Item healthItem = null;
         for (int i = 0; i < itemHealthList.size(); i++)
         {
             healthItem = itemHealthList.get(i);
-            // make shieldItem move
+            // move Health item downwards from the top, until the bottom of the screen
             healthItem.y = (int)(healthItem.y + backgroundSpeed * deltaTime);
             Random random3 = new Random();
             int randDirectionChangeRate = 100 + random3.nextInt(500); // between 100 and 600
-            if (updateCounter % randDirectionChangeRate ==0)
+            if (updateCounter % randDirectionChangeRate == 0) // between 1 and 6 seconds
             {
-                healthItem.direction = -healthItem.direction; // individual shieldItem direction
+                healthItem.direction = -healthItem.direction; // change direction
             }
             if (healthItem.x < 0 || healthItem.x > 320-healthItem.WIDTH)
             {
-                healthItem.direction = -healthItem.direction; // individual shieldItem direction
-                healthItem.x = (int)(healthItem.x + backgroundSpeed * deltaTime * healthItem.direction);
+                healthItem.direction = -healthItem.direction; // // change direction
             }
+            // move on the X axis: left or right, depending on the item direction
             healthItem.x = (int)(healthItem.x + backgroundSpeed * deltaTime * healthItem.direction);
-            if (healthItem.y > 480 - Item.HEIGHT) // if shieldItem disappears off screen
+            if (healthItem.y > 480) // if item disappears off screen
             {
                 itemHealthList.remove(i);
             }
         }
 
-        // making the bullets item power up
+        // Multiple Bullet item
         Item bulletsItem = null;
         for (int i = 0; i < itemBulletList.size(); i++)
         {
             bulletsItem = itemBulletList.get(i);
-            // make shieldItem move
+            // move Multiple Bullet item downwards from the top, until the bottom of the screen
             bulletsItem.y = (int)(bulletsItem.y + backgroundSpeed * deltaTime);
             Random random3 = new Random();
             int randDirectionChangeRate = 100 + random3.nextInt(500); // between 100 and 600
-            if (updateCounter % randDirectionChangeRate ==0)
+            if (updateCounter % randDirectionChangeRate == 0) // between 1 and 6 seconds
             {
-                bulletsItem.direction = -bulletsItem.direction; // individual bulletsItem direction
+                bulletsItem.direction = -bulletsItem.direction; // change direction
             }
             if (bulletsItem.x < 0 || bulletsItem.x > 320-bulletsItem.WIDTH)
             {
-                bulletsItem.direction = -bulletsItem.direction; // individual bulletsItem direction
-                bulletsItem.x = (int)(bulletsItem.x + backgroundSpeed * deltaTime * bulletsItem.direction);
+                bulletsItem.direction = -bulletsItem.direction; // change direction
             }
+            // move on the X axis: left or right, depending on the item direction
             bulletsItem.x = (int)(bulletsItem.x + backgroundSpeed * deltaTime * bulletsItem.direction);
-            if (bulletsItem.y > 480 - Item.HEIGHT) // if bulletsItem disappears off screen
+            if (bulletsItem.y > 480) // if item disappears off screen
             {
                 itemBulletList.remove(i);
             }
         }
 
-        // making the shield item power up
+        // Shield item
         Item shieldItem = null;
         for (int i = 0; i < itemShieldList.size(); i++)
         {
             shieldItem = itemShieldList.get(i);
-            // make shieldItem move
+            // move Shield item downwards from the top, until the bottom of the screen
             shieldItem.y = (int)(shieldItem.y + backgroundSpeed * deltaTime);
             Random random3 = new Random();
             int randDirectionChangeRate = 100 + random3.nextInt(500); // between 100 and 600
-            if (updateCounter % randDirectionChangeRate ==0)
+            if (updateCounter % randDirectionChangeRate == 0)
             {
-                shieldItem.direction = -shieldItem.direction; // individual shieldItem direction
+                shieldItem.direction = -shieldItem.direction; // change direction
             }
             if (shieldItem.x < 0 || shieldItem.x > 320- shieldItem.WIDTH)
             {
-                shieldItem.direction = -shieldItem.direction; // individual shieldItem direction
-                shieldItem.x = (int)(shieldItem.x + backgroundSpeed * deltaTime * shieldItem.direction);
+                shieldItem.direction = -shieldItem.direction; // change direction
             }
+            // move on the X axis: left or right, depending on the item direction
             shieldItem.x = (int)(shieldItem.x + backgroundSpeed * deltaTime * shieldItem.direction);
-            if (shieldItem.y > 480 - Item.HEIGHT) // if shieldItem disappears off screen
+            if (shieldItem.y > 480) // if item disappears off screen
             {
                 itemShieldList.remove(i);
             }
@@ -290,31 +297,30 @@ public class World
         for (int i = 0; i < enemyList.size(); i++)
         {
             enemy = enemyList.get(i);
-            // make enemy move
+            // move enemy downwards from the top, until the bottom of the screen
             enemy.y = (int)(enemy.y + backgroundSpeed * deltaTime);
             Random random2 = new Random();
             int randDirectionChangeRate = 100 + random2.nextInt(500); // between 100 and 600
             if (updateCounter % randDirectionChangeRate ==0)
             {
-                enemy.direction = -enemy.direction; // individual enemy direction
+                enemy.direction = -enemy.direction; // change direction
             }
             if (enemy.x < 0 || enemy.x > 320- enemy.WIDTH)
             {
-                enemy.direction = -enemy.direction; // individual enemy direction
-                enemy.x = (int)(enemy.x + backgroundSpeed * deltaTime * enemy.direction);
+                enemy.direction = -enemy.direction; // change direction
             }
+            // move on the X axis: left or right, depending on the enemy direction
             enemy.x = (int)(enemy.x + backgroundSpeed * deltaTime * enemy.direction);
-            if (enemy.y > 480 - Enemy.HEIGHT) // if enemy disappears off screen
+            if (enemy.y > 480) // if enemy disappears off screen
             {
                 enemyList.remove(i);
-//                add sound???
             }
         }
     }
 
     private void scoreCounter()
     {
-        if (updateCounter % 10 ==0)
+        if (updateCounter % 10 ==0) // every 10 updates
         {
             scorePoints++; // add 1 point for every 1/6 seconds
         }
@@ -322,10 +328,11 @@ public class World
 
     private void moveShip()
     {
-        // move the ship based on user touch.
+        // move the ship based on user touch
         if (gameEngine.isTouchDown(0));
         {
-            ship.x = gameEngine.getTouchX(0) - Ship.WIDTH/2; // position ship after touch x
+            // position the middle of the ship on touch coordinates
+            ship.x = gameEngine.getTouchX(0) - Ship.WIDTH/2;
             // check for ship to be in the lower part of the screen
             if (gameEngine.getTouchY(0) < 480/2) // check if touch is on the upper part
             {
@@ -334,15 +341,15 @@ public class World
             {
                 ship.y = gameEngine.getTouchY(0) - Ship.HEIGHT/2; // position ship after touch y
             }
-            if (gameEngine.getTouchY(0) > 480 - Ship.HEIGHT)  // check if ship is out of screen (lower)
+            if (gameEngine.getTouchY(0) > 480 - Ship.HEIGHT/2)  // check if ship is out of screen (lower)
             {
-                ship.y = 480 - Ship.HEIGHT - 10; // reposition ship on the lower part of the screen
+                ship.y = 480 - Ship.HEIGHT/2 - 40 ; // reposition ship on the lower part of the screen
             }
         }
         // check left screen boundary
-        if (ship.x < MIN_X) ship.x = (int) MIN_X + 1;
+        if (ship.x < -30) ship.x = -30 + 1;
         // check right screen boundary
-        if (ship.x + ship.WIDTH > MAX_X) ship.x = (int)(MAX_X - Ship.WIDTH - 1);
+        if (ship.x + ship.WIDTH > 320 + 30) ship.x = 320 + 30 - Ship.WIDTH - 1;  //  320 + 30 = logical screen + ship wing size
     }
 
     private void collideShipEnemy()
@@ -351,24 +358,21 @@ public class World
         for (int i=0; i < enemyList.size(); i++)
         {
             enemy = enemyList.get(i);
-            // if shield is off then check collide rectangles of the ship with enemy
+            // if shield is off then check collision between ship and enemy
             if (!ship.shield && collideRects(ship.x, ship.y, Ship.WIDTH, Ship.HEIGHT,
                     enemy.x, enemy.y, Enemy.WIDTH, Enemy.HEIGHT))
             {
-                ship.lives = ship.lives - 1; // lives decrease when collide with enemy
-//                if (!enemy.shield) // if enemy has shield, then it will stay alive, even after ship collision
-//                {
-                    //delete enemy from list
-                    enemyList.remove(i);
-//                }
+                ship.lives = ship.lives - 1; // loose 1 live when the ship hits an enemy
+                //delete enemy from list
+                enemyList.remove(i);
                 if(ship.multipleBullets > 1)
                 {
-                    ship.multipleBullets = ship.multipleBullets - 1; // multipleBullets decrease when collide with enemy
+                    // loose 1 multiple bullets, when the ship hits an enemy
+                    ship.multipleBullets = ship.multipleBullets - 1;
                 }
-                listener.collideShipEnemy();
-                Log.d("World", "The ship just hit an enemy");
+                listener.collideShipEnemy(); // generate specific sound
             }
-            // if shield is on then check collide rectangles of the shield on the ship with enemy
+            // if shield is on then check collision between ship shield and enemy
             else if(ship.shield && collideRects(ship.x, ship.y, Ship.WIDTH+10, Ship.HEIGHT+24,
                     enemy.x, enemy.y, Enemy.WIDTH, Enemy.HEIGHT))
             {
@@ -380,7 +384,7 @@ public class World
             if(ship.lives==0)
             {
                 gameOver = true;
-                listener.gameOver();
+                listener.gameOver(); // generate specific sound
             }
         }
     }
@@ -400,8 +404,7 @@ public class World
                     ship.lives = ship.lives + 1; // increase the lives
                 }
                 itemHealthList.remove(i);
-                listener.collideShipItem();
-                Log.d("World", "The ship just collected an healthItem.");
+                listener.collideShipItem(); // generate specific sound
                 // add points
                 scorePoints+=10;
             }
@@ -417,14 +420,13 @@ public class World
             if (collideRects(ship.x, ship.y, Ship.WIDTH, Ship.HEIGHT,
                     bulletsItem.x, bulletsItem.y, Item.WIDTH, Item.HEIGHT))
             {
-                // if there are less then 5 multiple bullest (which is the maximum)
+                // if there are less then 5 multiple bullets (which is the maximum)
                 if(ship.multipleBullets < 5)
                 {
                     ship.multipleBullets = ship.multipleBullets + 1; // increase the multiple bullets
                 }
                 itemBulletList.remove(i);
-                listener.collideShipItem();
-                Log.d("World", "The ship just collected an bulletsItem.");
+                listener.collideShipItem(); // generate specific sound
                 // add points
                 scorePoints+=10;
             }
@@ -443,8 +445,7 @@ public class World
                 // put the shield on
                 ship.shield = true; // shield is on
                 itemShieldList.remove(i);
-                listener.collideShipItem();
-                Log.d("World", "The ship just collected an shieldItem.");
+                listener.collideShipItem(); // generate specific sound
                 // add points
                 scorePoints+=10;
             }
@@ -468,10 +469,8 @@ public class World
                 {
                     enemy.health -=1;
                     Log.d("World", "The enemy was hit: Enemy HP -1" + enemy.health);
-                    // bullet dissapears
+                    // bullet disappears
                     bulletList.remove(i);
-                    Log.d("World", "The bullet just hit an enemy");
-
                     if (enemy.health <= 0 && !enemy.shield) // shielded enemy is immune
                     {
                         //delete enemy from list
@@ -490,11 +489,9 @@ public class World
                     {
                         scorePoints+=1;
                     }
-                    listener.collideBulletEnemy();
-//                    collideBulletEnemySound();
+                    listener.collideBulletEnemy(); // generate specific sound
                 }
             }
-
         }
     }
 
@@ -504,8 +501,8 @@ public class World
         for (int i=0; i < enemyBulletList.size(); i++)
         {
             enemyBullet = enemyBulletList.get(i);
-            // check collision of a bullet with a enemy
-            // if shield is off then check collide rectangles of the ship with bullet of enemy
+            // check collision of a enemy bullet with the ship
+            // if shield is off then check collision between enemy bullet and ship
             if (!ship.shield && collideRects(enemyBullet.x, enemyBullet.y, Bullet.WIDTH, Bullet.HEIGHT,
                     ship.x, ship.y, Ship.WIDTH, Ship.HEIGHT))
             {
@@ -516,11 +513,9 @@ public class World
                 {
                     ship.multipleBullets = ship.multipleBullets - 1; // multipleBullets decrease when collide with enemy bullet
                 }
-                Log.d("World", "The bullet just hit an enemy");
-                listener.collideBulletEnemy();
-//                    collideBulletEnemySound();
+                listener.collideBulletEnemy(); // generate specific sound
             }
-            // if shield is on then check collide rectangles of the shield on the ship with bullet of enemy
+            // if shield is on then check collision between enemy bullet and ship
             else if(ship.shield && collideRects(enemyBullet.x, enemyBullet.y, Bullet.WIDTH, Bullet.HEIGHT,
                     ship.x, ship.y, Ship.WIDTH+10, Ship.HEIGHT+24))
             {
@@ -531,12 +526,12 @@ public class World
             if(ship.lives==0)
             {
                 gameOver = true;
-                listener.gameOver();
+                listener.gameOver(); // generate specific sound
             }
         }
     }
 
-    // check the collide rectangles
+    // check the collision between 2 rectangles
     private boolean collideRects(float x, float y, float width, float height,
                                  float x2, float y2, float width2, float height2)
     {
@@ -582,7 +577,7 @@ public class World
             bulletsOffCounter2 = 0;  // reset counter
         }
     }
-    private void configureEnemyWaves(long updateCounter)
+    private void configureEnemyWaves(long updateCounter) // used updateCounter to spawn waves at a specific time
     {
         if (updateCounter == 50)
         {
@@ -596,39 +591,38 @@ public class World
         {
             spawnEnemyWave(0, 0, 4);
         }
-        if (updateCounter >= 2400 && updateCounter % 750 ==0)
+        if (updateCounter >= 2400 && updateCounter % 750 ==0) // repeat enemy waves spawn every 12-13 seconds, after 2400 updates
         {
             spawnEnemyWave(5, 3, 2);
         }
     }
+
     private void spawnEnemyWave(int enemyBasic, int enemyShooting, int enemyShielded)
     {
         Random random = new Random();
         for (int i=0; i<enemyBasic; i++)
         {
-            int randX = random.nextInt(320-30); // between 0 and 50
+            int randX = random.nextInt(320-30); // between 0 and 290
             int randY = random.nextInt(20);
-//            Enemy enemy = new Enemy(randX, ((-450 + randY) + i*100), 1, 3, false, false);
             Enemy enemy = new Enemy(randX, ((-450 + randY) + i*150)-200, 1, 3, false, false);
             enemyList.add(enemy);
         }
         for (int i=0; i<enemyShooting; i++)
         {
-            int randX = random.nextInt(320-30); // between 0 and 50
+            int randX = random.nextInt(320-30); // between 0 and 290
             int randY = random.nextInt(20);
             Enemy enemy2 = new Enemy(randX, ((-450 + randY) + i*150)-200, 1, 3, true, false);
             enemyList.add(enemy2);
         }
         for (int i=0; i<enemyShielded; i++)
         {
-            int randX = random.nextInt(320-30); // between 0 and 50
+            int randX = random.nextInt(320-30); // between 0 and 290
             int randY = random.nextInt(20);
             Enemy enemy3 = new Enemy(randX, ((-450 + randY) + i*150)-200, 1, 1, false, true);
             enemyList.add(enemy3);
         }
     }
 
-    //     Items
     private void configureItemWaves(long updateCounter)
     {
         if (updateCounter == 400)
@@ -639,7 +633,7 @@ public class World
         {
             spawnItemWave(1, 1, 1);
         }
-        if (updateCounter >= 2000 && updateCounter % 750 ==0)
+        if (updateCounter >= 2000 && updateCounter % 750 ==0) // repeat item waves spawn every 12-13 seconds, after 2000 updates
         {
             spawnItemWave(1, 1, 1);
         }
@@ -649,23 +643,22 @@ public class World
         Random random = new Random();
         for (int i=0; i<itemHealth; i++)
         {
-            int randX = random.nextInt(320-30); // between 0 and 50
+            int randX = random.nextInt(320-30); // between 0 and 290
             int randY = random.nextInt(20);
-//            Item item = new Item(randX, ((-450 + randY) + i*100), 1);
             Item item = new Item((randX + (i+1)*50), (randY + (i+1)*150)-300, 1);
             itemHealthList.add(item);
         }
         for (int i=0; i<itemBullet; i++)
         {
-            int randX = random.nextInt(320-30); // between 0 and 50
-            int randY = random.nextInt(70);
+            int randX = random.nextInt(320-30); // between 0 and 290
+            int randY = random.nextInt(20) + 50;
             Item item = new Item((randX + (i+1)*50), (randY + (i+1)*150)-300, 1);
             itemBulletList.add(item);
         }
         for (int i=0; i<itemShield; i++)
         {
-            int randX = random.nextInt(320-30); // between 0 and 50
-            int randY = random.nextInt(140);
+            int randX = random.nextInt(320-30); // between 0 and 290
+            int randY = random.nextInt(20) + 100;
             Item item = new Item((randX + (i+1)*50), (randY + (i+1)*150)-300, 1);
             itemShieldList.add(item);
         }
