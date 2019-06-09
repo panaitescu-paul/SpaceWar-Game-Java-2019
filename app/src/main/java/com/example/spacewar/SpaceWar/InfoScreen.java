@@ -24,7 +24,7 @@ public class InfoScreen extends Screen
     String text2 = "text2";
     String text3 = "text3";
     String text4 = "text4";
-    float passedTime = 0;
+    float passedTime = 0; // time passed before an interaction with the screen
     Typeface font; // the text font
 
     public InfoScreen(GameEngine gameEngine)
@@ -63,13 +63,12 @@ public class InfoScreen extends Screen
         gameEngine.drawBitmap(enemy1Image, 80, 290);
         gameEngine.drawBitmap(enemy2Image, 140, 295);
         gameEngine.drawBitmap(enemy3Image, 200, 295);
-        passedTime = passedTime + deltaTime; // global counter
+        passedTime = passedTime + deltaTime; // add time between updates
+
         // 123,4
         // 0,4 > 0,5  false
         // 123,8
         // 0,8 > 0,5  true
-        // updateCounter % 25
-
         if (gameEngine.isTouchDown(0) && (passedTime) > 0.5f) // wait half a second after the info menu shows, then interact
         {
             // check if x button from info screen is pressed

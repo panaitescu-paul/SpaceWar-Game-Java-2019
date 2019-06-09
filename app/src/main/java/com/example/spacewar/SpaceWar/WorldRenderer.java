@@ -9,6 +9,8 @@ public class WorldRenderer
 {
     GameEngine gameEngine;
     World world;
+
+    // Assets
     Bitmap shipImage;
     Bitmap enemy1Image;
     Bitmap enemy2Image;
@@ -26,15 +28,12 @@ public class WorldRenderer
     {
         gameEngine = ge;
         world = w;
+
+        // load the resources
         shipImage = gameEngine.loadBitmap("spacewar/images/vehicles/ship2.png");
-//        enemy1Image = gameEngine.loadBitmap("spacewar/images/vehicles/1/enemy2-8.png");
-//        enemy1Image = gameEngine.loadBitmap("spacewar/images/vehicles/1/enemy1-4.png");
-//        enemy1Image = gameEngine.loadBitmap("spacewar/images/vehicles/1/enemy2-8.png");
         enemy1Image = gameEngine.loadBitmap("spacewar/images/vehicles/1/enemy1-30.png");
         enemy2Image = gameEngine.loadBitmap("spacewar/images/vehicles/1/enemy2-30.png");
         enemy3Image = gameEngine.loadBitmap("spacewar/images/vehicles/1/enemy3-30.png");
-//        enemy1Image = gameEngine.loadBitmap("spacewar/images/vehicles/1/enemy1-9.png");
-//        enemy1Image = gameEngine.loadBitmap("spacewar/images/vehicles/1/enemy1-9.png");
         enemyHealthImage = gameEngine.loadBitmap("spacewar/images/health/health_bar3.png");
         bullet1Image = gameEngine.loadBitmap("spacewar/images/vehicles/1/bullet3-1.png");
         shipShieldImage = gameEngine.loadBitmap("spacewar/images/items/item-shield-on110.png");
@@ -42,9 +41,7 @@ public class WorldRenderer
         healthItemImage = gameEngine.loadBitmap("spacewar/images/items/item-health30.png");
         bulletItemImage = gameEngine.loadBitmap("spacewar/images/items/item-bullet30.png");
         shieldItemImage = gameEngine.loadBitmap("spacewar/images/items/item-shield30.png");
-//        enemyBulletImage = gameEngine.loadBitmap("spacewar/images/vehicles/bullet1.png");
         enemyBulletImage = gameEngine.loadBitmap("spacewar/images/vehicles/1/bullet2-2.png");
-
     }
 
     public void render()

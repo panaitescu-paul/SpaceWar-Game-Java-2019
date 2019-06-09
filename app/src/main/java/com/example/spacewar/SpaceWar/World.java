@@ -307,6 +307,7 @@ public class World
             if (enemy.y > 480 - Enemy.HEIGHT) // if enemy disappears off screen
             {
                 enemyList.remove(i);
+//                add sound???
             }
         }
     }
