@@ -342,7 +342,7 @@ public abstract class GameEngine extends Activity implements Runnable, TouchHand
                     frames = 0;
                     startTime = System.nanoTime();
                 }*/
-            } // end of while loop
+            } // end of synchronize
         }// end of while(true) loop
     }
 

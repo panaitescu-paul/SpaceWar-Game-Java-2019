@@ -101,6 +101,7 @@ public class World
             bullet = bulletList.get(i);
             // move ship bullet upwards from ship coordinates to the top of the screen
             bullet.y = (int)(bullet.y - backgroundSpeed * deltaTime);
+
             if (bullet.y < 0 - Bullet.HEIGHT) // if ship bullet disappears off screen
             {
                 bulletList.remove(i);
@@ -224,7 +225,7 @@ public class World
             healthItem.y = (int)(healthItem.y + backgroundSpeed * deltaTime);
             Random random3 = new Random();
             int randDirectionChangeRate = 100 + random3.nextInt(500); // between 100 and 600
-            if (updateCounter % randDirectionChangeRate == 0) // between 1 and 6 seconds
+            if (updateCounter % randDirectionChangeRate == 0) // between 1 and 10 seconds
             {
                 healthItem.direction = -healthItem.direction; // change direction
             }
@@ -249,7 +250,7 @@ public class World
             bulletsItem.y = (int)(bulletsItem.y + backgroundSpeed * deltaTime);
             Random random3 = new Random();
             int randDirectionChangeRate = 100 + random3.nextInt(500); // between 100 and 600
-            if (updateCounter % randDirectionChangeRate == 0) // between 1 and 6 seconds
+            if (updateCounter % randDirectionChangeRate == 0) // between 1 and 10 seconds
             {
                 bulletsItem.direction = -bulletsItem.direction; // change direction
             }
