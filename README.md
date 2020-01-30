@@ -16,3 +16,34 @@
 - **Basic enemy** - with 3 live
 - **Shooting enemy** - with 3 lives, and the ability to shoot
 - **Shielded enemy** - with 1 live, but it cannot be destroyed by ship bullets
+
+## Interesting problems solved
+
+### 1. Advancing in Game Levels
+- Enemy Waves - customizable
+- Item Waves - customizable
+
+### 2. Enemy - shooting bullets
+- Enemy Types
+- Enemy Bullet Spawn
+- Enemy Bullet Movement
+
+### 3. Spaceship - shooting bullets
+- Detect collision between spaceship bullet and enemy
+- Bullet disappears off screen
+- Customizable pace shooting (on units / off units)
+- Multiple Bullets power up
+
+### 4. Individual enemy movement
+
+### 5. Parallax Background
+
+### 6. Scoring System
+The score will increase when you:
+- Advance in the game (6 points every second)
+- Shoot a Basic enemy (10 points)
+- Shoot a Shooting enemy (25 points)
+- Shoot a Shielded enemy (1 point)
+- Collect a Health item (10 points)
+- Collect a Multiple Bullets item (10 points)
+- Collect a Shield item (10 points)
