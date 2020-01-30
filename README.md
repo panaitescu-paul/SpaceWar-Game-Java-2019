@@ -1,6 +1,12 @@
-# SpaceWar-Game-2019
+# Space War Game - 2019
 
 ***Space War*** is a ***Shoot 'Em Up type of game for mobile devices***. The player controls a **ship** that can **shoot enemies** and **get items** to improve it along the way. In order to advance in the game, you need to **survive the waves of enemies** by destroying them, or avoiding them. The **game will end** if the ship loses all its lives, otherwise will run indefinitely and will **increase the score** based on time passed, enemies destroyed, and items picked up.
+
+## Preview:
+<p align="center">
+  <img width="45%" height="45%" src="https://github.com/panaitescu-paul/SpaceWar-Game-2019/blob/master/screenshots/04.png">
+  <img width="45%" height="45%" src="https://github.com/panaitescu-paul/SpaceWar-Game-2019/blob/master/screenshots/07.png">
+</p>
 
 ## Initially, the **ship** has: 
 - 1 live
@@ -47,3 +53,20 @@ The score will increase when you:
 - Collect a Health item (10 points)
 - Collect a Multiple Bullets item (10 points)
 - Collect a Shield item (10 points)
+
+## Technologies:
+- Java
+
+## Screenshots:
+<p align="center">
+  <img width="45%" height="45%" src="https://github.com/panaitescu-paul/SpaceWar-Game-2019/blob/master/screenshots/01.png">
+  <img width="45%" height="45%" src="https://github.com/panaitescu-paul/SpaceWar-Game-2019/blob/master/screenshots/02.png">
+  <img width="45%" height="45%" src="https://github.com/panaitescu-paul/SpaceWar-Game-2019/blob/master/screenshots/03.png">
+  <img width="45%" height="45%" src="https://github.com/panaitescu-paul/SpaceWar-Game-2019/blob/master/screenshots/04.png">
+  <img width="45%" height="45%" src="https://github.com/panaitescu-paul/SpaceWar-Game-2019/blob/master/screenshots/05.png">
+  <img width="45%" height="45%" src="https://github.com/panaitescu-paul/SpaceWar-Game-2019/blob/master/screenshots/06.png">
+  <img width="45%" height="45%" src="https://github.com/panaitescu-paul/SpaceWar-Game-2019/blob/master/screenshots/07.png">
+  <img width="45%" height="45%" src="https://github.com/panaitescu-paul/SpaceWar-Game-2019/blob/master/screenshots/08.png">
+  <img width="45%" height="45%" src="https://github.com/panaitescu-paul/SpaceWar-Game-2019/blob/master/screenshots/09.png">
+  <img width="45%" height="45%" src="https://github.com/panaitescu-paul/SpaceWar-Game-2019/blob/master/screenshots/10.png">
+</p>
